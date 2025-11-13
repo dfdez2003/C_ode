@@ -1,0 +1,28 @@
+<div class="module-list-container">
+  <h2>📚 Módulos de Programación C</h2>
+
+  @if (isLoading()) {
+    <p>Cargando módulos...</p>
+  } 
+  
+  @else if (error()) {
+    <p class="error-message">Error: {{ error() }}</p>
+  }
+
+  @else {
+    <div class="modules-grid">
+      @for (module of modules(); track module._id) { 
+        <div class="module-card">
+          <a [routerLink]="['/module', module._id]"> 
+            <h3>{{ module.order }}. {{ module.title }}</h3>
+            <p>{{ module.description }}</p>
+            <p class="stats">
+              Tiempo estimado: {{ module.estimate_time }} min 
+              | Lecciones: {{ module.lessons.length }}
+            </p>
+          </a>
+        </div>
+      }
+    </div>
+  }
+</div>

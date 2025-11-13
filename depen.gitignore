@@ -1,0 +1,26 @@
+# Python / FastAPI
+__pycache__/
+*.pyc
+.venv/         # O venv/, el nombre de tu entorno virtual de Python
+/dist/         # Opcional, si has compilado algo
+
+# Node / Angular
+node_modules/
+dist/          # Carpeta de compilación de Angular
+
+# IDEs y otros
+.vscode/
+.idea/
+.DS_Store
+
+# Python Cache files
+__pycache__/
+*.pyc
+
+# Entorno Virtual
+venv/
+.venv/ 
+
+# Angular
+node_modules/
+dist/

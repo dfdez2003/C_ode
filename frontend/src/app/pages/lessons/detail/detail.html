@@ -1,0 +1,27 @@
+<div class="lesson-detail-content">
+  <h2>{{ lesson.order }}. {{ lesson.title }}</h2>
+  <p class="module-ref">Parte de: {{ moduleTitle }}</p>
+
+  @if (userRole === 'teacher') {
+    <div class="teacher-controls">
+      <h3>Modo Edición (Profesor)</h3>
+      <p>Aquí el profesor podrá editar la lección y sus ejercicios.</p>
+      <button class="edit-button">✏️ Editar Lección</button>
+      <button class="add-button">➕ Agregar Ejercicio</button>
+    </div>
+  }
+
+  <p class="description">{{ lesson.description }}</p>
+  <div class="xp-reward">+{{ lesson.xp_reward }} XP por completar</div>
+
+  <section class="exercises-section">
+    <h3>Ejercicios de la Lección ({{ lesson.exercises.length }})</h3>
+    
+    @for (exercise of lesson.exercises; track exercise.exercise_uuid) {
+        <div class="exercise-summary">
+            <h4>{{ exercise.title }} ({{ exercise.type | uppercase }})</h4>
+            <p>Puntos: {{ exercise.points }}</p>
+            </div>
+    }
+  </section>
+</div>

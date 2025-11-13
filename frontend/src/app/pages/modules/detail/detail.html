@@ -1,0 +1,69 @@
+<div class="module-detail-container">
+  
+  <a 
+    (click)="goBackToModuleList()" 
+    class="back-link"
+  >
+    ← Volver {{ selectedLesson() ? 'a Lecciones' : 'a Módulos' }}
+  </a>
+
+  @if (isLoading()) {
+    <p class="loading-state">Cargando detalles del módulo...</p>
+  } 
+  
+  @else if (error()) {
+    <p class="error-message">Error: {{ error() }}</p>
+  }
+
+  @else if (module(); as m) {
+    
+    @if (!selectedLesson()) {
+      
+      @if (userRole() === 'teacher') {
+        <div class="teacher-controls">
+          <button class="edit-button">✏️ Editar Módulo (Pendiente)</button>
+          <button class="add-button">➕ Agregar Lección (Pendiente)</button>
+        </div>
+      }
+
+      <section class="module-header">
+        <h1>{{ m.title }}</h1>
+        <p class="description">{{ m.description }}</p>
+        <div class="stats">
+          <span>🕒 Tiempo estimado: {{ m.estimate_time }} min</span>
+          <span>✨ Lecciones: {{ m.lessons.length }}</span>
+        </div>
+      </section>
+
+      <section class="lessons-list">
+        <h2>Lecciones disponibles ({{ userRole() === 'teacher' ? 'Vista Profesor' : 'Vista Estudiante' }})</h2>
+        
+        @for (lesson of m.lessons; track lesson._id) {
+          <div class="lesson-card">
+            <a (click)="selectLesson(lesson)"> 
+              <div class="lesson-info">
+                <span class="lesson-order">Lección {{ lesson.order }}</span>
+                <h4>{{ lesson.title }}</h4>
+                <p>{{ lesson.description }}</p>
+              </div>
+              <div class="lesson-meta">
+                <span>+{{ lesson.xp_reward }} XP</span>
+                <span class="exercise-count">Ejercicios: {{ lesson.exercises.length }}</span>
+              </div>
+            </a>
+          </div>
+        }
+        @empty {
+          <p>Este módulo aún no tiene lecciones.</p>
+        }
+      </section>
+    } 
+    
+    @else {
+      <app-lesson-detail 
+        [lesson]="selectedLesson()!" 
+        [moduleTitle]="m.title"
+      ></app-lesson-detail>
+    }
+  }
+</div>

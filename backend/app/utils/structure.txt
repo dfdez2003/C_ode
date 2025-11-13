@@ -1,0 +1,163 @@
+# ===============================================
+# ESTRUCTURA DE COLECCIONES EN MONGODB
+# ===============================================
+# Documentación completa de cómo se verán los documentos en cada colección
+# basado en los modelos y esquemas del proyecto FastAPI
+
+# ===============================================
+✅ 1. users (Usuarios)
+# ===============================================
+{
+  "_id": ObjectId,
+  "username": String,                    # Nombre de usuario único
+  "email": String,                       # Correo electrónico único
+  "password_hash": String,               # Hash de la contraseña (bcrypt)
+  "role": String,                        # Rol: "student" o "teacher"
+  "created_at": Date,                    # Fecha de creación de la cuenta
+  "streak": {
+    "current_days": Number,              # Días consecutivos de práctica
+    "last_practice_date": Date           # Fecha de última práctica
+  },
+  "total_points": Number,                # Puntos totales acumulados
+  "last_session_id": ObjectId           # Referencia a la última sesión
+}
+
+# ===============================================
+✅ 2. modules (Módulos)
+# ===============================================
+{
+  "_id": ObjectId,
+  "title": String,                       # Título del módulo
+  "description": String,                 # Descripción detallada del contenido
+  "order": Number,                       # Orden del módulo en el curso
+  "estimate_time": Number,               # Tiempo estimado en días
+  "lessons": [                           # Array de lecciones incrustadas
+    {
+      "exercise_uuid": String,           # UUID único del ejercicio
+      "type": String,                    # Tipo: "study", "complete", "make_code", "question", "unit_concepts"
+      "title": String,                   # Título del ejercicio
+      "points": Number,                  # Puntos que otorga
+      # Campos específicos según el tipo:
+      # Para "study":
+      "flashcards": {                    # Diccionario palabra-definición
+        "concepto": "definición"
+      },
+      # Para "complete":
+      "text": String,                    # Texto con espacios en blanco
+      "options": [String],               # Opciones disponibles
+      "correct_answer": String,          # Respuesta correcta
+      # Para "make_code":
+      "description": String,             # Descripción del problema
+      "code": String,                    # Código inicial/plantilla
+      "solution": String,                # Solución correcta
+      "test_cases": [                    # Casos de prueba
+        {
+          "input": String,               # Entrada del caso
+          "expected_output": String      # Salida esperada
+        }
+      ],
+      # Para "question":
+      "description": String,             # La pregunta
+      "options": [String],               # Opciones de respuesta
+      "correct_answer": String,          # Respuesta correcta
+      # Para "unit_concepts":
+      "description": String,             # Descripción general
+      "concepts": {                      # Diccionario concepto-definición
+        "concepto": "definición"
+      }
+    }
+  ]
+}
+
+# ===============================================
+✅ 3. lessons (Lecciones)
+# ===============================================
+{
+  "_id": ObjectId,
+  "module_id": ObjectId,                # Referencia al módulo padre
+  "title": String,                      # Título descriptivo de la lección
+  "description": String,                # Descripción detallada del contenido
+  "order": Number,                      # Orden de la lección dentro del módulo
+  "xp_reward": Number,                  # Recompensa en puntos XP
+  "exercises": [                        # Array de ejercicios incrustados
+    {
+      "exercise_uuid": String,          # UUID único del ejercicio
+      "type": String,                   # Tipo de ejercicio
+      "title": String,                  # Título del ejercicio
+      "points": Number,                 # Puntos que otorga
+      # Campos específicos según el tipo (igual que en modules)
+    }
+  ]
+}
+
+# ===============================================
+✅ 4. exercises (Ejercicios) - Colección separada
+# ===============================================
+{
+  "_id": ObjectId,
+  "lesson_id": ObjectId,                # Referencia a la lección padre
+  "exercise_uuid": String,             # UUID único del ejercicio
+  "type": String,                       # Tipo de ejercicio
+  "title": String,                      # Título del ejercicio
+  "points": Number,                     # Puntos que otorga
+  # Campos específicos según el tipo (igual que en lessons)
+}
+
+# ===============================================
+✅ 5. user_progress (Progreso del Usuario)
+# ===============================================
+{
+  "_id": ObjectId,
+  "user_id": ObjectId,                  # Referencia al usuario
+  "module_id": ObjectId,                # Referencia al módulo
+  "lesson_id": ObjectId,                # Referencia a la lección
+  "exercise_uuid": String,              # Referencia al UUID del ejercicio
+  "status": String,                     # Estado: "not_started", "in_progress", "completed"
+  "attempts": [                         # Historial de intentos
+    {
+      "code": String,                   # Código escrito por el usuario
+      "is_correct": Boolean,            # Si el intento fue correcto
+      "submitted_at": Date              # Timestamp del intento
+    }
+  ],
+  "last_session_id": ObjectId,          # Última sesión de trabajo
+  "is_mastered": Boolean                # Si el ejercicio ha sido dominado
+}
+
+# ===============================================
+✅ 6. sessions (Sesiones de Estudio)
+# ===============================================
+{
+  "_id": ObjectId,
+  "user_id": ObjectId,                  # Referencia al usuario
+  "lesson_id": ObjectId,                # Referencia a la lección
+  "start_time": Date,                   # Momento de inicio de la sesión
+  "end_time": Date,                     # Momento de fin (null si está activa)
+  "duration_minutes": Number,            # Duración en minutos
+  "status": String,                     # Estado: "in_progress", "completed"
+  "exercises_completed": Number,         # Ejercicios completados en esta sesión
+  "total_points_gained": Number         # Puntos ganados en esta sesión
+}
+
+# ===============================================
+✅ 7. rewards (Recompensas)
+# ===============================================
+{
+  "_id": ObjectId,
+  "name": String,                       # Nombre de la recompensa
+  "description": String,                 # Descripción de la recompensa
+  "type": String,                       # Tipo de recompensa
+  "points": Number,                     # Puntos que otorga la recompensa
+  "users_awarded": [ObjectId]           # Array de usuarios que ya la obtuvieron
+}
+
+# ===============================================
+# NOTAS IMPORTANTES:
+# ===============================================
+# 1. Los ejercicios pueden estar incrustados en modules y lessons, o en colección separada
+# 2. Los ObjectId se convierten a String en las respuestas JSON de la API
+# 3. Los UUID de ejercicios permiten identificación única dentro de lecciones
+# 4. El progreso del usuario se rastrea por ejercicio individual
+# 5. Las sesiones pueden estar activas (end_time = null) o completadas
+# 6. Los roles de usuario permiten diferentes niveles de acceso (student/teacher)
+

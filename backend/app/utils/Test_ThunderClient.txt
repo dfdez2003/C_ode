@@ -1,0 +1,1090 @@
+# ===============================================
+# EJEMPLOS DE PRUEBAS PARA THUNDER CLIENT - USERS
+# ===============================================
+
+# ===============================================
+# 1. REGISTRO DE USUARIO (POST /users/register)
+# ===============================================
+
+# Ejemplo 1: Usuario nuevo válido
+POST http://localhost:8000/users/register
+Content-Type: application/json
+
+{
+    "username": "juan_perez",
+    "email": "juan.perez@email.com",
+    "password": "juan123"
+}
+
+# Ejemplo 2: Usuario con email diferente
+POST http://localhost:8000/users/register
+Content-Type: application/json
+
+{
+    "username": "maria_garcia",
+    "email": "maria.garcia@email.com",
+    "password": "passwordSegura456"
+}
+
+# Ejemplo 3: Usuario con caracteres especiales en username
+POST http://localhost:8000/users/register
+Content-Type: application/json
+
+{
+    "username": "carlos_123",
+    "email": "carlos123@email.com",
+    "password": "miClave789"
+}
+
+# ===============================================
+# 2. LOGIN DE USUARIO (POST /users/login)
+# ===============================================
+
+# Ejemplo 1: Login con usuario registrado
+POST http://localhost:8000/users/login
+Content-Type: application/json
+
+{
+    "username": "juan_perez",
+    "password": "miPassword123"
+}
+
+# Ejemplo 2: Login con otro usuario
+POST http://localhost:8000/users/login
+Content-Type: application/json
+
+{
+    "username": "maria_garcia",
+    "password": "passwordSegura456"
+}
+
+# Ejemplo 3: Login con credenciales incorrectas (para probar error)
+POST http://localhost:8000/users/login
+Content-Type: application/json
+
+{
+    "username": "juan_perez",
+    "password": "passwordIncorrecta"
+}
+
+# ===============================================
+# 3. OBTENER USUARIO ACTUAL (GET /users/me)
+# ===============================================
+
+# IMPORTANTE: Para este endpoint necesitas el token JWT del login
+# Copia el "access_token" de la respuesta del login y úsalo en el header
+
+# Ejemplo 1: Obtener usuario actual con token válido
+GET http://localhost:8000/users/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuX3BlcmV6IiwiZXhwIjoxNzM4MjQ4MDAwfQ.example_token_here
+
+# Ejemplo 2: Sin token (para probar error 401)
+GET http://localhost:8000/users/me
+
+# Ejemplo 3: Con token inválido (para probar error 401)
+GET http://localhost:8000/users/me
+Authorization: Bearer token_invalido_aqui
+
+# ===============================================
+# CASOS DE PRUEBA ADICIONALES PARA REGISTRO
+# ===============================================
+
+# Caso de error: Email ya registrado
+POST http://localhost:8000/users/register
+Content-Type: application/json
+
+{
+    "username": "usuario_nuevo",
+    "email": "juan.perez@email.com",
+    "password": "otraPassword123"
+}
+
+# Caso de error: Username ya tomado
+POST http://localhost:8000/users/register
+Content-Type: application/json
+
+{
+    "username": "juan_perez",
+    "email": "nuevo.email@email.com",
+    "password": "otraPassword123"
+}
+
+# Caso de error: Email inválido
+POST http://localhost:8000/users/register
+Content-Type: application/json
+
+{
+    "username": "usuario_valido",
+    "email": "email_invalido_sin_arroba",
+    "password": "password123"
+}
+
+# Caso de error: Campos faltantes
+POST http://localhost:8000/users/register
+Content-Type: application/json
+
+{
+    "username": "usuario_sin_email"
+}
+
+# ===============================================
+# CASOS DE PRUEBA ADICIONALES PARA LOGIN
+# ===============================================
+
+# Caso de error: Usuario no existe
+POST http://localhost:8000/users/login
+Content-Type: application/json
+
+{
+    "username": "usuario_inexistente",
+    "password": "cualquierPassword"
+}
+
+# Caso de error: Campos faltantes
+POST http://localhost:8000/users/login
+Content-Type: application/json
+
+{
+    "username": "juan_perez"
+}
+
+
+
+{
+    "username": "yuliana",
+    "email": "jberuemn@email.com",
+    "password": "yuliana123"
+}
+
+
+
+# ===============================================
+# CASOS DE PRUEBA PARA CREAR LECCION 
+# ===============================================
+# ( se debe estar loguiado como proffesor)
+
+{
+  "title": "Introducción a Punteros en C",
+  "module_id": "651f678e71887e0b5f1a2345",
+  "description": "Una lección detallada sobre el uso y la manipulación de punteros en el lenguaje C.",
+  "order": 1,
+  "xp_reward": 50,
+  "exercises": [
+    {
+      "type": "study",
+      "title": "Conceptos básicos de punteros",
+      "points": 10,
+      "flashcards": {
+        "Puntero": "Una variable que almacena la dirección de memoria de otra variable.",
+        "Desreferencia": "El proceso de acceder al valor de la variable a la que apunta un puntero."
+      }
+    },
+    {
+      "type": "question",
+      "title": "¿Qué almacena un puntero?",
+      "points": 15,
+      "description": "¿Qué tipo de dato almacena un puntero?",
+      "options": [
+        "Un valor numérico",
+        "Una dirección de memoria",
+        "Un carácter"
+      ],
+      "correct_answer": "Una dirección de memoria"
+    },
+    {
+      "type": "make_code",
+      "title": "Ejercicio de suma con punteros",
+      "points": 25,
+      "description": "Escribe una función que use punteros para sumar dos números enteros y devuelva el resultado.",
+      "code": "#include <stdio.h>\n\nint add_with_pointers(int *a, int *b) {\n\n}",
+      "solution": "#include <stdio.h>\n\nint add_with_pointers(int *a, int *b) {\n    return (*a) + (*b);\n}",
+      "test_cases": [
+        {
+          "input": "1 2",
+          "expected_output": "3"
+        },
+        {
+          "input": "5 5",
+          "expected_output": "10"
+        }
+      ]
+    }
+  ]
+}
+
+# ===============================================
+# DOCUMENTACIÓN COMPLETA DE RUTAS Y FUNCIONES RELACIONADAS CON LECCIONES
+# ===============================================
+
+# ===============================================
+# RUTAS PRINCIPALES DE LECCIONES (/lessons)
+# ===============================================
+
+# 1. POST /lessons/ - Crear una lección
+#    - Requiere: Token JWT con rol de profesor
+#    - Entrada: LessonCreate (module_id, title, description, order, xp_reward, exercises[])
+#    - Salida: LessonOut (lección completa con ejercicios incrustados)
+#    - Función: create_lesson_service()
+
+# 2. GET /lessons/{lesson_id} - Obtener lección por ID
+#    - Requiere: Ninguna autenticación (público)
+#    - Entrada: lesson_id (String/ObjectId)
+#    - Salida: LessonOut (lección completa con ejercicios)
+#    - Función: get_lesson_by_id_service()
+
+# 3. PUT /lessons/{lesson_id} - Actualizar lección
+#    - Requiere: Token JWT con rol de profesor
+#    - Entrada: lesson_id + LessonUpdate (campos opcionales)
+#    - Salida: LessonOut (lección actualizada)
+#    - Función: update_lesson_service()
+
+# 4. DELETE /lessons/{lesson_id} - Eliminar lección
+#    - Requiere: Token JWT con rol de profesor
+#    - Entrada: lesson_id (String/ObjectId)
+#    - Salida: HTTP 204 No Content
+#    - Función: delete_lesson_service()
+
+# ===============================================
+# RUTAS DE MÓDULOS QUE USAN LECCIONES (/modules)
+# ===============================================
+
+# 1. POST /modules/ - Crear módulo con lecciones
+#    - Requiere: Token JWT con rol de profesor
+#    - Entrada: ModuleCreate (title, description, order, estimate_time, lessons[])
+#    - Salida: ModuleOut (módulo con lecciones y ejercicios incrustados)
+#    - Función: create_module_service()
+
+# 2. GET /modules/{module_id} - Obtener módulo por ID
+#    - Requiere: Ninguna autenticación (público)
+#    - Entrada: module_id (String/ObjectId)
+#    - Salida: ModuleOut (módulo completo con lecciones)
+#    - Función: get_module_by_id_service()
+
+# 3. GET /modules/ - Obtener todos los módulos
+#    - Requiere: Ninguna autenticación (público)
+#    - Entrada: Ninguna
+#    - Salida: List[ModuleOut] (lista de módulos con lecciones)
+#    - Función: Lista directa desde MongoDB
+
+# 4. PUT /modules/{module_id} - Actualizar módulo
+#    - Requiere: Token JWT con rol de profesor
+#    - Entrada: module_id + ModuleUpdate (campos opcionales)
+#    - Salida: ModuleOut (módulo actualizado)
+#    - Función: update_module_service()
+
+# 5. DELETE /modules/{module_id} - Eliminar módulo
+#    - Requiere: Token JWT con rol de profesor
+#    - Entrada: module_id (String/ObjectId)
+#    - Salida: HTTP 204 No Content
+#    - Función: delete_module_service()
+
+# ===============================================
+# FUNCIONES DE SERVICIO QUE MANEJAN LECCIONES
+# ===============================================
+
+# En services/lessons.py:
+# - create_lesson_service(lesson_data: LessonCreate) -> LessonOut
+# - get_lesson_by_id_service(lesson_id: str) -> Optional[LessonOut]
+# - update_lesson_service(lesson_id: str, lesson_data: LessonUpdate) -> Optional[LessonOut]
+# - delete_lesson_service(lesson_id: str) -> bool
+# - get_all_lessons_path(user_id: PyObjectId) -> List[ModulePathOut] (pendiente)
+# - get_user_current_progress(user_id: PyObjectId) -> Optional[dict] (pendiente)
+
+# En services/modules.py:
+# - create_module_service(module_data: ModuleCreate) -> ModuleOut
+# - get_module_by_id_service(module_id: str) -> Optional[ModuleOut]
+# - update_module_service(module_id: str, update_data: ModuleUpdate) -> Optional[ModuleOut]
+# - delete_module_service(module_id: str) -> bool
+
+# ===============================================
+# ESQUEMAS QUE USAN LECCIONES
+# ===============================================
+
+# En schemas/lessons.py:
+# - LessonCreate: Para crear lecciones (module_id, title, description, order, xp_reward, exercises[])
+# - LessonUpdate: Para actualizar lecciones (todos los campos opcionales)
+# - LessonOut: Respuesta de API (id, module_id, title, description, order, xp_reward, exercises[])
+# - ModulePathOut: Para rutas de aprendizaje (id, title, is_unlocked, lessons[])
+
+# En schemas/modules.py:
+# - ModuleCreate: Para crear módulos (title, description, order, estimate_time, lessons[])
+# - ModuleUpdate: Para actualizar módulos (todos los campos opcionales)
+# - ModuleOut: Respuesta de API (id, title, description, order, estimate_time, lessons[])
+
+# ===============================================
+# MODELOS DE BASE DE DATOS QUE USAN LECCIONES
+# ===============================================
+
+# En models.py:
+# - LessonModel: Modelo principal de lección con ejercicios incrustados
+# - ModuleModel: Modelo principal de módulo con lecciones incrustadas
+# - UserProgress_Model: Progreso del usuario por ejercicio (lesson_id)
+# - SessionModel: Sesiones de estudio (lesson_id)
+
+# ===============================================
+# COLECCIONES DE MONGODB RELACIONADAS
+# ===============================================
+
+# 1. lessons_collection: Almacena lecciones individuales
+#    - Documentos con ejercicios incrustados
+#    - Referencias a module_id
+
+# 2. modules_collection: Almacena módulos con lecciones incrustadas
+#    - Documentos con lecciones y ejercicios anidados
+#    - Estructura jerárquica completa
+
+# 3. userprogress_collection: Progreso del usuario
+#    - Referencias a lesson_id y module_id
+#    - Estado de completado por ejercicio
+
+# 4. sessions_collection: Sesiones de estudio
+#    - Referencias a lesson_id
+#    - Duración y puntos ganados
+
+# ===============================================
+# NOTAS IMPORTANTES SOBRE LECCIONES
+# ===============================================
+
+# 1. AUTENTICACIÓN:
+#    - Crear/Actualizar/Eliminar: Requiere rol de profesor
+#    - Leer: Público (sin autenticación)
+
+# 2. ESTRUCTURA DE DATOS:
+#    - Los ejercicios están incrustados en las lecciones
+#    - Las lecciones pueden estar incrustadas en módulos
+#    - Los UUID de ejercicios permiten identificación única
+
+# 3. VALIDACIÓN:
+#    - lesson_id debe ser un ObjectId válido
+#    - module_id debe existir en la base de datos (ACTUALMENTE NO VALIDADO)
+#    - exercises[] debe contener al menos un ejercicio
+
+# 4. CONVERSIÓN DE TIPOS:
+#    - ObjectId se convierte a String en respuestas JSON
+#    - Los esquemas Pydantic manejan la validación automáticamente
+
+# 5. FUNCIONES PENDIENTES:
+#    - get_all_lessons_path(): Ruta completa de aprendizaje
+#    - get_user_current_progress(): Progreso actual del usuario
+#    - Funciones de desbloqueo de lecciones
+
+
+
+
+
+
+------------------- Estructura para entradas con thunder client ---------------------
+
+
+# ===============================================
+# 4. CREAR MÓDULO CON 4 LECCIONES (4 EJERCICIOS CADA UNA)
+# ===============================================
+# Requiere: Token JWT con rol de 'teacher' (profesor)
+# Endpoint: POST /modules
+# Descripción:
+# - Crea un módulo con 4 lecciones.
+# - Cada lección contiene 4 ejercicios:
+#   1) study (flashcards)
+#   2) question (opciones y respuesta correcta)
+#   3) make_code (código, solución, casos de prueba)
+#   4) study (resumen/refuerzo)
+#
+# Notas:
+# - Ajusta 'order' de lecciones y ejercicios según el flujo deseado.
+# - estimate_time está en minutos.
+# - Reemplaza el token por el de tu login con rol profesor.
+#
+POST http://localhost:8000/modules
+Content-Type: application/json
+Authorization: Bearer REEMPLAZAR_CON_TOKEN_DE_PROFESOR
+
+{
+    "title": "Fundamentos de Programación en C - Nivel 1",
+    "description": "Módulo introductorio que cubre los pilares del lenguaje C mediante teoría, preguntas y ejercicios prácticos.",
+    "order": 1,
+    "estimate_time": 240,
+    "lessons": [
+        {
+            "title": "Introducción y Configuración del Entorno",
+            "description": "Instalación de compilador, estructura básica de un programa en C y primer 'Hello World'.",
+            "order": 1,
+            "xp_reward": 50,
+            "exercises": [
+                {
+                    "type": "study",
+                    "title": "Conceptos clave: Compilación y Ejecución",
+                    "points": 10,
+                    "flashcards": {
+                        "Compilador": "Programa que traduce código fuente a código máquina.",
+                        "Ejecutable": "Archivo binario que puede ser corrido por el sistema operativo.",
+                        "main": "Función principal donde inicia la ejecución en C."
+                    }
+                },
+                {
+                    "type": "question",
+                    "title": "¿Cuál es la función de entrada de un programa en C?",
+                    "points": 10,
+                    "description": "Selecciona la respuesta correcta.",
+                    "options": [
+                        "init()",
+                        "start()",
+                        "main()",
+                        "run()"
+                    ],
+                    "correct_answer": "main()"
+                },
+                {
+                    "type": "make_code",
+                    "title": "Hola Mundo en C",
+                    "points": 20,
+                    "description": "Completa el programa para imprimir 'Hello, World!' seguido de un salto de línea.",
+                    "code": "#include <stdio.h>\n\nint main() {\n    // Escribe tu código aquí\n    return 0;\n}\n",
+                    "solution": "#include <stdio.h>\n\nint main() {\n    printf(\"Hello, World!\\n\");\n    return 0;\n}\n",
+                    "test_cases": [
+                        { "input": "", "expected_output": "Hello, World!\n" }
+                    ]
+                },
+                {
+                    "type": "study",
+                    "title": "Resumen rápido del flujo de trabajo",
+                    "points": 10,
+                    "flashcards": {
+                        "Editar": "Escribe código en un archivo .c",
+                        "Compilar": "gcc archivo.c -o programa",
+                        "Ejecutar": "./programa"
+                    }
+                }
+            ]
+        },
+        {
+            "title": "Tipos de Datos y Variables",
+            "description": "Enteros, flotantes, caracteres y su almacenamiento en memoria.",
+            "order": 2,
+            "xp_reward": 60,
+            "exercises": [
+                {
+                    "type": "study",
+                    "title": "Tipos primitivos en C",
+                    "points": 10,
+                    "flashcards": {
+                        "int": "Entero con signo (tamaño dependiente de la plataforma).",
+                        "float": "Número en coma flotante de precisión simple.",
+                        "char": "Almacena un carácter (1 byte)."
+                    }
+                },
+                {
+                    "type": "question",
+                    "title": "¿Cuál es el especificador de formato para enteros?",
+                    "points": 10,
+                    "description": "Selecciona el especificador correcto para printf.",
+                    "options": [
+                        "%c",
+                        "%d",
+                        "%f",
+                        "%s"
+                    ],
+                    "correct_answer": "%d"
+                },
+                {
+                    "type": "make_code",
+                    "title": "Suma de enteros",
+                    "points": 20,
+                    "description": "Lee dos enteros desde entrada estándar e imprime su suma.",
+                    "code": "#include <stdio.h>\n\nint main() {\n    int a, b;\n    // Lee y suma aquí\n    return 0;\n}\n",
+                    "solution": "#include <stdio.h>\n\nint main() {\n    int a, b;\n    if (scanf(\"%d %d\", &a, &b) == 2) {\n        printf(\"%d\\n\", a + b);\n    }\n    return 0;\n}\n",
+                    "test_cases": [
+                        { "input": "2 3", "expected_output": "5\n" },
+                        { "input": "10 -4", "expected_output": "6\n" }
+                    ]
+                },
+                {
+                    "type": "study",
+                    "title": "Casting y desbordamiento",
+                    "points": 10,
+                    "flashcards": {
+                        "Casting": "Convertir de un tipo de dato a otro explícitamente.",
+                        "Overflow": "Resultado excede el rango máximo del tipo."
+                    }
+                }
+            ]
+        },
+        {
+            "title": "Control de Flujo",
+            "description": "Condiciones if/else, switch y bucles for/while.",
+            "order": 3,
+            "xp_reward": 70,
+            "exercises": [
+                {
+                    "type": "study",
+                    "title": "Estructuras de control",
+                    "points": 10,
+                    "flashcards": {
+                        "if/else": "Ejecuta bloques según una condición booleana.",
+                        "for": "Itera un número determinado de veces."
+                    }
+                },
+                {
+                    "type": "question",
+                    "title": "¿Qué imprime este código?",
+                    "points": 15,
+                    "description": "int x = 3; if (x > 2) printf(\"A\"); else printf(\"B\");",
+                    "options": [
+                        "A",
+                        "B",
+                        "AB",
+                        "No imprime nada"
+                    ],
+                    "correct_answer": "A"
+                },
+                {
+                    "type": "make_code",
+                    "title": "Conteo de 1 a N",
+                    "points": 25,
+                    "description": "Lee N y muestra los números del 1 al N separados por espacios.",
+                    "code": "#include <stdio.h>\n\nint main() {\n    int n;\n    // Completa el bucle\n    return 0;\n}\n",
+                    "solution": "#include <stdio.h>\n\nint main() {\n    int n;\n    if (scanf(\"%d\", &n) == 1) {\n        for (int i = 1; i <= n; i++) {\n            printf(\"%d\", i);\n            if (i < n) printf(\" \");\n        }\n        printf(\"\\n\");\n    }\n    return 0;\n}\n",
+                    "test_cases": [
+                        { "input": "5", "expected_output": "1 2 3 4 5\n" }
+                    ]
+                },
+                {
+                    "type": "study",
+                    "title": "Switch vs if/else",
+                    "points": 10,
+                    "flashcards": {
+                        "switch": "Adecuado para comparar contra valores constantes.",
+                        "break": "Evita el 'fall-through' en cada caso."
+                    }
+                }
+            ]
+        },
+        {
+            "title": "Funciones y Paso por Referencia",
+            "description": "Definición de funciones, parámetros y uso de punteros para modificar argumentos.",
+            "order": 4,
+            "xp_reward": 80,
+            "exercises": [
+                {
+                    "type": "study",
+                    "title": "Firmas de funciones",
+                    "points": 10,
+                    "flashcards": {
+                        "Prototipo": "Declaración previa que indica tipos de parámetros y retorno.",
+                        "void": "Indica que la función no retorna valor."
+                    }
+                },
+                {
+                    "type": "question",
+                    "title": "¿Qué permite modificar el valor original en una función?",
+                    "points": 15,
+                    "description": "Selecciona la opción correcta.",
+                    "options": [
+                        "Paso por valor",
+                        "Paso por referencia usando punteros",
+                        "Usar variables globales únicamente",
+                        "Ninguna"
+                    ],
+                    "correct_answer": "Paso por referencia usando punteros"
+                },
+                {
+                    "type": "make_code",
+                    "title": "Intercambio de valores",
+                    "points": 30,
+                    "description": "Implementa swap(int* a, int* b) para intercambiar valores.",
+                    "code": "#include <stdio.h>\n\nvoid swap(int* a, int* b) {\n    // Implementa aquí\n}\n\nint main() {\n    int x = 2, y = 3;\n    swap(&x, &y);\n    printf(\"%d %d\\n\", x, y);\n    return 0;\n}\n",
+                    "solution": "#include <stdio.h>\n\nvoid swap(int* a, int* b) {\n    int tmp = *a;\n    *a = *b;\n    *b = tmp;\n}\n\nint main() {\n    int x = 2, y = 3;\n    swap(&x, &y);\n    printf(\"%d %d\\n\", x, y);\n    return 0;\n}\n",
+                    "test_cases": [
+                        { "input": "", "expected_output": "3 2\n" }
+                    ]
+                },
+                {
+                    "type": "study",
+                    "title": "Resumen de punteros",
+                    "points": 10,
+                    "flashcards": {
+                        "Desreferenciar": "Acceder al valor apuntado por un puntero (*ptr).",
+                        "Dirección": "Obtener la dirección con el operador &."
+                    }
+                }
+            ]
+        }
+    ]
+}
+
+
+# ===============================================
+# 5. CREAR MÓDULO NIVEL 2: FUNCIONES Y RECURSIÓN (4x4)
+# ===============================================
+# Requiere: Token JWT con rol de 'teacher' (profesor)
+# Endpoint: POST /modules
+# Descripción:
+# - Módulo de Nivel 2 enfocado en funciones, paso por valor y referencia, ámbito y recursión.
+# - 4 lecciones; cada lección con 4 ejercicios (study, question, make_code, study).
+# - Preparado para copiar/pegar en Thunder Client.
+#
+# Sugerencias:
+# - Ajusta 'order' y 'xp_reward' a tu flujo.
+# - Asegúrate de usar un token válido en el header Authorization.
+#
+POST http://localhost:8000/modules
+Content-Type: application/json
+Authorization: Bearer REEMPLAZAR_CON_TOKEN_DE_PROFESOR
+
+{
+    "title": "Nivel 2: Funciones, Parámetros y Recursión en C",
+    "description": "Profundiza en funciones: prototipos, ámbito, paso por valor/referencia y recursión con ejercicios prácticos.",
+    "order": 2,
+    "estimate_time": 300,
+    "lessons": [
+        {
+            "title": "Funciones en C: Prototipos y Definiciones",
+            "description": "Diferencia entre declaración y definición, prototipos y reglas de ámbito.",
+            "order": 1,
+            "xp_reward": 70,
+            "exercises": [
+                {
+                    "type": "study",
+                    "title": "Conceptos clave de funciones",
+                    "points": 10,
+                    "flashcards": {
+                        "Prototipo": "Declaración previa de una función que indica su firma.",
+                        "Definición": "Implementación de la función (cuerpo de la función).",
+                        "Ámbito": "Visibilidad de nombres en archivos y bloques."
+                    }
+                },
+                {
+                    "type": "question",
+                    "title": "¿Por qué usar prototipos?",
+                    "points": 10,
+                    "description": "Selecciona la razón principal para usar prototipos en C.",
+                    "options": [
+                        "Para ejecutar más rápido el programa",
+                        "Para permitir llamadas antes de la definición",
+                        "Para reducir el tamaño del binario",
+                        "Para evitar el uso de headers"
+                    ],
+                    "correct_answer": "Para permitir llamadas antes de la definición"
+                },
+                {
+                    "type": "make_code",
+                    "title": "Función max(int a, int b)",
+                    "points": 30,
+                    "description": "Implementa una función max que retorne el mayor de dos enteros.",
+                    "code": "#include <stdio.h>\n\nint max(int a, int b); // prototipo\n\nint main() {\n    int x, y;\n    if (scanf(\"%d %d\", &x, &y) == 2) {\n        printf(\"%d\\n\", max(x, y));\n    }\n    return 0;\n}\n\n// Implementa aquí max\n",
+                    "solution": "#include <stdio.h>\n\nint max(int a, int b); // prototipo\n\nint max(int a, int b) {\n    return (a > b) ? a : b;\n}\n\nint main() {\n    int x, y;\n    if (scanf(\"%d %d\", &x, &y) == 2) {\n        printf(\"%d\\n\", max(x, y));\n    }\n    return 0;\n}\n",
+                    "test_cases": [
+                        { "input": "3 8", "expected_output": "8\n" },
+                        { "input": "-1 -5", "expected_output": "-1\n" }
+                    ]
+                },
+                {
+                    "type": "study",
+                    "title": "Buenas prácticas",
+                    "points": 10,
+                    "flashcards": {
+                        "Headers": "Coloca prototipos en .h para reutilización.",
+                        "Modularidad": "Separa declaración y definición para escalar proyectos."
+                    }
+                }
+            ]
+        },
+        {
+            "title": "Parámetros: Paso por Valor vs Referencia",
+            "description": "Efectos de modificar parámetros y uso de punteros para cambiar valores.",
+            "order": 2,
+            "xp_reward": 80,
+            "exercises": [
+                {
+                    "type": "study",
+                    "title": "Modelo de parámetros en C",
+                    "points": 10,
+                    "flashcards": {
+                        "Por valor": "Se pasa una copia del valor al parámetro formal.",
+                        "Por referencia": "Se simula con punteros (direcciones de memoria)."
+                    }
+                },
+                {
+                    "type": "question",
+                    "title": "Efecto de pasar por valor",
+                    "points": 15,
+                    "description": "Si una función f(int x) hace x++, ¿cambia la variable original?",
+                    "options": [
+                        "Sí, siempre",
+                        "No, porque se trabaja con una copia",
+                        "Solo si x es global",
+                        "Solo en sistemas de 64-bit"
+                    ],
+                    "correct_answer": "No, porque se trabaja con una copia"
+                },
+                {
+                    "type": "make_code",
+                    "title": "Incremento por referencia",
+                    "points": 30,
+                    "description": "Implementa void inc(int* p) que incremente en 1 el entero apuntado.",
+                    "code": "#include <stdio.h>\n\nvoid inc(int* p);\n\nint main() {\n    int v;\n    if (scanf(\"%d\", &v) == 1) {\n        inc(&v);\n        printf(\"%d\\n\", v);\n    }\n    return 0;\n}\n\n// Implementa inc aquí\n",
+                    "solution": "#include <stdio.h>\n\nvoid inc(int* p) {\n    if (p) { *p = *p + 1; }\n}\n\nint main() {\n    int v;\n    if (scanf(\"%d\", &v) == 1) {\n        inc(&v);\n        printf(\"%d\\n\", v);\n    }\n    return 0;\n}\n",
+                    "test_cases": [
+                        { "input": "0", "expected_output": "1\n" },
+                        { "input": "41", "expected_output": "42\n" }
+                    ]
+                },
+                {
+                    "type": "study",
+                    "title": "Errores comunes con punteros",
+                    "points": 10,
+                    "flashcards": {
+                        "NULL": "Verifica p != NULL antes de desreferenciar.",
+                        "Alias": "Evita confusión al apuntar a la misma dirección."
+                    }
+                }
+            ]
+        },
+        {
+            "title": "Recursión: Casos Base y Progreso",
+            "description": "Cómo definir recursión correctamente y evitar desbordes de pila.",
+            "order": 3,
+            "xp_reward": 90,
+            "exercises": [
+                {
+                    "type": "study",
+                    "title": "Pilares de la recursión",
+                    "points": 10,
+                    "flashcards": {
+                        "Caso base": "Condición que detiene la recursión.",
+                        "Progreso": "Hacer que la llamada avance hacia el caso base."
+                    }
+                },
+                {
+                    "type": "question",
+                    "title": "Selecciona el caso base correcto para factorial",
+                    "points": 15,
+                    "description": "¿Cuál es un caso base válido para factorial(n)?",
+                    "options": [
+                        "n == 0 retorna 0",
+                        "n == 0 retorna 1",
+                        "n == 1 retorna 0",
+                        "n < 0 retorna 1"
+                    ],
+                    "correct_answer": "n == 0 retorna 1"
+                },
+                {
+                    "type": "make_code",
+                    "title": "Factorial recursivo",
+                    "points": 35,
+                    "description": "Implementa factorial(n) de forma recursiva (asume n >= 0).",
+                    "code": "#include <stdio.h>\n\nlong long fact(int n);\n\nint main() {\n    int n;\n    if (scanf(\"%d\", &n) == 1) {\n        printf(\"%lld\\n\", fact(n));\n    }\n    return 0;\n}\n\n// Implementa fact aquí\n",
+                    "solution": "#include <stdio.h>\n\nlong long fact(int n) {\n    if (n == 0) return 1;\n    return (long long)n * fact(n - 1);\n}\n\nint main() {\n    int n;\n    if (scanf(\"%d\", &n) == 1) {\n        printf(\"%lld\\n\", fact(n));\n    }\n    return 0;\n}\n",
+                    "test_cases": [
+                        { "input": "0", "expected_output": "1\n" },
+                        { "input": "5", "expected_output": "120\n" }
+                    ]
+                },
+                {
+                    "type": "study",
+                    "title": "Notas de rendimiento",
+                    "points": 10,
+                    "flashcards": {
+                        "Pila": "Cada llamada recursiva consume stack.",
+                        "Memoización": "Evita recomputación en recursiones costosas (p.ej., Fibonacci)."
+                    }
+                }
+            ]
+        },
+        {
+            "title": "Ámbito, Tiempo de Vida y Librerías",
+            "description": "static, extern, variables locales/estáticas y uso básico de headers .h",
+            "order": 4,
+            "xp_reward": 85,
+            "exercises": [
+                {
+                    "type": "study",
+                    "title": "Ámbito y almacenamiento",
+                    "points": 10,
+                    "flashcards": {
+                        "static local": "Conserva su valor entre invocaciones.",
+                        "extern": "Declara símbolo definido en otro archivo."
+                    }
+                },
+                {
+                    "type": "question",
+                    "title": "Comportamiento de variables estáticas locales",
+                    "points": 15,
+                    "description": "¿Qué sucede con una variable static dentro de una función entre llamadas?",
+                    "options": [
+                        "Se reinicia cada llamada",
+                        "Conserva su último valor",
+                        "Se convierte en global",
+                        "Provoca error de compilación"
+                    ],
+                    "correct_answer": "Conserva su último valor"
+                },
+                {
+                    "type": "make_code",
+                    "title": "Contador estático",
+                    "points": 30,
+                    "description": "Implementa counter() que use static para incrementar y retornar el conteo.",
+                    "code": "#include <stdio.h>\n\nint counter(void);\n\nint main() {\n    printf(\"%d\\n\", counter());\n    printf(\"%d\\n\", counter());\n    printf(\"%d\\n\", counter());\n    return 0;\n}\n\n// Implementa counter aquí\n",
+                    "solution": "#include <stdio.h>\n\nint counter(void) {\n    static int c = 0;\n    c++;\n    return c;\n}\n\nint main() {\n    printf(\"%d\\n\", counter());\n    printf(\"%d\\n\", counter());\n    printf(\"%d\\n\", counter());\n    return 0;\n}\n",
+                    "test_cases": [
+                        { "input": "", "expected_output": "1\n2\n3\n" }
+                    ]
+                },
+                {
+                    "type": "study",
+                    "title": "Modularización",
+                    "points": 10,
+                    "flashcards": {
+                        "Headers .h": "Exponen prototipos para separar en múltiples archivos.",
+                        "Compilación separada": "gcc -c *.c y enlazar posteriormente."
+                    }
+                }
+            ]
+        }
+    ]
+}
+
+
+# ===============================================
+# 6. CREAR MÓDULO: INTRODUCCIÓN A ESTRUCTURAS DE DATOS (4x4)
+# ===============================================
+# Requiere: Token JWT con rol de 'teacher' (profesor)
+# Endpoint: POST /modules
+# Descripción:
+# - Módulo introductorio sobre Estructuras de Datos en C.
+# - 4 lecciones; cada lección con 4 ejercicios (study, question, make_code, study).
+# - Enfoque en conceptos fundamentales: arrays, listas, pilas, colas y árboles básicos.
+# - Preparado para copiar/pegar en Thunder Client.
+#
+# Sugerencias:
+# - Ajusta 'order' y 'xp_reward' según tu flujo de aprendizaje.
+# - Asegúrate de usar un token válido en el header Authorization.
+#
+POST http://localhost:8000/modules
+Content-Type: application/json
+Authorization: Bearer REEMPLAZAR_CON_TOKEN_DE_PROFESOR
+
+{
+    "title": "Introducción a Estructuras de Datos en C",
+    "description": "Módulo fundamental que introduce los conceptos básicos de estructuras de datos: organización, almacenamiento y manipulación eficiente de información. Cubre desde arrays estáticos hasta estructuras dinámicas como listas, pilas, colas y árboles básicos, proporcionando una base sólida para el diseño de algoritmos eficientes.",
+    "order": 3,
+    "estimate_time": 320,
+    "lessons": [
+        {
+            "title": "Fundamentos de Estructuras de Datos",
+            "description": "Introducción a los conceptos básicos: qué son las estructuras de datos, tipos abstractos de datos (TAD), complejidad temporal y espacial, y la importancia de elegir la estructura adecuada para cada problema.",
+            "order": 1,
+            "xp_reward": 60,
+            "exercises": [
+                {
+                    "type": "study",
+                    "title": "Conceptos fundamentales",
+                    "points": 10,
+                    "flashcards": {
+                        "Estructura de Datos": "Forma de organizar y almacenar datos en memoria para facilitar su acceso y manipulación.",
+                        "TAD (Tipo Abstracto de Datos)": "Definición de operaciones permitidas sobre una estructura sin especificar su implementación.",
+                        "Complejidad Temporal": "Tiempo que tarda un algoritmo en ejecutarse en función del tamaño de entrada.",
+                        "Complejidad Espacial": "Cantidad de memoria que utiliza un algoritmo en función del tamaño de entrada."
+                    }
+                },
+                {
+                    "type": "question",
+                    "title": "¿Qué es una estructura de datos?",
+                    "points": 15,
+                    "description": "Selecciona la definición más precisa de estructura de datos.",
+                    "options": [
+                        "Un tipo de variable primitivo en C",
+                        "Una forma de organizar y almacenar datos para facilitar su acceso y manipulación",
+                        "Solo arrays y matrices",
+                        "Un algoritmo de ordenamiento"
+                    ],
+                    "correct_answer": "Una forma de organizar y almacenar datos para facilitar su acceso y manipulación"
+                },
+                {
+                    "type": "make_code",
+                    "title": "Análisis de complejidad básico",
+                    "points": 25,
+                    "description": "Implementa una función que calcule la suma de los primeros n números enteros y analiza su complejidad temporal.",
+                    "code": "#include <stdio.h>\n\n// Completa la función suma_n\n// Complejidad temporal: O(?) \nint suma_n(int n) {\n    // Escribe tu código aquí\n}\n\nint main() {\n    int n;\n    if (scanf(\"%d\", &n) == 1) {\n        printf(\"%d\\n\", suma_n(n));\n    }\n    return 0;\n}\n",
+                    "solution": "#include <stdio.h>\n\n// Complejidad temporal: O(n)\nint suma_n(int n) {\n    int suma = 0;\n    for (int i = 1; i <= n; i++) {\n        suma += i;\n    }\n    return suma;\n}\n\nint main() {\n    int n;\n    if (scanf(\"%d\", &n) == 1) {\n        printf(\"%d\\n\", suma_n(n));\n    }\n    return 0;\n}\n",
+                    "test_cases": [
+                        { "input": "5", "expected_output": "15\n" },
+                        { "input": "10", "expected_output": "55\n" }
+                    ]
+                },
+                {
+                    "type": "study",
+                    "title": "Clasificación de estructuras",
+                    "points": 10,
+                    "flashcards": {
+                        "Lineales": "Arrays, listas, pilas, colas (acceso secuencial o por índice).",
+                        "No lineales": "Árboles, grafos (relaciones jerárquicas o de red).",
+                        "Estáticas": "Tamaño fijo definido en tiempo de compilación (arrays).",
+                        "Dinámicas": "Tamaño variable que cambia en tiempo de ejecución (listas enlazadas)."
+                    }
+                }
+            ]
+        },
+        {
+            "title": "Arrays y Listas enlazadas",
+            "description": "Arrays estáticos vs listas enlazadas: ventajas y desventajas, operaciones básicas (inserción, eliminación, búsqueda), y cuándo usar cada una según el problema.",
+            "order": 2,
+            "xp_reward": 70,
+            "exercises": [
+                {
+                    "type": "study",
+                    "title": "Arrays vs Listas enlazadas",
+                    "points": 10,
+                    "flashcards": {
+                        "Array": "Estructura de tamaño fijo con acceso O(1) por índice, pero inserción/eliminación costosa.",
+                        "Lista enlazada": "Estructura dinámica con nodos conectados, inserción/eliminación O(1) pero acceso O(n).",
+                        "Nodo": "Estructura que contiene datos y un puntero al siguiente nodo.",
+                        "Cabeza (head)": "Puntero al primer nodo de una lista enlazada."
+                    }
+                },
+                {
+                    "type": "question",
+                    "title": "Ventaja principal de arrays sobre listas",
+                    "points": 15,
+                    "description": "¿Cuál es la principal ventaja de usar un array sobre una lista enlazada?",
+                    "options": [
+                        "Inserción más rápida",
+                        "Acceso aleatorio por índice en tiempo O(1)",
+                        "Uso dinámico de memoria",
+                        "Eliminación más eficiente"
+                    ],
+                    "correct_answer": "Acceso aleatorio por índice en tiempo O(1)"
+                },
+                {
+                    "type": "make_code",
+                    "title": "Estructura de nodo y lista básica",
+                    "points": 30,
+                    "description": "Define una estructura Node con un entero y un puntero al siguiente nodo. Crea una función que inserte un valor al inicio de la lista.",
+                    "code": "#include <stdio.h>\n#include <stdlib.h>\n\n// Define la estructura Node aquí\n\ntypedef struct Node* List;\n\n// Función para insertar al inicio\nList insertar_inicio(List lista, int valor) {\n    // Implementa aquí\n}\n\nvoid imprimir(List lista) {\n    while (lista != NULL) {\n        printf(\"%d \", lista->data);\n        lista = lista->next;\n    }\n    printf(\"\\n\");\n}\n\nint main() {\n    List lista = NULL;\n    int n, valor;\n    if (scanf(\"%d\", &n) == 1) {\n        for (int i = 0; i < n; i++) {\n            if (scanf(\"%d\", &valor) == 1) {\n                lista = insertar_inicio(lista, valor);\n            }\n        }\n        imprimir(lista);\n    }\n    return 0;\n}\n",
+                    "solution": "#include <stdio.h>\n#include <stdlib.h>\n\ntypedef struct Node {\n    int data;\n    struct Node* next;\n} Node;\n\ntypedef struct Node* List;\n\nList insertar_inicio(List lista, int valor) {\n    Node* nuevo = (Node*)malloc(sizeof(Node));\n    nuevo->data = valor;\n    nuevo->next = lista;\n    return nuevo;\n}\n\nvoid imprimir(List lista) {\n    while (lista != NULL) {\n        printf(\"%d \", lista->data);\n        lista = lista->next;\n    }\n    printf(\"\\n\");\n}\n\nint main() {\n    List lista = NULL;\n    int n, valor;\n    if (scanf(\"%d\", &n) == 1) {\n        for (int i = 0; i < n; i++) {\n            if (scanf(\"%d\", &valor) == 1) {\n                lista = insertar_inicio(lista, valor);\n            }\n        }\n        imprimir(lista);\n    }\n    return 0;\n}\n",
+                    "test_cases": [
+                        { "input": "3\n1 2 3", "expected_output": "3 2 1 \n" }
+                    ]
+                },
+                {
+                    "type": "study",
+                    "title": "Operaciones comunes",
+                    "points": 10,
+                    "flashcards": {
+                        "Inserción al inicio": "O(1) en lista enlazada, O(n) en array (desplazamiento).",
+                        "Búsqueda": "O(n) en ambas estructuras en el peor caso.",
+                        "Acceso por índice": "O(1) en array, O(n) en lista enlazada."
+                    }
+                }
+            ]
+        },
+        {
+            "title": "Pilas (Stack) y Colas (Queue)",
+            "description": "Estructuras LIFO (Last In First Out) y FIFO (First In First Out): implementación con arrays y listas, operaciones push/pop y enqueue/dequeue, y casos de uso prácticos.",
+            "order": 3,
+            "xp_reward": 75,
+            "exercises": [
+                {
+                    "type": "study",
+                    "title": "Pilas y Colas",
+                    "points": 10,
+                    "flashcards": {
+                        "Pila (Stack)": "Estructura LIFO: el último elemento en entrar es el primero en salir.",
+                        "Cola (Queue)": "Estructura FIFO: el primer elemento en entrar es el primero en salir.",
+                        "Push": "Operación para insertar un elemento en la pila.",
+                        "Pop": "Operación para eliminar y retornar el elemento superior de la pila.",
+                        "Enqueue": "Operación para insertar un elemento al final de la cola.",
+                        "Dequeue": "Operación para eliminar y retornar el elemento del frente de la cola."
+                    }
+                },
+                {
+                    "type": "question",
+                    "title": "Principio de una pila",
+                    "points": 15,
+                    "description": "¿Qué principio sigue una estructura de datos tipo pila?",
+                    "options": [
+                        "FIFO (First In First Out)",
+                        "LIFO (Last In First Out)",
+                        "Orden aleatorio",
+                        "Orden por prioridad"
+                    ],
+                    "correct_answer": "LIFO (Last In First Out)"
+                },
+                {
+                    "type": "make_code",
+                    "title": "Implementación básica de pila",
+                    "points": 30,
+                    "description": "Implementa una pila usando un array con operaciones push y pop. La pila tiene capacidad máxima de 100 elementos.",
+                    "code": "#include <stdio.h>\n#define MAX 100\n\nint stack[MAX];\nint top = -1;\n\nvoid push(int valor) {\n    // Implementa push aquí\n}\n\nint pop(void) {\n    // Implementa pop aquí\n    return -1; // valor por defecto si está vacía\n}\n\nint main() {\n    int n, valor;\n    char op;\n    if (scanf(\"%d\", &n) == 1) {\n        for (int i = 0; i < n; i++) {\n            if (scanf(\" %c\", &op) == 1) {\n                if (op == 'p') { // push\n                    if (scanf(\"%d\", &valor) == 1) {\n                        push(valor);\n                    }\n                } else if (op == 'o') { // pop\n                    int resultado = pop();\n                    if (resultado != -1) {\n                        printf(\"%d\\n\", resultado);\n                    }\n                }\n            }\n        }\n    }\n    return 0;\n}\n",
+                    "solution": "#include <stdio.h>\n#define MAX 100\n\nint stack[MAX];\nint top = -1;\n\nvoid push(int valor) {\n    if (top < MAX - 1) {\n        stack[++top] = valor;\n    }\n}\n\nint pop(void) {\n    if (top >= 0) {\n        return stack[top--];\n    }\n    return -1;\n}\n\nint main() {\n    int n, valor;\n    char op;\n    if (scanf(\"%d\", &n) == 1) {\n        for (int i = 0; i < n; i++) {\n            if (scanf(\" %c\", &op) == 1) {\n                if (op == 'p') {\n                    if (scanf(\"%d\", &valor) == 1) {\n                        push(valor);\n                    }\n                } else if (op == 'o') {\n                    int resultado = pop();\n                    if (resultado != -1) {\n                        printf(\"%d\\n\", resultado);\n                    }\n                }\n            }\n        }\n    }\n    return 0;\n}\n",
+                    "test_cases": [
+                        { "input": "4\np 5\np 3\no\no", "expected_output": "3\n5\n" }
+                    ]
+                },
+                {
+                    "type": "study",
+                    "title": "Casos de uso",
+                    "points": 10,
+                    "flashcards": {
+                        "Pilas": "Evaluación de expresiones, backtracking, gestión de llamadas a funciones.",
+                        "Colas": "Sistemas de impresión, procesamiento de solicitudes, algoritmos BFS."
+                    }
+                }
+            ]
+        },
+        {
+            "title": "Árboles Binarios Básicos",
+            "description": "Introducción a árboles binarios: terminología (raíz, nodo, hoja, altura, profundidad), recorridos (preorden, inorden, postorden), y operaciones básicas de inserción y búsqueda.",
+            "order": 4,
+            "xp_reward": 80,
+            "exercises": [
+                {
+                    "type": "study",
+                    "title": "Terminología de árboles",
+                    "points": 10,
+                    "flashcards": {
+                        "Árbol binario": "Estructura donde cada nodo tiene como máximo dos hijos (izquierdo y derecho).",
+                        "Raíz": "Nodo superior del árbol, sin padre.",
+                        "Hoja": "Nodo sin hijos.",
+                        "Altura": "Longitud del camino más largo desde la raíz hasta una hoja.",
+                        "Recorrido inorden": "Izquierda, raíz, derecha (produce ordenamiento en BST)."
+                    }
+                },
+                {
+                    "type": "question",
+                    "title": "Estructura de un nodo en árbol binario",
+                    "points": 15,
+                    "description": "¿Qué componentes debe tener un nodo en un árbol binario?",
+                    "options": [
+                        "Solo un valor",
+                        "Un valor y un puntero al siguiente nodo",
+                        "Un valor y dos punteros (izquierdo y derecho)",
+                        "Un valor y un array de hijos"
+                    ],
+                    "correct_answer": "Un valor y dos punteros (izquierdo y derecho)"
+                },
+                {
+                    "type": "make_code",
+                    "title": "Estructura de árbol binario y recorrido inorden",
+                    "points": 35,
+                    "description": "Define la estructura de un nodo de árbol binario e implementa una función de recorrido inorden que imprima los valores.",
+                    "code": "#include <stdio.h>\n#include <stdlib.h>\n\n// Define la estructura TreeNode aquí\n\ntypedef struct TreeNode* Tree;\n\n// Función para crear un nuevo nodo\nTree crear_nodo(int valor) {\n    // Implementa aquí\n}\n\n// Recorrido inorden: izquierda, raíz, derecha\nvoid inorden(Tree raiz) {\n    // Implementa aquí\n}\n\nint main() {\n    // Ejemplo: árbol con raíz 5, izquierdo 3, derecho 7\n    Tree raiz = crear_nodo(5);\n    raiz->left = crear_nodo(3);\n    raiz->right = crear_nodo(7);\n    \n    inorden(raiz);\n    printf(\"\\n\");\n    \n    return 0;\n}\n",
+                    "solution": "#include <stdio.h>\n#include <stdlib.h>\n\ntypedef struct TreeNode {\n    int data;\n    struct TreeNode* left;\n    struct TreeNode* right;\n} TreeNode;\n\ntypedef struct TreeNode* Tree;\n\nTree crear_nodo(int valor) {\n    Tree nuevo = (Tree)malloc(sizeof(TreeNode));\n    nuevo->data = valor;\n    nuevo->left = NULL;\n    nuevo->right = NULL;\n    return nuevo;\n}\n\nvoid inorden(Tree raiz) {\n    if (raiz != NULL) {\n        inorden(raiz->left);\n        printf(\"%d \", raiz->data);\n        inorden(raiz->right);\n    }\n}\n\nint main() {\n    Tree raiz = crear_nodo(5);\n    raiz->left = crear_nodo(3);\n    raiz->right = crear_nodo(7);\n    \n    inorden(raiz);\n    printf(\"\\n\");\n    \n    return 0;\n}\n",
+                    "test_cases": [
+                        { "input": "", "expected_output": "3 5 7 \n" }
+                    ]
+                },
+                {
+                    "type": "study",
+                    "title": "Tipos de árboles",
+                    "points": 10,
+                    "flashcards": {
+                        "BST (Binary Search Tree)": "Árbol donde el hijo izquierdo < raíz < hijo derecho.",
+                        "Árbol completo": "Todos los niveles están completamente llenos excepto posiblemente el último.",
+                        "Árbol balanceado": "Altura de subárboles izquierdo y derecho difieren en máximo 1."
+                    }
+                }
+            ]
+        }
+    ]
+}
+

@@ -1,0 +1,64 @@
+/* frontend/src/app/pages/modules/list/list.component.css */
+
+.module-list-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.module-list-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #4a4a4a;
+}
+
+.modules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.module-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.module-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.module-card a {
+    display: block;
+    padding: 20px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.module-card h3 {
+    margin-top: 0;
+    color: #007bff; /* Color primario */
+    font-size: 1.5em;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.module-card p {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+}
+
+.module-card .stats {
+    display: block;
+    color: #5cb85c; /* Duolingo-like green */
+    font-weight: bold;
+    font-size: 0.85em;
+    padding-top: 10px;
+    border-top: 1px dashed #eee;
+}
