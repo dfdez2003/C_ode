@@ -1,0 +1,379 @@
+<!-- frontend/src/app/pages/game-map/components/module-form-modal/module-form-modal.html -->
+
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-content modal-large">
+    
+    <!-- Header con indicador de pasos -->
+    <div class="modal-header">
+      <div>
+        <h2>📚 Crear Módulo Completo</h2>
+        <div class="step-indicator">
+          <span class="step" [class.active]="currentStep() === 'module'" [class.completed]="currentStep() !== 'module'">
+            1. Módulo
+          </span>
+          <span class="step-arrow">→</span>
+          <span class="step" [class.active]="currentStep() === 'lesson'" [class.completed]="currentStep() === 'exercise-selector' || currentStep() === 'exercise-form'">
+            2. Lección
+          </span>
+          <span class="step-arrow">→</span>
+          <span class="step" [class.active]="currentStep() === 'exercise-selector' || currentStep() === 'exercise-form'">
+            3. Ejercicios
+          </span>
+        </div>
+      </div>
+      <button class="close-button" (click)="onCancel()" [disabled]="isSubmitting()">
+        ✕
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+      
+      <!-- Error Message -->
+      @if (error()) {
+        <div class="error-message">
+          ⚠️ {{ error() }}
+        </div>
+      }
+
+      <!-- ========== PASO 1: DATOS DEL MÓDULO ========== -->
+      @if (currentStep() === 'module') {
+        <div class="step-content fade-in">
+          <h3>�� Paso 1: Datos del Módulo</h3>
+          
+          <div class="form-group">
+            <label for="module-title" class="form-label">
+              Título del Módulo *
+            </label>
+            <input
+              id="module-title"
+              type="text"
+              class="form-input"
+              placeholder="Ej: Introducción a Python"
+              [(ngModel)]="moduleTitle"
+              name="moduleTitle"
+              maxlength="100"
+              required
+            />
+            <small class="form-hint">Mínimo 3 caracteres</small>
+          </div>
+
+          <div class="form-group">
+            <label for="module-description" class="form-label">
+              Descripción del Módulo *
+            </label>
+            <textarea
+              id="module-description"
+              class="form-textarea"
+              placeholder="Describe el contenido y objetivos del módulo..."
+              [(ngModel)]="moduleDescription"
+              name="moduleDescription"
+              rows="4"
+              maxlength="500"
+              required
+            ></textarea>
+            <small class="form-hint">Mínimo 10 caracteres</small>
+          </div>
+
+          <div class="info-box">
+            <p>ℹ️ A continuación crearás una lección con ejercicios para este módulo.</p>
+          </div>
+        </div>
+      }
+
+      <!-- ========== PASO 2: DATOS DE LA LECCIÓN ========== -->
+      @if (currentStep() === 'lesson') {
+        <div class="step-content fade-in">
+          <h3>📝 Paso 2: Primera Lección</h3>
+          
+          <div class="form-group">
+            <label for="lesson-title" class="form-label">
+              Título de la Lección *
+            </label>
+            <input
+              id="lesson-title"
+              type="text"
+              class="form-input"
+              placeholder="Ej: Variables y Tipos de Datos"
+              [(ngModel)]="lessonTitle"
+              name="lessonTitle"
+              maxlength="100"
+              required
+            />
+            <small class="form-hint">Mínimo 3 caracteres</small>
+          </div>
+
+          <div class="form-group">
+            <label for="lesson-description" class="form-label">
+              Descripción de la Lección *
+            </label>
+            <textarea
+              id="lesson-description"
+              class="form-textarea"
+              placeholder="Describe los temas que se cubrirán en esta lección..."
+              [(ngModel)]="lessonDescription"
+              name="lessonDescription"
+              rows="4"
+              maxlength="500"
+              required
+            ></textarea>
+            <small class="form-hint">Mínimo 10 caracteres</small>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="lesson-xp" class="form-label">
+                XP Recompensa *
+              </label>
+              <input
+                id="lesson-xp"
+                type="number"
+                class="form-input"
+                [(ngModel)]="lessonXpReward"
+                name="lessonXpReward"
+                min="1"
+                max="500"
+                required
+              />
+              <small class="form-hint">Entre 1 y 500 XP</small>
+            </div>
+
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input
+                  type="checkbox"
+                  [(ngModel)]="lessonIsPrivate"
+                  name="lessonIsPrivate"
+                />
+                🔒 Lección Privada (Examen - un solo intento)
+              </label>
+            </div>
+          </div>
+
+          <div class="info-box">
+            <p>ℹ️ A continuación crearás ejercicios para esta lección.</p>
+          </div>
+        </div>
+      }
+
+      <!-- ========== PASO 3A: SELECTOR DE TIPO DE EJERCICIO ========== -->
+      @if (currentStep() === 'exercise-selector') {
+        <div class="step-content fade-in">
+          <h3>✏️ Paso 3: Agregar Ejercicios</h3>
+          
+          @if (exercises().length > 0) {
+            <div class="exercise-list">
+              <h4>Ejercicios creados ({{ exercises().length }}):</h4>
+              @for (exercise of exercises(); track $index) {
+                <div class="exercise-item">
+                  <span class="exercise-icon">
+                    @switch (exercise.type) {
+                      @case ('question') { 🤔 }
+                      @case ('study') { 📖 }
+                      @case ('complete') { ✍️ }
+                      @case ('make_code') { 💻 }
+                      @case ('unit_concepts') { 🎯 }
+                    }
+                  </span>
+                  <div class="exercise-info">
+                    <strong>{{ exercise.title }}</strong>
+                    <small>{{ exercise.type }} - {{ exercise.points }} XP</small>
+                  </div>
+                  <div class="exercise-actions">
+                    <button class="btn-icon" (click)="onEditExercise($index)" title="Editar">✏️</button>
+                    <button class="btn-icon" (click)="onDeleteExercise($index)" title="Eliminar">🗑️</button>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+
+          <h4>Selecciona el tipo de ejercicio a crear:</h4>
+          <div class="exercise-type-grid">
+            <button class="type-card question" (click)="onExerciseTypeSelected('question')">
+              <span class="type-icon">🤔</span>
+              <span class="type-name">Pregunta</span>
+              <span class="type-desc">Pregunta simple con respuesta de texto</span>
+            </button>
+
+            <button class="type-card study" (click)="onExerciseTypeSelected('study')">
+              <span class="type-icon">📖</span>
+              <span class="type-name">Estudio</span>
+              <span class="type-desc">Tarjetas de estudio (flashcards)</span>
+            </button>
+
+            <button class="type-card complete" (click)="onExerciseTypeSelected('complete')">
+              <span class="type-icon">✍️</span>
+              <span class="type-name">Completar</span>
+              <span class="type-desc">Llenar espacios en código</span>
+            </button>
+
+            <button class="type-card make-code" (click)="onExerciseTypeSelected('make_code')">
+              <span class="type-icon">💻</span>
+              <span class="type-name">Programar</span>
+              <span class="type-desc">Escribir código completo</span>
+            </button>
+
+            <button class="type-card unit-concepts" (click)="onExerciseTypeSelected('unit_concepts')">
+              <span class="type-icon">🎯</span>
+              <span class="type-name">Conceptos</span>
+              <span class="type-desc">Relacionar conceptos y definiciones</span>
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- ========== PASO 3B: FORMULARIO DE EJERCICIO ========== -->
+      @if (currentStep() === 'exercise-form' && selectedExerciseType()) {
+        <div class="step-content fade-in">
+          @switch (selectedExerciseType()) {
+            @case ('question') {
+              <app-question-exercise-form
+                [exercise]="editingExerciseIndex() !== null ? exercises()[editingExerciseIndex()!] : null"
+                (save)="onExerciseSaved($event)"
+                (close)="onExerciseBack()"
+              />
+            }
+            @case ('study') {
+              <app-study-exercise-form
+                [exercise]="editingExerciseIndex() !== null ? exercises()[editingExerciseIndex()!] : null"
+                (save)="onExerciseSaved($event)"
+                (close)="onExerciseBack()"
+              />
+            }
+            @case ('complete') {
+              <app-complete-exercise-form
+                [exercise]="editingExerciseIndex() !== null ? exercises()[editingExerciseIndex()!] : null"
+                (save)="onExerciseSaved($event)"
+                (close)="onExerciseBack()"
+              />
+            }
+            @case ('make_code') {
+              <app-make-code-exercise-form
+                [exercise]="editingExerciseIndex() !== null ? exercises()[editingExerciseIndex()!] : null"
+                (save)="onExerciseSaved($event)"
+                (close)="onExerciseBack()"
+              />
+            }
+            @case ('unit_concepts') {
+              <app-unit-concepts-exercise-form
+                [exercise]="editingExerciseIndex() !== null ? exercises()[editingExerciseIndex()!] : null"
+                (save)="onExerciseSaved($event)"
+                (close)="onExerciseBack()"
+              />
+            }
+          }
+        </div>
+      }
+
+
+      <!-- ========== PASO 4: RESUMEN DE LECCIONES ========== -->
+      @if (currentStep() === 'lessons-summary') {
+        <div class="step-content fade-in">
+          <h3 class="step-title">📚 Lecciones del Módulo</h3>
+          <p class="step-description">
+            Revisa las lecciones que has creado. Puedes agregar más o finalizar la creación del módulo.
+          </p>
+
+          <div class="lessons-list">
+            @for (lesson of completedLessons(); track $index) {
+              <div class="lesson-card">
+                <div class="lesson-header">
+                  <span class="lesson-number">Lección {{$index + 1}}</span>
+                  <button class="btn-delete-lesson" (click)="deleteLesson($index)" title="Eliminar lección">
+                    🗑️
+                  </button>
+                </div>
+                <h4 class="lesson-title">{{ lesson.title }}</h4>
+                <p class="lesson-description">{{ lesson.description }}</p>
+                <div class="lesson-stats">
+                  <span class="stat">
+                    <span class="stat-icon">✏️</span>
+                    <span class="stat-value">{{ lesson.exercises.length }}</span>
+                    <span class="stat-label">ejercicios</span>
+                  </span>
+                  <span class="stat">
+                    <span class="stat-icon">⭐</span>
+                    <span class="stat-value">{{ lesson.xp_reward }}</span>
+                    <span class="stat-label">XP</span>
+                  </span>
+                  @if (lesson.is_private) {
+                    <span class="stat private">
+                      <span class="stat-icon">🔒</span>
+                      <span class="stat-label">Privada</span>
+                    </span>
+                  }
+                </div>
+              </div>
+            } @empty {
+              <div class="empty-lessons">
+                <p>No hay lecciones aún. Esto no debería ocurrir 🤔</p>
+              </div>
+            }
+          </div>
+
+          <div class="summary-actions">
+            <button type="button" class="btn btn-secondary" (click)="addAnotherLesson()">
+              ➕ Agregar Otra Lección
+            </button>
+            <button 
+              type="button" 
+              class="btn btn-success" 
+              (click)="createCompleteModule()"
+              [disabled]="isSubmitting() || completedLessons().length === 0">
+              @if (isSubmitting()) {
+                <span class="spinner-small"></span>
+                Creando...
+              } @else {
+                ✅ Finalizar y Crear Módulo
+              }
+            </button>
+          </div>
+        </div>
+      }
+
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      @if (currentStep() === 'module') {
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-primary" (click)="onModuleNext()">
+          Siguiente: Lección →
+        </button>
+      }
+
+      @if (currentStep() === 'lesson') {
+        <button type="button" class="btn btn-secondary" (click)="currentStep.set('module')">
+          ← Atrás
+        </button>
+        <button type="button" class="btn btn-primary" (click)="onLessonNext()">
+          Siguiente: Ejercicios →
+        </button>
+      }
+
+      @if (currentStep() === 'exercise-selector') {
+        <button type="button" class="btn btn-secondary" (click)="onExerciseSelectorBack()">
+          ← Atrás
+        </button>
+        @if (exercises().length > 0) {
+          <button 
+            type="button" 
+            class="btn btn-success" 
+            (click)="onFinalize()">
+            ✅ Crear Lección
+          </button>
+        }
+      }
+
+      @if (currentStep() === 'lessons-summary') {
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">
+          Cancelar
+        </button>
+      }
+    </div>
+
+  </div>
+</div>

@@ -13,6 +13,11 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     password: str
 
+# ---> Esquema para registro de profesor con clave secreta <---
+class TeacherCreate(UserBase):
+    password: str
+    secret_key: str  # Clave secreta requerida para crear cuenta de profesor
+
 # ---> Esquema de entrada para login <---
 # Se usa para el inicio de sesión del usuario (POST /users/login).
 class UserLogin(BaseModel):

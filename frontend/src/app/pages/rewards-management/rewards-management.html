@@ -1,0 +1,199 @@
+<!-- frontend/src/app/pages/rewards-management/rewards-management.html -->
+
+<div class="rewards-management">
+
+  <!-- ========== HEADER ========== -->
+  <div class="page-header">
+    <button class="btn-back" (click)="goBack()">
+      ← Volver
+    </button>
+    <div class="header-content">
+      <h1 class="page-title">🎁 Gestión de Recompensas</h1>
+      <p class="page-subtitle">Crea y administra las recompensas del sistema</p>
+    </div>
+    <button class="btn-primary" (click)="openCreateModal()">
+      ➕ Crear Recompensa
+    </button>
+  </div>
+
+  <!-- ========== FILTERS ========== -->
+  <div class="filters-section">
+    <button 
+      class="filter-btn" 
+      [class.active]="filterActive() === 'all'"
+      (click)="setFilter('all')">
+      Todas
+    </button>
+    <button 
+      class="filter-btn" 
+      [class.active]="filterActive() === 'active'"
+      (click)="setFilter('active')">
+      Activas
+    </button>
+    <button 
+      class="filter-btn" 
+      [class.active]="filterActive() === 'inactive'"
+      (click)="setFilter('inactive')">
+      Inactivas
+    </button>
+  </div>
+
+  <!-- ========== LOADING ========== -->
+  @if (isLoading()) {
+    <div class="loading-container">
+      <div class="spinner"></div>
+      <p>Cargando recompensas...</p>
+    </div>
+  }
+
+  <!-- ========== ERROR ========== -->
+  @else if (error()) {
+    <div class="error-container">
+      <div class="error-icon">😕</div>
+      <p class="error-message">{{ error() }}</p>
+      <button class="btn-retry" (click)="loadRewards()">🔄 Reintentar</button>
+    </div>
+  }
+
+  <!-- ========== REWARDS GRID ========== -->
+  @else {
+    @if (getFilteredRewards().length === 0) {
+      <div class="empty-state">
+        <div class="empty-icon">🎁</div>
+        <h2>No hay recompensas</h2>
+        <p>Crea tu primera recompensa para motivar a los estudiantes</p>
+        <button class="btn-primary" (click)="openCreateModal()">
+          ➕ Crear Primera Recompensa
+        </button>
+      </div>
+    }
+    @else {
+      <div class="rewards-grid">
+        @for (reward of getFilteredRewards(); track reward._id) {
+          <div class="reward-card" [class.inactive]="!reward.is_active">
+            
+            <!-- Status Badge -->
+            <div class="status-badge" [class.active]="reward.is_active">
+              {{ reward.is_active ? 'Activa' : 'Inactiva' }}
+            </div>
+
+            <!-- Icon -->
+            <div class="reward-icon">{{ reward.icon }}</div>
+
+            <!-- Title & Description -->
+            <h3 class="reward-title">{{ reward.title }}</h3>
+            <p class="reward-description">{{ reward.description }}</p>
+
+            <!-- Type Badge -->
+            <div class="type-badge" [style.background-color]="getRewardTypeColor(reward.reward_type)">
+              {{ getRewardTypeLabel(reward.reward_type) }}
+            </div>
+
+            <!-- XP Bonus -->
+            @if (reward.xp_bonus > 0) {
+              <div class="xp-bonus">
+                ⭐ +{{ reward.xp_bonus }} XP Bonus
+              </div>
+            }
+
+            <!-- Criteria -->
+            @if (reward.criteria) {
+              <div class="criteria-section" [attr.data-reward-type]="reward.reward_type" [attr.data-has-lesson]="reward.criteria.lesson_title ? 'yes' : 'no'">
+                <strong>📋 Criterios:</strong>
+                @switch (reward.reward_type) {
+                  @case ('lesson_perfect') {
+                    @if (reward.criteria.lesson_title && (reward.criteria.module_number === 0 || reward.criteria.module_number)) {
+                      <div class="criteria-detail">
+                        <span class="criteria-icon">📖</span>
+                        <span>Módulo {{ reward.criteria.module_number }}: {{ reward.criteria.lesson_title }}</span>
+                      </div>
+                    } @else {
+                      <pre>{{ reward.criteria | json }}</pre>
+                    }
+                  }
+                  @case ('xp_milestone') {
+                    @if (reward.criteria.xp_threshold) {
+                      <div class="criteria-detail">
+                        <span class="criteria-icon">⭐</span>
+                        <span>Alcanzar {{ reward.criteria.xp_threshold }} XP</span>
+                      </div>
+                    } @else {
+                      <pre>{{ reward.criteria | json }}</pre>
+                    }
+                  }
+                  @case ('streak_milestone') {
+                    @if (reward.criteria.streak) {
+                      <div class="criteria-detail">
+                        <span class="criteria-icon">🔥</span>
+                        <span>Mantener {{ reward.criteria.streak }} días de racha</span>
+                      </div>
+                    } @else {
+                      <pre>{{ reward.criteria | json }}</pre>
+                    }
+                  }
+                  @case ('custom') {
+                    <div class="criteria-detail">
+                      <span class="criteria-icon">🎯</span>
+                      <span>Personalizada</span>
+                    </div>
+                  }
+                  @default {
+                    <pre>{{ reward.criteria | json }}</pre>
+                  }
+                }
+              </div>
+            }
+
+            <!-- Actions -->
+            <div class="card-actions">
+              <button 
+                class="btn-action btn-edit" 
+                (click)="openEditModal(reward)"
+                title="Editar">
+                ✏️
+              </button>
+              <button 
+                class="btn-action btn-toggle" 
+                (click)="toggleRewardStatus(reward)"
+                [title]="reward.is_active ? 'Desactivar' : 'Activar'">
+                {{ reward.is_active ? '🔴' : '🟢' }}
+              </button>
+              <button 
+                class="btn-action btn-delete" 
+                (click)="deleteReward(reward)"
+                title="Eliminar">
+                🗑️
+              </button>
+            </div>
+
+            <!-- Metadata -->
+            <div class="card-metadata">
+              <small>Creada: {{ reward.created_at | date:'short' }}</small>
+            </div>
+
+          </div>
+        }
+      </div>
+    }
+  }
+
+  <!-- ========== CREATE MODAL ========== -->
+  @if (showCreateModal()) {
+    <app-reward-form-modal
+      [isEdit]="false"
+      (onSave)="onRewardCreated($event)"
+      (onCancel)="closeCreateModal()"
+    />
+  }
+
+  <!-- ========== EDIT MODAL ========== -->
+  @if (showEditModal() && editingReward()) {
+    <app-reward-form-modal
+      [isEdit]="true"
+      [reward]="editingReward()!"
+      (onSave)="onRewardUpdated($event)"
+      (onCancel)="closeEditModal()"
+    />
+  }
+
+</div>

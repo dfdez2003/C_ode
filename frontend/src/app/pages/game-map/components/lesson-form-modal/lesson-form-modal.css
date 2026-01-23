@@ -1,0 +1,107 @@
+/* frontend/src/app/pages/game-map/components/lesson-form-modal/lesson-form-modal.css */
+
+/* Reutilizamos los mismos estilos del modal de módulo */
+@import '../module-form-modal/module-form-modal.css';
+
+/* ========== ESTILOS ADICIONALES PARA LECCIÓN ========== */
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  padding: 0.75rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.checkbox-label:hover {
+  background: #f7fafc;
+  border-color: #cbd5e0;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #667eea;
+}
+
+.checkbox-text {
+  font-weight: 600;
+  color: #2d3748;
+  font-size: 0.95rem;
+}
+
+/* ========== WARNING BOX ========== */
+
+.warning-box {
+  background: #fef3c7;
+  border: 2px solid #fbbf24;
+  color: #92400e;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.warning-box p {
+  margin: 0;
+}
+
+/* ========== FOOTER CON DOS SECCIONES ========== */
+
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-top: 2px solid #e2e8f0;
+  background: #f7fafc;
+}
+
+.footer-left {
+  flex: 0;
+}
+
+.footer-right {
+  display: flex;
+  gap: 1rem;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.btn-danger {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #dc2626;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+}
+
+/* ========== RESPONSIVE ========== */
+
+@media (max-width: 640px) {
+  .modal-footer {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .footer-left,
+  .footer-right {
+    width: 100%;
+  }
+
+  .footer-right {
+    flex-direction: column-reverse;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

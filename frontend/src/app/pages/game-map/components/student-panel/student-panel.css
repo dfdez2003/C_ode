@@ -1,0 +1,213 @@
+/* frontend/src/app/pages/game-map/components/student-panel/student-panel.css */
+
+.student-panel {
+  padding: 1.5rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========== HEADER ========== */
+
+.panel-header {
+  margin-bottom: 1.5rem;
+}
+
+.panel-header h2 {
+  font-size: 1.5rem;
+  margin: 0 0 0.25rem 0;
+  color: white;
+}
+
+.panel-subtitle {
+  margin: 0;
+  font-size: 0.875rem;
+  opacity: 0.8;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ========== ESTADOS ========== */
+
+.panel-loading,
+.panel-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.spinner-small {
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.panel-loading p,
+.panel-error p {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* ========== LISTA DE ESTUDIANTES ========== */
+
+.students-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Scrollbar personalizado */
+.students-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.students-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.students-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.students-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* ========== ITEM DE ESTUDIANTE ========== */
+
+.student-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(5px);
+}
+
+.student-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateX(4px);
+}
+
+.student-item.top-rank {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 165, 0, 0.2));
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.student-item.top-rank:hover {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(255, 165, 0, 0.3));
+}
+
+/* ========== CONTENIDO DEL ITEM ========== */
+
+.student-rank {
+  font-size: 1.5rem;
+  width: 40px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.student-info {
+  flex: 1;
+  min-width: 0; /* Para permitir text-overflow */
+}
+
+.student-name {
+  display: block;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 0.25rem;
+}
+
+.student-stats {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.stat-xp {
+  background: rgba(255, 215, 0, 0.2);
+  padding: 0.125rem 0.5rem;
+  border-radius: 8px;
+}
+
+.stat-lessons {
+  background: rgba(16, 185, 129, 0.2);
+  padding: 0.125rem 0.5rem;
+  border-radius: 8px;
+}
+
+.student-action {
+  font-size: 1.2rem;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+  flex-shrink: 0;
+}
+
+.student-item:hover .student-action {
+  opacity: 1;
+}
+
+/* ========== EMPTY STATE ========== */
+
+.empty-list {
+  padding: 2rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.empty-list p {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+/* ========== RESPONSIVE ========== */
+
+@media (max-width: 768px) {
+  .student-panel {
+    padding: 1rem;
+  }
+
+  .panel-header h2 {
+    font-size: 1.25rem;
+  }
+
+  .students-list {
+    max-height: 250px;
+  }
+
+  .student-rank {
+    font-size: 1.2rem;
+    width: 32px;
+  }
+
+  .student-name {
+    font-size: 0.875rem;
+  }
+
+  .student-stats {
+    font-size: 0.75rem;
+  }
+}

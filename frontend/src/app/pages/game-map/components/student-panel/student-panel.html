@@ -1,0 +1,56 @@
+<!-- frontend/src/app/pages/game-map/components/student-panel/student-panel.html -->
+
+<div class="student-panel">
+  <!-- Header -->
+  <div class="panel-header">
+    <h2>👥 Estudiantes</h2>
+    <p class="panel-subtitle">Ordenados por XP</p>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+    <div class="panel-loading">
+      <div class="spinner-small"></div>
+      <p>Cargando...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error()) {
+    <div class="panel-error">
+      <p>{{ error() }}</p>
+    </div>
+  }
+
+  <!-- Lista de Estudiantes -->
+  @if (!isLoading() && !error()) {
+    <div class="students-list">
+      @for (student of students(); track student.id; let i = $index) {
+        <div 
+          class="student-item"
+          [class.top-rank]="i < 3"
+          (click)="onStudentClick(student.id)">
+          
+          <div class="student-rank">
+            {{ getRankEmoji(i) }}
+          </div>
+          
+          <div class="student-info">
+            <span class="student-name">{{ student.username }}</span>
+            <div class="student-stats">
+              <span class="stat-xp">⭐ {{ student.total_points || 0 }} XP</span>
+            </div>
+          </div>
+
+          <div class="student-action">
+            📊
+          </div>
+        </div>
+      } @empty {
+        <div class="empty-list">
+          <p>No hay estudiantes registrados</p>
+        </div>
+      }
+    </div>
+  }
+</div>

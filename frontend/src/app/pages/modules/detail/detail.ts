@@ -4,16 +4,17 @@ import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContentService } from '../../../services/content/content';
 import { ModuleOut } from '../../../models/content';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router'; 
+import { ActivatedRoute, Router } from '@angular/router'; 
 import { AuthService } from '../../../services/auth/auth';
 import { LessonOut } from '../../../models/content';
 import { DetailComponent as LessonDetailComponent } from '../../lessons/detail/detail';
+import { LessonFormModalComponent } from './components/lesson-form-modal/lesson-form-modal';
 
 
 @Component({
   selector: 'app-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, LessonDetailComponent], 
+  imports: [CommonModule, LessonDetailComponent, LessonFormModalComponent], 
   templateUrl: './detail.html',
   styleUrl: './detail.css',
 })
@@ -31,6 +32,9 @@ export class DetailComponent implements OnInit {
   // Obtener el rol del usuario (Estudiante o Profesor) para controlar la vista
   // public userRole = signal(this.authService.currentUser()?.role || 'student');
   public userRole = signal<'student' | 'teacher'>(this.authService.currentUser()?.role || 'student');
+
+  // Control del modal de agregar lección
+  public showAddLessonModal = signal(false);
 
   ngOnInit(): void {
     // Suscribirse a los parámetros de la ruta para obtener el ID
@@ -76,8 +80,35 @@ export class DetailComponent implements OnInit {
       // Si hay una lección seleccionada, solo ocultarla
       this.selectedLesson.set(null);
     } else {
-      // Si no hay lección seleccionada, volver a la lista de módulos
-      this.router.navigate(['/dashboard']);
+      // Si no hay lección seleccionada, volver al mapa de juego
+      this.router.navigate(['/game-map']);
+    }
+  }
+
+  /**
+   * Abre el modal para agregar una nueva lección
+   */
+  openAddLessonModal(): void {
+    this.showAddLessonModal.set(true);
+  }
+
+  /**
+   * Cierra el modal de agregar lección
+   */
+  closeAddLessonModal(): void {
+    this.showAddLessonModal.set(false);
+  }
+
+  /**
+   * Maneja la creación exitosa de una lección
+   */
+  onLessonCreated(): void {
+    this.showAddLessonModal.set(false);
+    
+    // Recargar el módulo para mostrar la nueva lección
+    const moduleId = this.module()?._id;
+    if (moduleId) {
+      this.loadModuleDetails(moduleId);
     }
   }
 }

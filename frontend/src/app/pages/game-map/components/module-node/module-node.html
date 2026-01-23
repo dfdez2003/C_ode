@@ -1,0 +1,60 @@
+<!-- frontend/src/app/pages/game-map/components/module-node/module-node.html -->
+
+<div class="module-card">
+  <!-- Header del Módulo -->
+  <div class="module-header">
+    <div class="module-info">
+      <h2 class="module-title">📦 {{ module.title }}</h2>
+      <p class="module-description">{{ module.description }}</p>
+      <div class="module-meta">
+        <span class="meta-item">📚 {{ module.lessons.length }} lecciones</span>
+        <span class="meta-item">⏱️ ~{{ module.estimate_time }} min</span>
+      </div>
+    </div>
+
+    <!-- Controles de Profesor -->
+    @if (isTeacher) {
+      <div class="module-controls">
+        <button 
+          class="btn-icon btn-edit"
+          (click)="editModule.emit()"
+          title="Editar módulo">
+          ✏️
+        </button>
+        <button 
+          class="btn-icon btn-delete"
+          (click)="deleteModule.emit()"
+          title="Eliminar módulo">
+          🗑️
+        </button>
+      </div>
+    }
+  </div>
+
+  <!-- Mapa de Lecciones -->
+  <div class="lessons-map">
+    @for (lesson of module.lessons; track lesson._id; let i = $index) {
+      <app-lesson-node
+        [lesson]="lesson"
+        [lessonIndex]="i"
+        [isTeacher]="isTeacher"
+        (click)="onLessonClick(lesson._id, i)">
+      </app-lesson-node>
+      
+      <!-- Línea conectora (excepto después de la última) -->
+      @if (i < module.lessons.length - 1) {
+        <div class="lesson-connector"></div>
+      }
+    }
+
+    <!-- Botón Agregar Lección (Solo Profesor) -->
+    @if (isTeacher) {
+      <button 
+        class="btn-add-lesson"
+        (click)="addLesson.emit()"
+        title="Agregar nueva lección">
+        ➕
+      </button>
+    }
+  </div>
+</div>

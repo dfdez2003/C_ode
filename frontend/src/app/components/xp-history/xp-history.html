@@ -1,0 +1,125 @@
+<div class="xp-history-container">
+  <!-- Header with Summary -->
+  <div class="xp-header">
+    <h2>📊 Historial de XP</h2>
+    @if (summary()) {
+      <div class="xp-summary">
+        <div class="summary-card total">
+          <div class="summary-value">{{ summary()!.total_xp }}</div>
+          <div class="summary-label">XP Total</div>
+        </div>
+        <div class="summary-card transactions">
+          <div class="summary-value">{{ summary()!.total_transactions }}</div>
+          <div class="summary-label">Transacciones</div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Breakdown by Reason -->
+  @if (summary() && Object.keys(summary()!.breakdown_by_reason).length > 0) {
+    <div class="breakdown-section">
+      <h3>📈 Desglose por Tipo</h3>
+      <div class="breakdown-grid">
+        @for (reason of Object.keys(summary()!.breakdown_by_reason); track reason) {
+          <div class="breakdown-item">
+            <span class="reason-label">{{ getReasonLabel(reason) }}</span>
+            <span class="reason-count">{{ summary()!.breakdown_by_reason[reason] }}x</span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- History List -->
+  <div class="history-section">
+    <h3>📝 Transacciones Recientes</h3>
+    
+    @if (loading()) {
+      <div class="loading">⏳ Cargando historial...</div>
+    } @else if (error()) {
+      <div class="error-message">❌ {{ error() }}</div>
+    } @else if (history().length > 0) {
+      <div class="history-list">
+        @for (entry of history(); track entry.id) {
+          <div class="history-item" [style.border-left-color]="getReasonColor(entry.reason)">
+            <div class="item-left">
+              <div class="reason-badge" [style.background-color]="getReasonColor(entry.reason)">
+                {{ getReasonLabel(entry.reason) }}
+              </div>
+              <div class="item-details">
+                @if (hasMetadataKey(entry.metadata, 'lesson_title')) {
+                  <div class="detail-line">
+                    <span class="detail-label">Lección:</span>
+                    <span class="detail-value">{{ getMetadataValue(entry.metadata, 'lesson_title') }}</span>
+                  </div>
+                }
+                @if (hasMetadataKey(entry.metadata, 'reward_title')) {
+                  <div class="detail-line">
+                    <span class="detail-label">Recompensa:</span>
+                    <span class="detail-value">{{ getMetadataValue(entry.metadata, 'reward_title') }}</span>
+                  </div>
+                }
+                @if (hasMetadataKey(entry.metadata, 'xp_bonus')) {
+                  <div class="detail-line">
+                    <span class="detail-label">XP Bonus:</span>
+                    <span class="detail-value">{{ getMetadataValue(entry.metadata, 'xp_bonus') }} XP</span>
+                  </div>
+                }
+                @if (hasMetadataKey(entry.metadata, 'streak_days')) {
+                  <div class="detail-line">
+                    <span class="detail-label">Racha:</span>
+                    <span class="detail-value">{{ getMetadataValue(entry.metadata, 'streak_days') }} días</span>
+                  </div>
+                }
+                @if (hasMetadataKey(entry.metadata, 'xp_threshold')) {
+                  <div class="detail-line">
+                    <span class="detail-label">Hito XP:</span>
+                    <span class="detail-value">{{ getMetadataValue(entry.metadata, 'xp_threshold') }} XP</span>
+                  </div>
+                }
+                @if (hasMetadataKey(entry.metadata, 'percentage')) {
+                  <div class="detail-line">
+                    <span class="detail-label">Porcentaje:</span>
+                    <span class="detail-value">{{ getMetadataValue(entry.metadata, 'percentage') }}%</span>
+                  </div>
+                }
+                <div class="detail-line timestamp">
+                  <span>{{ formatDate(entry.timestamp) }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="item-right">
+              <div class="xp-amount" [class.positive]="entry.amount > 0">
+                {{ entry.amount > 0 ? '+' : '' }}{{ entry.amount }} XP
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination">
+        <button 
+          class="btn-pagination" 
+          (click)="previousPage()"
+          [disabled]="currentPage() === 0"
+        >
+          ← Anterior
+        </button>
+        <div class="pagination-info">
+          Página {{ currentPage() + 1 }} - Mostrando {{ history().length }} de {{ totalCount() }}
+        </div>
+        <button 
+          class="btn-pagination"
+          (click)="nextPage()"
+          [disabled]="!hasNextPage()"
+        >
+          Siguiente →
+        </button>
+      </div>
+    } @else {
+      <div class="no-data">📭 No hay historial de XP aún</div>
+    }
+  </div>
+</div>

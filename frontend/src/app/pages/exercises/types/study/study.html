@@ -1,0 +1,88 @@
+<!-- frontend/src/app/pages/exercises/types/study/study.html -->
+
+<div class="study-exercise-container">
+  <!-- Header con título y puntos -->
+  <div class="exercise-header">
+    <h2 class="exercise-title">{{ exerciseTitle }}</h2>
+    <span class="exercise-points">{{ exercisePoints }} puntos</span>
+  </div>
+
+  <!-- Instrucciones -->
+  <p class="instructions">
+    🎴 Revisa las tarjetas. Haz clic para voltearlas y ver la definición.
+  </p>
+
+  <!-- Barra de progreso -->
+  <div class="progress-container">
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="progress()"></div>
+    </div>
+    <span class="progress-text">
+      {{ cardsViewed().size }} / {{ flashcardsArray().length }} tarjetas vistas
+    </span>
+  </div>
+
+  <!-- Flashcard -->
+  <div class="flashcard-wrapper">
+    <div 
+      class="flashcard" 
+      [class.flipped]="isFlipped()"
+      (click)="flipCard()">
+      
+      <!-- Cara frontal (concepto) -->
+      <div class="flashcard-front">
+        <div class="card-label">Concepto</div>
+        <div class="card-content">
+          {{ currentCard().concept }}
+        </div>
+        <div class="card-hint">👆 Haz clic para ver la definición</div>
+      </div>
+
+      <!-- Cara trasera (definición) -->
+      <div class="flashcard-back">
+        <div class="card-label">Definición</div>
+        <div class="card-content">
+          {{ currentCard().definition }}
+        </div>
+        <div class="card-hint">✅ ¡Ahora lo sabes!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contador de card actual -->
+  <div class="card-counter">
+    Tarjeta {{ currentCardIndex() + 1 }} de {{ flashcardsArray().length }}
+  </div>
+
+  <!-- Controles de navegación -->
+  <div class="navigation-controls">
+    <button 
+      class="btn btn-secondary"
+      (click)="previousCard()"
+      [disabled]="currentCardIndex() === 0">
+      ← Anterior
+    </button>
+
+    <button 
+      class="btn btn-primary"
+      (click)="nextCard()"
+      [disabled]="isLastCard()">
+      Siguiente →
+    </button>
+  </div>
+
+  <!-- Botón de continuar (aparece cuando todas las cartas están vistas) -->
+  @if (allCardsViewed()) {
+    <div class="continue-section">
+      <div class="completion-message">
+        ✅ ¡Has revisado todas las tarjetas!
+      </div>
+      <button 
+        class="btn btn-continue"
+        [disabled]="!sessionId"
+        (click)="completeExercise()">
+        {{ sessionId ? 'Continuar →' : '⏳ Iniciando sesión...' }}
+      </button>
+    </div>
+  }
+</div>

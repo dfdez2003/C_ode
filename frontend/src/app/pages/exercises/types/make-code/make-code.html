@@ -1,0 +1,136 @@
+<!-- frontend/src/app/pages/exercises/types/make-code/make-code.html -->
+
+<div class="make-code-container">
+  <div class="exercise-card">
+    <!-- ========== HEADER ========== -->
+    <div class="exercise-header">
+      <div class="exercise-info">
+        <h2 class="exercise-title">{{ exerciseTitle }}</h2>
+        <span class="exercise-points">
+          <span>🏆</span>
+          <span>{{ exercisePoints }} XP</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- ========== PROBLEM DESCRIPTION ========== -->
+    <div class="problem-section">
+      <div class="problem-icon">📝</div>
+      <div class="problem-content">
+        <h3>Descripción del Problema</h3>
+        <p>{{ exerciseData.description }}</p>
+      </div>
+    </div>
+
+    <!-- ========== CODE EDITOR ========== -->
+    <div class="code-editor-wrapper">
+      <!-- Editor Header -->
+      <div class="editor-header">
+        <div class="editor-tabs">
+          <div class="editor-tab active">
+            <span class="tab-icon">📄</span>
+            <span>solution.c</span>
+          </div>
+        </div>
+        <div class="editor-actions">
+          <button 
+            class="run-button" 
+            [disabled]="isSubmitting() || userCode().trim().length === 0"
+            (click)="submitCode()">
+            <span>{{ isSubmitting() ? '⏳' : '▶️' }}</span>
+            <span>{{ isSubmitting() ? 'Compilando...' : 'Ejecutar Código' }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Editor Body -->
+      <div class="editor-body">
+        <!-- Line Numbers -->
+        <div class="line-numbers">
+          @for (line of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]; track line) {
+            <div class="line-number">{{ line }}</div>
+          }
+        </div>
+
+        <!-- Code Input Area -->
+        <textarea 
+          #codeEditor
+          class="code-input"
+          [(ngModel)]="userCode"
+          [disabled]="hasSubmitted()"
+          (keydown)="handleTab($event, codeEditor)"
+          placeholder="// Escribe tu código aquí..."
+          spellcheck="false">
+        </textarea>
+      </div>
+    </div>
+
+    <!-- ========== OUTPUT / FEEDBACK ========== -->
+    @if (hasSubmitted()) {
+      <div class="output-section">
+        <div class="output-header">
+          <span class="output-icon">📤</span>
+          <h3>Resultado</h3>
+        </div>
+        
+        <!-- Spinner mientras carga -->
+        @if (isSubmitting()) {
+          <div class="output-body validating">
+            <div class="spinner"></div>
+            <p>Compilando y validando tu código...</p>
+          </div>
+        }
+        
+        <!-- Resultado cuando ya llegó -->
+        @if (!isSubmitting() && codeFeedback) {
+          <div class="output-body">
+            <!-- Validación del Código -->
+            <div class="validation-result" [class.success]="codeFeedback.code_is_correct" [class.error]="!codeFeedback.code_is_correct">
+              <div class="result-icon">
+                {{ codeFeedback.code_is_correct ? '✅' : '❌' }}
+              </div>
+              <div class="result-text">
+                <strong>{{ codeFeedback.code_is_correct ? 'Código Correcto' : 'Código Incorrecto' }}</strong>
+                <p>
+                  {{ codeFeedback.code_is_correct 
+                    ? 'Tu código resuelve correctamente el problema.' 
+                    : 'Tu código no resuelve correctamente el problema. Revisa la lógica.' 
+                  }}
+                </p>
+              </div>
+            </div>
+
+            <!-- ✅ Tests: SOLO si el ejercicio tiene test_cases definidos -->
+            @if (hasTests && codeFeedback.has_tests && codeFeedback.test_is_correct !== null) {
+              <div class="test-results" [class.passed]="codeFeedback.test_is_correct" [class.failed]="!codeFeedback.test_is_correct">
+                <div class="test-icon">🧪</div>
+                <div class="test-text">
+                  <strong>Tests: {{ codeFeedback.test_is_correct ? 'Pasaron ✅' : 'Fallaron ❌' }}</strong>
+                  <p>
+                    {{ codeFeedback.test_is_correct 
+                      ? 'Todos los casos de prueba pasaron correctamente.' 
+                      : 'Algunos casos de prueba no pasaron.' 
+                    }}
+                  </p>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Botón Continuar -->
+      @if (!isSubmitting() && codeFeedback) {
+        <div class="action-buttons">
+          <button 
+            class="continue-button" 
+            [disabled]="isContinueClicked()"
+            (click)="continue()">
+            <span>{{ isContinueClicked() ? 'Enviando...' : 'Continuar' }}</span>
+            <span>→</span>
+          </button>
+        </div>
+      }
+    }
+  </div>
+</div>

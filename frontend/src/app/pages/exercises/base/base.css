@@ -1,0 +1,46 @@
+/* frontend/src/app/pages/exercises/base/base.css */
+
+/* Estilos para placeholders de ejercicios no implementados */
+.exercise-placeholder {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 32px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.exercise-placeholder h3 {
+  font-size: 24px;
+  margin: 0 0 16px 0;
+  color: #212121;
+}
+
+.exercise-placeholder p {
+  font-size: 16px;
+  color: #757575;
+  margin: 8px 0;
+}
+
+.exercise-placeholder p strong {
+  color: #424242;
+}
+
+/* Mensaje de error */
+.error-message {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 24px;
+  background: #ffebee;
+  border: 2px solid #f44336;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.error-message p {
+  color: #c62828;
+  font-size: 16px;
+  margin: 0;
+  font-weight: 500;
+}

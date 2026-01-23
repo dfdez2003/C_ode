@@ -1,0 +1,105 @@
+<div class="modal-backdrop" (click)="onClose()"></div>
+
+<div class="modal-dialog" (click)="$event.stopPropagation()">
+  <div class="modal-header">
+    <h2 class="modal-title">✏️ Editar Lección</h2>
+    <button class="close-btn" (click)="onClose()" aria-label="Cerrar modal">
+      <span>×</span>
+    </button>
+  </div>
+
+  <form class="modal-body" (ngSubmit)="onSubmit()">
+    <!-- Título -->
+    <div class="form-group">
+      <label for="title" class="form-label">
+        Título de la Lección <span class="required">*</span>
+      </label>
+      <input
+        type="text"
+        id="title"
+        class="form-control"
+        placeholder="Ej: Variables y Tipos de Datos"
+        [value]="title()"
+        (input)="title.set($any($event.target).value)"
+        required
+      />
+    </div>
+
+    <!-- Descripción -->
+    <div class="form-group">
+      <label for="description" class="form-label">
+        Descripción
+      </label>
+      <textarea
+        id="description"
+        class="form-control"
+        rows="4"
+        placeholder="Describe brevemente el contenido de esta lección..."
+        [value]="description()"
+        (input)="description.set($any($event.target).value)"
+      ></textarea>
+    </div>
+
+    <!-- Fila: XP y Orden -->
+    <div class="form-row">
+      <!-- XP Reward -->
+      <div class="form-group">
+        <label for="xpReward" class="form-label">
+          Recompensa XP <span class="required">*</span>
+        </label>
+        <input
+          type="number"
+          id="xpReward"
+          class="form-control"
+          min="0"
+          [value]="xpReward()"
+          (input)="xpReward.set(+$any($event.target).value)"
+          required
+        />
+      </div>
+
+      <!-- Order -->
+      <div class="form-group">
+        <label for="order" class="form-label">
+          Orden <span class="required">*</span>
+        </label>
+        <input
+          type="number"
+          id="order"
+          class="form-control"
+          min="1"
+          [value]="order()"
+          (input)="order.set(+$any($event.target).value)"
+          required
+        />
+      </div>
+    </div>
+
+    <!-- Lección Privada -->
+    <div class="form-group checkbox-group">
+      <label class="checkbox-label">
+        <input
+          type="checkbox"
+          [checked]="isPrivate()"
+          (change)="isPrivate.set($any($event.target).checked)"
+        />
+        <span class="checkbox-text">
+          🔒 Lección Privada (Un solo intento, tipo examen)
+        </span>
+      </label>
+      <p class="help-text">
+        Si está marcada, el estudiante solo tendrá un intento para completar esta lección.
+      </p>
+    </div>
+
+    <!-- Botones -->
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="onClose()">
+        Cancelar
+      </button>
+      <button type="submit" class="btn btn-primary">
+        💾 Guardar Cambios
+      </button>
+    </div>
+  </form>
+</div>

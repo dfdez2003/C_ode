@@ -1,0 +1,185 @@
+<!-- frontend/src/app/pages/lesson-editor/components/make-code-exercise-form/make-code-exercise-form.html -->
+
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-content">
+    
+    <!-- HEADER -->
+    <div class="modal-header">
+      <h2>{{ modalTitle }}</h2>
+      <button class="close-button" (click)="onCancel()" type="button">✕</button>
+    </div>
+
+    <!-- FORM -->
+    <form (ngSubmit)="onSubmit()" class="exercise-form">
+      
+      <!-- Título -->
+      <div class="form-group">
+        <label for="title">
+          <span class="label-icon">📝</span>
+          Título del Ejercicio
+          <span class="required">*</span>
+        </label>
+        <input
+          id="title"
+          type="text"
+          class="form-control"
+          placeholder="Ej: Función Factorial en C"
+          [value]="title()"
+          (input)="title.set($any($event.target).value)"
+          required
+          minlength="3"
+        />
+      </div>
+
+      <!-- Enunciado del Problema -->
+      <div class="form-group">
+        <label for="problemStatement">
+          <span class="label-icon">📋</span>
+          Enunciado del Problema
+          <span class="required">*</span>
+        </label>
+        <textarea
+          id="problemStatement"
+          class="form-control"
+          rows="6"
+          placeholder="Escribe el problema completo:&#10;- Contexto&#10;- Requisitos&#10;- Restricciones&#10;- Ejemplos de entrada/salida"
+          [value]="problemStatement()"
+          (input)="problemStatement.set($any($event.target).value)"
+          required
+        ></textarea>
+        <small class="helper-text">
+          💡 Sé claro y específico. Incluye ejemplos de entrada y salida esperada.
+        </small>
+      </div>
+
+      <!-- Código Inicial (Opcional) -->
+      <div class="form-group">
+        <label for="starterCode">
+          <span class="label-icon">🌱</span>
+          Código Inicial (Opcional)
+        </label>
+        <textarea
+          id="starterCode"
+          class="form-control code-textarea"
+          rows="8"
+          placeholder="int factorial(int n) {&#10;    // Tu código aquí&#10;    return 0;&#10;}"
+          [value]="starterCode()"
+          (input)="starterCode.set($any($event.target).value)"
+        ></textarea>
+        <small class="helper-text">
+          Código base que verá el estudiante al empezar. Déjalo vacío si quieres que escriba desde cero.
+        </small>
+      </div>
+
+      <!-- Solución de Referencia -->
+      <div class="form-group">
+        <label for="solutionCode">
+          <span class="label-icon">✅</span>
+          Solución de Referencia
+          <span class="required">*</span>
+        </label>
+        <textarea
+          id="solutionCode"
+          class="form-control code-textarea"
+          rows="10"
+          placeholder="int factorial(int n) {&#10;    if (n <= 1) {&#10;        return 1;&#10;    }&#10;    return n * factorial(n - 1);&#10;}"
+          [value]="solutionCode()"
+          (input)="solutionCode.set($any($event.target).value)"
+          required
+        ></textarea>
+        <small class="helper-text">
+          La solución correcta del problema. Se usa para validación y como referencia.
+        </small>
+      </div>
+
+      <!-- Test Cases (Opcional) -->
+      <div class="form-group">
+        <label for="testCases">
+          <span class="label-icon">🧪</span>
+          Casos de Prueba (Opcional)
+        </label>
+        <textarea
+          id="testCases"
+          class="form-control"
+          rows="6"
+          placeholder="factorial(0) == 1&#10;factorial(1) == 1&#10;factorial(5) == 120&#10;factorial(10) == 3628800"
+          [value]="testCases()"
+          (input)="testCases.set($any($event.target).value)"
+        ></textarea>
+        <small class="helper-text">
+          Una prueba por línea. Formato: <code>funcion(entrada) == salida_esperada</code>
+        </small>
+      </div>
+
+      <!-- XP Recompensa -->
+      <div class="form-group">
+        <label for="xpReward">
+          <span class="label-icon">⭐</span>
+          Recompensa en XP
+          <span class="required">*</span>
+        </label>
+        <input
+          id="xpReward"
+          type="number"
+          class="form-control"
+          min="30"
+          max="100"
+          [value]="xpReward()"
+          (input)="xpReward.set(+$any($event.target).value)"
+          required
+        />
+        <small class="helper-text">
+          Rango: 30-100 XP. Ejercicios de código completo dan más XP. Recomendado: 50-80 XP.
+        </small>
+      </div>
+
+      <!-- Error Message -->
+      @if (error()) {
+        <div class="error-box">
+          <span class="error-icon">⚠️</span>
+          {{ error() }}
+        </div>
+      }
+
+      <!-- Info Box -->
+      <div class="info-box">
+        <div class="info-icon">💻</div>
+        <div>
+          <strong>Este es el ejercicio más avanzado</strong>
+          <p>El estudiante escribirá código completo desde cero o a partir del código inicial. El sistema ejecutará su código y lo comparará con la solución de referencia.</p>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn-cancel"
+          (click)="onCancel()"
+          [disabled]="isSubmitting()"
+        >
+          Cancelar
+        </button>
+        
+        <button
+          type="submit"
+          class="btn-submit"
+          [disabled]="isSubmitting()"
+        >
+          @if (isSubmitting()) {
+            <span class="spinner"></span>
+            Guardando...
+          } @else {
+            @if (isEditing) {
+              💾 Actualizar
+            } @else {
+              ✨ Crear Ejercicio
+            }
+          }
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

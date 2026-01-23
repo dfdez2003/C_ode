@@ -1,6 +1,5 @@
 from fastapi import FastAPI
-from routers import users
-from routers import exercises, lessons, modules
+from routers import users, modules, sessions, progress, rewards, xp_history
 from fastapi.middleware.cors import CORSMiddleware
 
 # Instancia de la aplicación FastAPI
@@ -32,6 +31,8 @@ async def read_root():
 
 # Incluir los routers de los diferentes módulos
 app.include_router(users.router)
-app.include_router(exercises.router)
-app.include_router(lessons.router)
 app.include_router(modules.router)
+app.include_router(sessions.router)
+app.include_router(progress.router)
+app.include_router(rewards.router)
+app.include_router(xp_history.router)

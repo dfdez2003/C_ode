@@ -1,0 +1,125 @@
+<!-- frontend/src/app/pages/game-map/game-map.html -->
+
+<div class="game-map-container">
+  
+  <!-- ========== PANEL DE ESTUDIANTES (Solo Profesor) ========== -->
+  @if (isTeacher()) {
+    <app-student-panel />
+  }
+
+  <!-- ========== CONTENEDOR PRINCIPAL ========== -->
+  <div class="main-content">
+    
+    <!-- ========== HEADER ========== -->
+    <div class="map-header">
+      <div class="header-info">
+        <h1 class="map-title">🗺️ Mapa de Aprendizaje</h1>
+        @if (currentUser()) {
+          <div class="user-info">
+            <span class="user-name">👤 {{ currentUser()!.username }}</span>
+            @if (!isTeacher()) {
+              <span class="user-xp">⭐ {{ currentUser()!.total_points || 0 }} XP</span>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Botones de Profesor -->
+      @if (isTeacher()) {
+        <div class="teacher-controls">
+          <button class="btn btn-stats" (click)="goToTeacherStats()">
+            📊 Estadísticas
+          </button>
+          <button class="btn btn-primary" (click)="onCreateNewModule()">
+            ➕ Crear Módulo
+          </button>
+        </div>
+      }
+
+      <!-- Botón de Estudiante -->
+      @if (!isTeacher()) {
+        <div class="teacher-controls">
+          <button class="btn btn-student-stats" (click)="goToStudentDashboard()">
+            🎯 Mi Progreso
+          </button>
+        </div>
+      }
+    </div>
+
+    <!-- ========== ESTADOS DE CARGA ========== -->
+    
+    @if (isLoading()) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Cargando módulos...</p>
+      </div>
+    }
+
+    @if (error()) {
+      <div class="error-state">
+        <p class="error-message">❌ {{ error() }}</p>
+        <button class="btn btn-secondary" (click)="loadModules()">
+          🔄 Reintentar
+        </button>
+      </div>
+    }
+
+    <!-- ========== GRID DE MÓDULOS ========== -->
+    
+    @if (!isLoading() && !error() && modules().length > 0) {
+      <div class="modules-grid">
+        @for (module of modules(); track module._id) {
+          <app-module-node
+            [module]="module"
+            [isTeacher]="isTeacher()"
+            (lessonClick)="isTeacher() 
+              ? onLessonClickTeacher(module._id, $event.lessonId, $event.lessonIndex)
+              : onLessonClickStudent(module._id, $event.lessonId)"
+            (addLesson)="onAddLessonToModule(module._id)"
+            (editModule)="onEditModule(module._id)"
+            (deleteModule)="onDeleteModule(module._id, module.title)"
+          />
+        }
+      </div>
+    }
+
+    @if (!isLoading() && !error() && modules().length === 0) {
+      <div class="empty-state">
+        <p>📚 No hay módulos disponibles todavía.</p>
+        @if (isTeacher()) {
+          <button class="btn btn-primary" (click)="onCreateNewModule()">
+            Crear el primer módulo
+          </button>
+        }
+      </div>
+    }
+
+  </div>
+
+  <!-- ========== MODAL DE CREACIÓN DE MÓDULO ========== -->
+  @if (showModuleFormModal()) {
+    <app-module-form-modal
+      (close)="onCloseModuleFormModal()"
+      (moduleCreated)="onModuleCreated()"
+    />
+  }
+
+  <!-- ========== MODAL DE EDICIÓN DE MÓDULO ========== -->
+  @if (showModuleEditModal() && moduleToEdit()) {
+    <app-module-edit-modal
+      [moduleToEdit]="moduleToEdit()"
+      (save)="onSaveModuleEdit($event)"
+      (close)="onCloseModuleEditModal()"
+    />
+  }
+
+  <!-- ========== MODAL DE LECCIÓN ========== -->
+  @if (showLessonFormModal() && editingModuleId()) {
+    <app-lesson-form-modal
+      [moduleId]="editingModuleId()!"
+      (close)="onCloseLessonFormModal()"
+      (lessonCreated)="onLessonSaved()"
+    />
+  }
+
+</div>

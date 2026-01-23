@@ -96,6 +96,7 @@ class LessonModel(BaseModel):
     description: str  # Descripción detallada del contenido de la lección
     order: int  # Orden de la lección dentro del módulo (1, 2, 3, etc.)
     xp_reward: int  # Recompensa en puntos XP por completar la lección
+    is_private: bool = False  # 🆕 True si es una lección privada/examen (un solo intento, luego se bloquea)
     exercises: List[ExerciseModel] = [] # Lista de los ejercicios de esta lección
 
     model_config = {
@@ -178,7 +179,7 @@ class RewardModel(BaseModel):
 
 # ---> Racha de estudio del usuario <---
 class UserStreakModel(BaseModel):
-    current_days: int = 0  # Días consecutivos estudiando
+    current_days: int = 0                          # Días consecutivos estudiando
     last_practice_date: Optional[datetime] = None  # Último día de estudio
 
 # ---> Modelo de usuario <---

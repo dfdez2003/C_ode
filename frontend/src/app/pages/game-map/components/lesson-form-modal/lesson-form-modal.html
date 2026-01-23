@@ -1,0 +1,171 @@
+<!-- frontend/src/app/pages/game-map/components/lesson-form-modal/lesson-form-modal.html -->
+
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-content">
+    
+    <!-- Header -->
+    <div class="modal-header">
+      <h2>{{ modalTitle }}</h2>
+      <button class="close-button" (click)="onCancel()" [disabled]="isSubmitting()">
+        ✕
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+      
+      <!-- Error Message -->
+      @if (error()) {
+        <div class="error-message">
+          ⚠️ {{ error() }}
+        </div>
+      }
+
+      <!-- Form -->
+      <form (ngSubmit)="onSubmit()">
+        
+        <!-- Título -->
+        <div class="form-group">
+          <label for="lesson-title" class="form-label">
+            Título de la Lección *
+          </label>
+          <input
+            id="lesson-title"
+            type="text"
+            class="form-input"
+            placeholder="Ej: Variables y Tipos de Datos"
+            [(ngModel)]="title"
+            [ngModelOptions]="{updateOn: 'change'}"
+            name="title"
+            [disabled]="isSubmitting()"
+            maxlength="100"
+            required
+          />
+          <small class="form-hint">
+            Mínimo 3 caracteres
+          </small>
+        </div>
+
+        <!-- Descripción -->
+        <div class="form-group">
+          <label for="lesson-description" class="form-label">
+            Descripción *
+          </label>
+          <textarea
+            id="lesson-description"
+            class="form-textarea"
+            placeholder="Describe el contenido de la lección..."
+            [(ngModel)]="description"
+            [ngModelOptions]="{updateOn: 'change'}"
+            name="description"
+            [disabled]="isSubmitting()"
+            rows="3"
+            maxlength="500"
+            required
+          ></textarea>
+          <small class="form-hint">
+            Explica qué aprenderán en esta lección
+          </small>
+        </div>
+
+        <!-- Recompensa XP -->
+        <div class="form-group">
+          <label for="lesson-xp" class="form-label">
+            Recompensa de XP
+          </label>
+          <input
+            id="lesson-xp"
+            type="number"
+            class="form-input"
+            [(ngModel)]="xpReward"
+            [ngModelOptions]="{updateOn: 'change'}"
+            name="xpReward"
+            [disabled]="isSubmitting()"
+            min="10"
+            max="1000"
+            step="10"
+            required
+          />
+          <small class="form-hint">
+            Entre 10 y 1000 XP (por defecto: 50 XP)
+          </small>
+        </div>
+
+        <!-- Lección Privada -->
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              [(ngModel)]="isPrivate"
+              [ngModelOptions]="{updateOn: 'change'}"
+              name="isPrivate"
+              [disabled]="isSubmitting()"
+            />
+            <span class="checkbox-text">
+              🔒 Lección Privada (estilo examen)
+            </span>
+          </label>
+          <small class="form-hint">
+            Las lecciones privadas solo se pueden hacer una vez y se bloquean al completarse
+          </small>
+        </div>
+
+        <!-- Info adicional -->
+        @if (!isEditing) {
+          <div class="info-box">
+            <p>
+              ℹ️ La lección se creará sin ejercicios. Después de crearla, deberás agregar ejercicios desde Thunder Client o usando el editor de ejercicios (próximamente).
+            </p>
+          </div>
+        }
+
+        @if (isEditing && lesson() && lesson()!.exercises.length === 0) {
+          <div class="warning-box">
+            <p>
+              ⚠️ Esta lección no tiene ejercicios. Los estudiantes no podrán completarla.
+            </p>
+          </div>
+        }
+
+      </form>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <div class="footer-left">
+        @if (isEditing) {
+          <button 
+            type="button"
+            class="btn btn-danger" 
+            (click)="onDeleteLesson()"
+            [disabled]="isSubmitting()">
+            🗑️ Eliminar Lección
+          </button>
+        }
+      </div>
+      <div class="footer-right">
+        <button 
+          type="button"
+          class="btn btn-secondary" 
+          (click)="onCancel()"
+          [disabled]="isSubmitting()">
+          Cancelar
+        </button>
+        <button 
+          type="button"
+          class="btn btn-primary" 
+          (click)="onSubmit()"
+          [disabled]="isSubmitting()">
+          @if (isSubmitting()) {
+            <span class="spinner-small"></span>
+            Guardando...
+          } @else {
+            {{ isEditing ? '💾 Guardar Cambios' : '✅ Crear Lección' }}
+          }
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

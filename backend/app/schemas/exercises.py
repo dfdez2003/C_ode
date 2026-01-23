@@ -22,6 +22,8 @@ class ExerciseBase(BaseModel):
 # Esquemas para creación y salida de ejercicios ( uso interno )
 # -----------------------------------------------------------------------
 class ExerciseCreate(BaseModel):
+    # Añadimos `exercise_uuid` para asegurar que todo ejercicio creado tenga UUID desde el momento de creación
+    exercise_uuid: str = Field(default_factory=lambda: str(uuid.uuid4()))
     lesson_id: Optional[PyObjectId]= None # ID de la lección padre
     type: str  # Tipo de ejercicio
     title: str  # Título del ejercicio
@@ -47,25 +49,25 @@ class CompleteExerciseSchema(ExerciseBase):
 
 class MakeCodeExerciseSchema(ExerciseBase):
     type: str = "make_code"
-    description: str
+    description: str  # Enunciado del problema
     code: str
     solution: str
     test_cases: List[ExerciseTestCases]
 
 class QuestionExerciseSchema(ExerciseBase):
     type: str = "question"
-    description: str
+    description: str  # Enunciado de la pregunta
     options: List[str]
     correct_answer: str
 
 class UnitConceptsExerciseSchema(ExerciseBase):
     type: str = "unit_concepts"
-    description: str
-    concepts: Dict[str, str]
+    concepts: Dict[str, str]  # { concepto: definición }
 
 
-# Unión de todos los tipos de ejercicios para validación estricta
-# Base para discriminación de tipos
+# Unión de todos los tipos de ejercicios
+# Pydantic intentará validar contra cada esquema hasta encontrar uno que coincida
+# Las validaciones específicas de campos requeridos se manejan en services/modules.py
 ExerciseSchema = Union[
     StudyExerciseSchema,
     CompleteExerciseSchema,

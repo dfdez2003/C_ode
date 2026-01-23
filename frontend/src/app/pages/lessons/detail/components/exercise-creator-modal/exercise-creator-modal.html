@@ -1,0 +1,150 @@
+<!-- frontend/src/app/pages/lessons/detail/components/exercise-creator-modal/exercise-creator-modal.html -->
+
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-content">
+    
+    <!-- Header -->
+    <div class="modal-header">
+      <h2>
+        @if (isEditMode()) {
+          ✏️ Editar Ejercicio
+        } @else {
+          ➕ Agregar Nuevo Ejercicio
+        }
+      </h2>
+      <button class="close-button" (click)="onCancel()" [disabled]="isSubmitting()">
+        ✕
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+      
+      <!-- Error Message -->
+      @if (error()) {
+        <div class="error-message">
+          ⚠️ {{ error() }}
+        </div>
+      }
+
+      <!-- VISTA 1: SELECTOR DE TIPO DE EJERCICIO (Solo en modo creación) -->
+      @if (currentView() === 'selector' && !isEditMode()) {
+        <div class="exercise-selector-container">
+          
+          <h3>Selecciona el tipo de ejercicio que deseas agregar</h3>
+          
+          <!-- Tarjetas de tipos de ejercicios -->
+          <div class="exercise-types-grid">
+            
+            <button 
+              class="exercise-type-card"
+              (click)="onExerciseTypeSelected('question')">
+              <span class="type-icon">❓</span>
+              <span class="type-name">Pregunta</span>
+              <span class="type-desc">Pregunta con opciones múltiples</span>
+            </button>
+
+            <button 
+              class="exercise-type-card"
+              (click)="onExerciseTypeSelected('complete')">
+              <span class="type-icon">📝</span>
+              <span class="type-name">Completar</span>
+              <span class="type-desc">Completar código con opciones</span>
+            </button>
+
+            <button 
+              class="exercise-type-card"
+              (click)="onExerciseTypeSelected('make_code')">
+              <span class="type-icon">💻</span>
+              <span class="type-name">Hacer Código</span>
+              <span class="type-desc">Escribir código desde cero</span>
+            </button>
+
+            <button 
+              class="exercise-type-card"
+              (click)="onExerciseTypeSelected('study')">
+              <span class="type-icon">📚</span>
+              <span class="type-name">Estudiar</span>
+              <span class="type-desc">Flashcards de conceptos</span>
+            </button>
+
+            <button 
+              class="exercise-type-card"
+              (click)="onExerciseTypeSelected('unit_concepts')">
+              <span class="type-icon">🔗</span>
+              <span class="type-name">Unir Conceptos</span>
+              <span class="type-desc">Emparejar conceptos y definiciones</span>
+            </button>
+
+          </div>
+
+        </div>
+      }
+
+      <!-- VISTA 2: FORMULARIO DE EJERCICIO -->
+      @if (currentView() === 'form' && selectedExerciseType()) {
+        <div class="exercise-form-container">
+          
+          @switch (selectedExerciseType()) {
+            @case ('question') {
+              <app-question-exercise-form
+                [exercise]="exerciseToEdit()"
+                (close)="onCancel()"
+                (save)="onExerciseSaved($event)"
+              />
+            }
+            @case ('complete') {
+              <app-complete-exercise-form
+                [exercise]="exerciseToEdit()"
+                (close)="onCancel()"
+                (save)="onExerciseSaved($event)"
+              />
+            }
+            @case ('make_code') {
+              <app-make-code-exercise-form
+                [exercise]="exerciseToEdit()"
+                (close)="onCancel()"
+                (save)="onExerciseSaved($event)"
+              />
+            }
+            @case ('study') {
+              <app-study-exercise-form
+                [exercise]="exerciseToEdit()"
+                (close)="onCancel()"
+                (save)="onExerciseSaved($event)"
+              />
+            }
+            @case ('unit_concepts') {
+              <app-unit-concepts-exercise-form
+                [exercise]="exerciseToEdit()"
+                (close)="onCancel()"
+                (save)="onExerciseSaved($event)"
+              />
+            }
+          }
+
+        </div>
+      }
+
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      @if (currentView() === 'selector') {
+        <button 
+          type="button"
+          class="btn btn-secondary" 
+          (click)="onCancel()">
+          Cancelar
+        </button>
+      }
+
+      @if (currentView() === 'form') {
+        <p class="footer-hint">
+          💡 Completa el formulario del ejercicio y haz clic en Guardar
+        </p>
+      }
+    </div>
+
+  </div>
+</div>

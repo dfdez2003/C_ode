@@ -1,0 +1,198 @@
+<!-- frontend/src/app/pages/lesson-editor/components/study-exercise-form/study-exercise-form.html -->
+
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-content">
+    
+    <!-- HEADER -->
+    <div class="modal-header">
+      <h2>{{ modalTitle }}</h2>
+      <button class="close-button" (click)="onCancel()" type="button">✕</button>
+    </div>
+
+    <!-- FORM -->
+    <form (ngSubmit)="onSubmit()" class="exercise-form">
+      
+      <!-- Título del Ejercicio -->
+      <div class="form-group">
+        <label for="title">
+          <span class="label-icon">📝</span>
+          Título del Ejercicio
+          <span class="required">*</span>
+        </label>
+        <input
+          id="title"
+          type="text"
+          class="form-control"
+          placeholder="Ej: Tipos de Datos en Python"
+          [value]="title()"
+          (input)="title.set($any($event.target).value)"
+          required
+          minlength="3"
+        />
+      </div>
+
+      <!-- XP Recompensa -->
+      <div class="form-group">
+        <label for="xpReward">
+          <span class="label-icon">⭐</span>
+          Recompensa en XP
+          <span class="required">*</span>
+        </label>
+        <input
+          id="xpReward"
+          type="number"
+          class="form-control"
+          min="5"
+          max="100"
+          [value]="xpReward()"
+          (input)="xpReward.set(+$any($event.target).value)"
+          required
+        />
+        <small class="helper-text">
+          Rango: 5-100 XP. Se reparte entre las flashcards.
+        </small>
+      </div>
+
+      <!-- Flashcards -->
+      <div class="flashcards-section">
+        <div class="section-header">
+          <h3>
+            <span class="section-icon">📚</span>
+            Flashcards
+            <span class="badge">{{ flashcards().length }}</span>
+          </h3>
+          <button
+            type="button"
+            class="btn-add-flashcard"
+            (click)="addFlashcard()"
+          >
+            ➕ Agregar Flashcard
+          </button>
+        </div>
+
+        <div class="flashcards-list">
+          @for (card of flashcards(); track $index) {
+            <div class="flashcard-item">
+              
+              <!-- Card Header -->
+              <div class="flashcard-header">
+                <span class="flashcard-number">{{ $index + 1 }}</span>
+                
+                <div class="flashcard-actions">
+                  <!-- Mover arriba -->
+                  <button
+                    type="button"
+                    class="btn-icon"
+                    (click)="moveUp($index)"
+                    [disabled]="$index === 0"
+                    title="Mover arriba"
+                  >
+                    ↑
+                  </button>
+                  
+                  <!-- Mover abajo -->
+                  <button
+                    type="button"
+                    class="btn-icon"
+                    (click)="moveDown($index)"
+                    [disabled]="$index === flashcards().length - 1"
+                    title="Mover abajo"
+                  >
+                    ↓
+                  </button>
+                  
+                  <!-- Eliminar -->
+                  <button
+                    type="button"
+                    class="btn-icon btn-delete"
+                    (click)="removeFlashcard($index)"
+                    [disabled]="flashcards().length <= 1"
+                    title="Eliminar"
+                  >
+                    🗑️
+                  </button>
+                </div>
+              </div>
+
+              <!-- Frente -->
+              <div class="flashcard-field">
+                <label class="flashcard-label">
+                  <span class="face-icon">🎴</span>
+                  Frente (Pregunta/Concepto)
+                </label>
+                <textarea
+                  class="form-control flashcard-textarea"
+                  rows="2"
+                  placeholder="Ej: ¿Qué es una variable?"
+                  [value]="card.front"
+                  (input)="updateFront($index, $any($event.target).value)"
+                  required
+                ></textarea>
+              </div>
+
+              <!-- Reverso -->
+              <div class="flashcard-field">
+                <label class="flashcard-label">
+                  <span class="face-icon">🔄</span>
+                  Reverso (Respuesta/Definición)
+                </label>
+                <textarea
+                  class="form-control flashcard-textarea"
+                  rows="2"
+                  placeholder="Ej: Un contenedor que almacena un valor en memoria"
+                  [value]="card.back"
+                  (input)="updateBack($index, $any($event.target).value)"
+                  required
+                ></textarea>
+              </div>
+
+            </div>
+          }
+        </div>
+
+        <div class="helper-box">
+          💡 <strong>Consejo:</strong> Las flashcards son ideales para memorizar conceptos, vocabulario técnico, sintaxis, o fórmulas.
+        </div>
+      </div>
+
+      <!-- Error Message -->
+      @if (error()) {
+        <div class="error-box">
+          <span class="error-icon">⚠️</span>
+          {{ error() }}
+        </div>
+      }
+
+      <!-- FOOTER -->
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn-cancel"
+          (click)="onCancel()"
+          [disabled]="isSubmitting()"
+        >
+          Cancelar
+        </button>
+        
+        <button
+          type="submit"
+          class="btn-submit"
+          [disabled]="isSubmitting()"
+        >
+          @if (isSubmitting()) {
+            <span class="spinner"></span>
+            Guardando...
+          } @else {
+            @if (isEditing) {
+              💾 Actualizar
+            } @else {
+              ✨ Crear Ejercicio
+            }
+          }
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

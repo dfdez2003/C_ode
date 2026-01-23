@@ -1,0 +1,145 @@
+/* frontend/src/app/pages/game-map/components/module-node/module-node.css */
+
+.module-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: #333;
+}
+
+.module-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+}
+
+/* ========== HEADER DEL MÓDULO ========== */
+
+.module-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.module-info {
+  flex: 1;
+}
+
+.module-title {
+  font-size: 1.5rem;
+  margin: 0 0 0.5rem 0;
+  color: #1f2937;
+}
+
+.module-description {
+  color: #6b7280;
+  margin: 0 0 0.75rem 0;
+  line-height: 1.5;
+}
+
+.module-meta {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  background: #f3f4f6;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+/* ========== CONTROLES DE PROFESOR ========== */
+
+.module-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-icon {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f4f6;
+}
+
+.btn-icon:hover {
+  transform: scale(1.1);
+}
+
+.btn-edit:hover {
+  background: #dbeafe;
+}
+
+.btn-delete:hover {
+  background: #fee2e2;
+}
+
+/* ========== MAPA DE LECCIONES ========== */
+
+.lessons-map {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.lesson-connector {
+  width: 4px;
+  height: 40px;
+  background: linear-gradient(to bottom, #cbd5e1, #94a3b8);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* ========== BOTÓN AGREGAR LECCIÓN ========== */
+
+.btn-add-lesson {
+  width: 60px;
+  height: 60px;
+  border: 2px dashed #cbd5e1;
+  border-radius: 50%;
+  background: transparent;
+  color: #9ca3af;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.btn-add-lesson:hover {
+  border-color: #667eea;
+  color: #667eea;
+  background: rgba(102, 126, 234, 0.1);
+  transform: scale(1.1);
+}
+
+/* ========== RESPONSIVE ========== */
+
+@media (max-width: 768px) {
+  .module-title {
+    font-size: 1.25rem;
+  }
+
+  .lessons-map {
+    justify-content: center;
+  }
+
+  .lesson-connector {
+    width: 20px;
+  }
+}

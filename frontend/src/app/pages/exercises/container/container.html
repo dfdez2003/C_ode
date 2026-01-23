@@ -1,0 +1,93 @@
+<div class="exercise-session">
+  <div class="progress-header">
+    <div class="header-top">
+      <button class="exit-button" (click)="exitLesson()" title="Volver al mapa">
+        ← Salir
+      </button>
+      <div class="progress-info">
+        <span class="exercise-count">📝 Ejercicio {{ currentExerciseIndex() + 1 }} / {{ exercises.length }}</span>
+        <span class="session-time">⏱️ {{ sessionDuration }}</span>
+      </div>
+    </div>
+    <div class="progress-bar-container">
+      <div class="progress-bar" [style.width.%]="lessonProgress"></div>
+    </div>
+    <span class="exercise-title">{{ currentExercise().title }}</span>
+  </div>
+
+  <!-- Mostrar ejercicio SOLO si la lección NO está completada -->
+  @if (!isLessonCompleted()) {
+    <div class="exercise-content">
+      <app-exercise-base 
+        [exerciseSummary]="currentExercise()"
+        [sessionId]="sessionId()"
+        [moduleId]="moduleId"
+        [lessonId]="lessonId"
+        (onExerciseComplete)="nextExercise()"
+      ></app-exercise-base>
+    </div>
+  }
+  
+  <!-- Botón final solo cuando la lección está completada -->
+  @if (isLessonCompleted()) {
+    <div class="completion-footer">
+      <div class="completion-message">
+        <h2>🎉 ¡Lección Completada!</h2>
+        <p>Has completado todos los ejercicios de esta lección.</p>
+        
+        <!-- Estadísticas de la lección -->
+        <div class="lesson-stats">
+          <div class="stat-card">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-value">{{ currentScore() }}/{{ totalPossible() }}</div>
+            <div class="stat-label">Puntos Obtenidos</div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">✅</div>
+            <div class="stat-value">{{ correctAnswers() }}/{{ exercisesCompleted() }}</div>
+            <div class="stat-label">Respuestas Correctas</div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">📚</div>
+            <div class="stat-value">{{ exercises.length }}</div>
+            <div class="stat-label">Ejercicios Completados</div>
+          </div>
+        </div>
+        
+        <!-- Detalles de recompensas adicionales -->
+        @if (rewardDetails() && rewardDetails()!.reward_details) {
+          <div class="reward-details">
+            <h3>🏆 Experiencia Ganada</h3>
+            <div class="reward-breakdown">
+              <div class="reward-item">
+                <span>XP ganado en este intento:</span>
+                <strong>{{ rewardDetails()!.reward_details!.lesson_xp }} XP</strong>
+              </div>
+              
+              @if (rewardDetails()!.reward_details!.bonus_xp > 0) {
+                <div class="reward-item">
+                  <span>🌟 Bonus de Perfección (15%):</span>
+                  <strong>{{ rewardDetails()!.reward_details!.bonus_xp }} XP</strong>
+                </div>
+              }
+              
+              @if (rewardDetails()!.reward_details!.new_level) {
+                <div class="reward-item level-up">
+                  <span>🎊 ¡Subiste de nivel!</span>
+                  <strong>Nivel {{ rewardDetails()!.reward_details!.new_level }}</strong>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+      
+      <button class="back-button" (click)="goBackToMap()">
+        🗺️ Volver al Mapa
+      </button>
+    </div>
+  }
+
+</div>

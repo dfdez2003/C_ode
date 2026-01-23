@@ -1,0 +1,181 @@
+<div class="modal-overlay" (click)="cancel()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ isEdit ? '✏️ Editar Recompensa' : '✨ Nueva Recompensa' }}</h2>
+      <button class="btn-close" (click)="cancel()">×</button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="reward-form">
+      <div class="modal-body">
+        <!-- Título -->
+        <div class="form-group">
+          <label for="title">Título *</label>
+          <input
+            type="text"
+            id="title"
+            formControlName="title"
+            placeholder="Ej: Primera Victoria"
+            [class.error]="hasError('title', 'required') || hasError('title', 'minlength') || hasError('title', 'maxlength')"
+          />
+          @if (getErrorMessage('title')) {
+            <span class="error-message">{{ getErrorMessage('title') }}</span>
+          }
+        </div>
+
+        <!-- Descripción -->
+        <div class="form-group">
+          <label for="description">Descripción *</label>
+          <textarea
+            id="description"
+            formControlName="description"
+            rows="3"
+            placeholder="Describe qué debe lograr el estudiante para obtener esta recompensa"
+            [class.error]="hasError('description', 'required') || hasError('description', 'minlength') || hasError('description', 'maxlength')"
+          ></textarea>
+          @if (getErrorMessage('description')) {
+            <span class="error-message">{{ getErrorMessage('description') }}</span>
+          }
+        </div>
+
+        <!-- Icono -->
+        <div class="form-group">
+          <label>Icono *</label>
+          <div class="icon-selector">
+            <div class="selected-icon">{{ form.get('icon')?.value }}</div>
+            <div class="icon-grid">
+              @for (icon of commonIcons; track icon) {
+                <button
+                  type="button"
+                  class="icon-option"
+                  [class.selected]="form.get('icon')?.value === icon"
+                  (click)="selectIcon(icon)"
+                >
+                  {{ icon }}
+                </button>
+              }
+            </div>
+          </div>
+          <input
+            type="text"
+            formControlName="icon"
+            placeholder="O escribe un emoji personalizado"
+            class="icon-input"
+          />
+        </div>
+
+        <!-- Tipo de Recompensa -->
+        <div class="form-group">
+          <label for="reward_type">Tipo de Recompensa *</label>
+          <select
+            id="reward_type"
+            formControlName="reward_type"
+            (change)="onRewardTypeChange()"
+          >
+            @for (type of rewardTypes; track type.value) {
+              <option [value]="type.value">{{ type.label }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- CRITERIOS DINÁMICOS SEGÚN TIPO -->
+
+        <!-- Lección Perfecta: Dropdown de Lecciones -->
+        @if (form.get('reward_type')?.value === 'lesson_perfect') {
+          <div class="form-group">
+            <label for="lesson_select">Selecciona la Lección *</label>
+            @if (loadingLessons()) {
+              <div class="loading-indicator">⏳ Cargando lecciones...</div>
+            } @else if (lessons().length > 0) {
+              <select
+                id="lesson_select"
+                [(ngModel)]="selectedLessonId"
+                [ngModelOptions]="{standalone: true}"
+              >
+                <option value="" disabled>-- Selecciona una lección --</option>
+                @for (lesson of lessons(); track lesson._id) {
+                  <option [value]="lesson._id">{{ lesson.title }}</option>
+                }
+              </select>
+            } @else {
+              <div class="no-lessons-message">No hay lecciones disponibles</div>
+            }
+          </div>
+        }
+
+        <!-- XP Milestone: Input para valor de XP -->
+        @if (form.get('reward_type')?.value === 'xp_milestone') {
+          <div class="form-group">
+            <label for="xp_threshold">Valor de XP Requerido *</label>
+            <input
+              type="number"
+              id="xp_threshold"
+              [(ngModel)]="xpThreshold"
+              [ngModelOptions]="{standalone: true}"
+              min="1"
+              placeholder="Ej: 500"
+            />
+            <small class="helper-text">El estudiante recibirá esta recompensa al alcanzar {{ xpThreshold() }} XP</small>
+          </div>
+        }
+
+        <!-- Streak Milestone: Input para días de racha -->
+        @if (form.get('reward_type')?.value === 'streak_milestone') {
+          <div class="form-group">
+            <label for="streak_days">Días de Racha Requeridos *</label>
+            <input
+              type="number"
+              id="streak_days"
+              [(ngModel)]="streakDays"
+              [ngModelOptions]="{standalone: true}"
+              min="1"
+              placeholder="Ej: 7"
+            />
+            <small class="helper-text">El estudiante recibirá esta recompensa al mantener una racha de {{ streakDays() }} días</small>
+          </div>
+        }
+
+        <!-- Custom: Sin criterios específicos -->
+        @if (form.get('reward_type')?.value === 'custom') {
+          <div class="form-group info-box">
+            <p>📝 Esta es una recompensa personalizada. Se entrega manualmente a los estudiantes.</p>
+          </div>
+        }
+
+        <!-- XP Bonus -->
+        <div class="form-group">
+          <label for="xp_bonus">Bonificación de XP *</label>
+          <input
+            type="number"
+            id="xp_bonus"
+            formControlName="xp_bonus"
+            min="1"
+            placeholder="Ej: 100"
+            [class.error]="hasError('xp_bonus', 'required') || hasError('xp_bonus', 'min')"
+          />
+          @if (getErrorMessage('xp_bonus')) {
+            <span class="error-message">{{ getErrorMessage('xp_bonus') }}</span>
+          }
+          <small class="helper-text">XP adicional que recibirá el estudiante al obtener esta recompensa (mínimo 1)</small>
+        </div>
+
+        <!-- Estado Activo -->
+        <div class="form-group checkbox-group">
+          <label>
+            <input type="checkbox" formControlName="is_active" />
+            <span>Recompensa activa</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Botones de Modal -->
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" (click)="cancel()">
+          Cancelar
+        </button>
+        <button type="submit" class="btn-save" [disabled]="form.invalid">
+          {{ isEdit ? '💾 Guardar Cambios' : '✨ Crear Recompensa' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

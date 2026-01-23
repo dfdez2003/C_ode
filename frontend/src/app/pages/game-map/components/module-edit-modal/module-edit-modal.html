@@ -1,0 +1,96 @@
+<!-- frontend/src/app/pages/game-map/components/module-edit-modal/module-edit-modal.html -->
+
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-content">
+    
+    <!-- Header -->
+    <div class="modal-header">
+      <h2>📝 Editar Módulo</h2>
+      <button class="close-button" (click)="onCancel()">✕</button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+      <form (ngSubmit)="onSubmit()">
+        
+        <!-- Título -->
+        <div class="form-group">
+          <label for="module-title" class="form-label">Título del Módulo *</label>
+          <input
+            id="module-title"
+            type="text"
+            class="form-input"
+            [(ngModel)]="title"
+            [ngModelOptions]="{standalone: true}"
+            placeholder="Ej: Introducción a Python"
+            maxlength="100"
+            required
+          />
+          <small class="form-hint">Mínimo 3 caracteres</small>
+        </div>
+
+        <!-- Descripción -->
+        <div class="form-group">
+          <label for="module-description" class="form-label">Descripción *</label>
+          <textarea
+            id="module-description"
+            class="form-textarea"
+            [(ngModel)]="description"
+            [ngModelOptions]="{standalone: true}"
+            placeholder="Describe el contenido y objetivos del módulo..."
+            rows="4"
+            maxlength="500"
+            required
+          ></textarea>
+          <small class="form-hint">Mínimo 10 caracteres</small>
+        </div>
+
+        <!-- Orden y Tiempo Estimado (en una fila) -->
+        <div class="form-row">
+          <!-- Orden -->
+          <div class="form-group">
+            <label for="module-order" class="form-label">Orden</label>
+            <input
+              id="module-order"
+              type="number"
+              class="form-input"
+              [(ngModel)]="order"
+              [ngModelOptions]="{standalone: true}"
+              min="0"
+              required
+            />
+            <small class="form-hint">Posición en la lista</small>
+          </div>
+
+          <!-- Tiempo Estimado -->
+          <div class="form-group">
+            <label for="module-time" class="form-label">Tiempo Estimado (min)</label>
+            <input
+              id="module-time"
+              type="number"
+              class="form-input"
+              [(ngModel)]="estimateTime"
+              [ngModelOptions]="{standalone: true}"
+              min="1"
+              max="500"
+              required
+            />
+            <small class="form-hint">Entre 1 y 500 minutos</small>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="onCancel()">
+        Cancelar
+      </button>
+      <button type="button" class="btn btn-primary" (click)="onSubmit()">
+        💾 Guardar Cambios
+      </button>
+    </div>
+
+  </div>
+</div>

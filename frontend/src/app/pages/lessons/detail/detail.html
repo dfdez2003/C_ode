@@ -1,27 +1,181 @@
 <div class="lesson-detail-content">
-  <h2>{{ lesson.order }}. {{ lesson.title }}</h2>
-  <p class="module-ref">Parte de: {{ moduleTitle }}</p>
-
+  
+  <!-- Encabezado de la lección (Solo profesor) -->
   @if (userRole === 'teacher') {
-    <div class="teacher-controls">
-      <h3>Modo Edición (Profesor)</h3>
-      <p>Aquí el profesor podrá editar la lección y sus ejercicios.</p>
-      <button class="edit-button">✏️ Editar Lección</button>
-      <button class="add-button">➕ Agregar Ejercicio</button>
+    <div class="lesson-header">
+      <div class="lesson-info">
+        <h2 class="lesson-title">{{ lesson.title }}</h2>
+        <p class="lesson-description">{{ lesson.description }}</p>
+        <div class="lesson-meta">
+          <span class="meta-item">📚 {{ lesson.exercises.length }} ejercicios</span>
+          <span class="meta-item">⭐ +{{ lesson.xp_reward }} XP</span>
+          @if (lesson.is_private) {
+            <span class="meta-item badge-private">🔐 Privada</span>
+          }
+        </div>
+      </div>
+      <button class="btn-edit-lesson" (click)="openEditLessonModal()" title="Editar información de la lección">
+        ✏️ Editar Lección
+      </button>
+    </div>
+  } @else {
+    <!-- Vista de estudiante (mantener como estaba) -->
+    <p class="description">{{ lesson.description }}</p>
+  }
+  
+  <!-- 🆕 Badge de lección privada (Solo estudiantes) -->
+  @if (userRole !== 'teacher') {
+    <div class="lesson-badges">
+      @if (lesson.is_private) {
+        <span class="badge badge-private">🔐 Lección Privada (Un solo intento)</span>
+      }
     </div>
   }
-
-  <p class="description">{{ lesson.description }}</p>
-  <div class="xp-reward">+{{ lesson.xp_reward }} XP por completar</div>
+  
+  <!-- 🆕 Estado de la lección -->
+  @if (lessonStatus(); as status) {
+    <div class="lesson-status">
+      @if (status.is_locked) {
+        <div class="alert alert-locked">
+          <strong>🔒 Lección Bloqueada</strong>
+          <p>Esta lección privada ya fue completada y no puede volver a realizarse.</p>
+          <p><strong>Puntaje obtenido:</strong> {{ status.best_score }} puntos</p>
+        </div>
+      } @else if (status.is_completed) {
+        <div class="alert alert-info">
+          <strong>✅ Lección Completada</strong>
+          <p><strong>Mejor puntaje:</strong> {{ status.best_score }} puntos</p>
+          <p><strong>Intentos realizados:</strong> {{ status.attempt_count }}</p>
+          @if (!lesson.is_private) {
+            <p class="hint">💡 Puedes volver a intentarla para mejorar tu puntaje</p>
+          }
+        </div>
+      } @else if (lesson.is_private && status.attempt_count === 0) {
+        <div class="alert alert-warning">
+          <strong>⚠️ Advertencia: Lección Privada</strong>
+          <p>Esta es una lección privada y <strong>solo podrás realizarla UNA VEZ</strong>.</p>
+          <p>Una vez que completes todos los ejercicios, la lección quedará bloqueada permanentemente.</p>
+          <p>Asegúrate de estar preparado antes de comenzar.</p>
+        </div>
+      }
+    </div>
+  }
+  
+  <!-- XP Reward (Solo estudiantes) -->
+  @if (userRole !== 'teacher') {
+    <div class="xp-reward">+{{ lesson.xp_reward }} XP por completar</div>
+  }
 
   <section class="exercises-section">
-    <h3>Ejercicios de la Lección ({{ lesson.exercises.length }})</h3>
-    
-    @for (exercise of lesson.exercises; track exercise.exercise_uuid) {
-        <div class="exercise-summary">
-            <h4>{{ exercise.title }} ({{ exercise.type | uppercase }})</h4>
-            <p>Puntos: {{ exercise.points }}</p>
+
+    @if (userRole === 'teacher') {
+      
+      @if (editingExercise(); as ex) {
+        <div class="edit-form-wrapper">
+          <h3>✏️ Editando: {{ ex.title }} ({{ ex.type | uppercase }})</h3>
+          
+          <div class="placeholder-edit-form">
+            <p>Formulario de edición para el tipo **{{ ex.type }}** (PENDIENTE: Implementar lógica de formulario de CRUD).</p>
+            <button class="add-button" disabled>Guardar Cambios</button>
+            <button class="cancel-button" (click)="cancelEdit()">Cancelar</button>
+          </div>
+        </div>
+      } 
+      
+      @else {
+        <div class="teacher-controls">
+          <button class="add-button" (click)="openAddExerciseModal()">
+            ➕ Agregar Nuevo Ejercicio
+          </button>
+        </div>
+        <h3>Gestión de Ejercicios ({{ lesson.exercises.length }})</h3>
+        
+        <!-- Vista tipo Game Map de Ejercicios (VERTICAL) -->
+        <div class="exercises-game-map">
+          @for (exercise of lesson.exercises; track exercise.exercise_uuid; let idx = $index) {
+            <div class="exercise-node">
+              <div class="exercise-node-content">
+                <!-- Icono del tipo de ejercicio -->
+                <div class="exercise-icon">
+                  @switch (exercise.type) {
+                    @case ('question') { <span class="icon">❓</span> }
+                    @case ('complete') { <span class="icon">📝</span> }
+                    @case ('make_code') { <span class="icon">💻</span> }
+                    @case ('study') { <span class="icon">📚</span> }
+                    @case ('unit_concepts') { <span class="icon">🔗</span> }
+                    @default { <span class="icon">📄</span> }
+                  }
+                </div>
+                
+                <!-- Información del ejercicio -->
+                <div class="exercise-info">
+                  <span class="exercise-number">Ejercicio {{ idx + 1 }}</span>
+                  <h4 class="exercise-title">{{ exercise.title }}</h4>
+                  <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <span class="exercise-type-badge">{{ exercise.type }}</span>
+                    <span class="exercise-points">{{ exercise.points }} pts</span>
+                  </div>
+                </div>
+                
+                <!-- Botones de acción -->
+                <div class="exercise-actions">
+                  <button class="edit-btn" (click)="startEdit(exercise)" title="Editar ejercicio">
+                    ✏️
+                  </button>
+                  <button class="delete-btn" (click)="deleteExercise(exercise)" title="Eliminar ejercicio">
+                    🗑️
+                  </button>
+                </div>
+              </div>
             </div>
+            
+            <!-- Línea conectora vertical (excepto después del último) -->
+            @if (idx < lesson.exercises.length - 1) {
+              <div class="exercise-connector"></div>
+            }
+          }
+          
+          <!-- Botón + al final de la lista -->
+          <button class="btn-add-exercise" (click)="openAddExerciseModal()" title="Agregar nuevo ejercicio">
+            ➕
+          </button>
+        </div>
+      }
+    } 
+    
+    @else {
+      <!-- Solo mostrar ejercicios si la lección NO está bloqueada -->
+      @if (lessonStatus() && !lessonStatus()!.is_locked) {
+        <app-exercise-container 
+          [exercises]="lesson.exercises"
+          [lessonId]="lesson._id"
+          [moduleId]="moduleId"
+        ></app-exercise-container>
+      } @else if (lessonStatus() && lessonStatus()!.is_locked) {
+        <div class="locked-message">
+          <p>🔒 No puedes acceder a los ejercicios de una lección privada bloqueada.</p>
+          <button class="back-button" (click)="cancelStartExam()">← Volver al Módulo</button>
+        </div>
+      }
     }
   </section>
 </div>
+
+<!-- Modal de Agregar/Editar Ejercicio -->
+@if (showAddExerciseModal()) {
+  <app-exercise-creator-modal
+    [moduleId]="moduleId"
+    [lessonId]="lesson._id"
+    [exerciseToEdit]="exerciseToEdit()"
+    (close)="closeAddExerciseModal()"
+    (exerciseCreated)="onExerciseCreated()"
+  />
+}
+<!-- Modal de Editar Lección -->
+@if (showEditLessonModal()) {
+  <app-lesson-edit-modal
+    [lessonToEdit]="lesson"
+    (save)="onSaveLessonEdit($event)"
+    (close)="closeEditLessonModal()"
+  />
+}

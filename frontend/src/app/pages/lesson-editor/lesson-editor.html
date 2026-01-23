@@ -1,0 +1,248 @@
+<!-- frontend/src/app/pages/lesson-editor/lesson-editor.html -->
+
+<div class="lesson-editor-container">
+  
+  <!-- ========== LOADING STATE ========== -->
+  @if (isLoading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Cargando lección...</p>
+    </div>
+  }
+
+  <!-- ========== ERROR STATE ========== -->
+  @if (error()) {
+    <div class="error-state">
+      <h2>❌ Error</h2>
+      <p>{{ error() }}</p>
+      <button class="btn btn-secondary" (click)="goBack()">
+        ← Volver al Mapa
+      </button>
+    </div>
+  }
+
+  <!-- ========== LESSON EDITOR ========== -->
+  @if (lesson() && !isLoading() && !error()) {
+    
+    <!-- Header -->
+    <div class="editor-header">
+      <div class="header-left">
+        <button class="back-button" (click)="goBack()">
+          ← Volver al Mapa
+        </button>
+        <div class="breadcrumb">
+          <span class="breadcrumb-item">{{ moduleTitle() }}</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item current">{{ lesson()!.title }}</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <button class="btn btn-secondary" (click)="onEditLessonInfo()">
+          ✏️ Editar Info
+        </button>
+      </div>
+    </div>
+
+    <!-- Lesson Info Card -->
+    <div class="lesson-info-card">
+      <div class="info-header">
+        <h1>{{ lesson()!.title }}</h1>
+        @if (lesson()!.is_private) {
+          <span class="badge badge-private">🔒 Privada</span>
+        }
+      </div>
+      <p class="lesson-description">{{ lesson()!.description }}</p>
+      <div class="lesson-stats">
+        <div class="stat">
+          <span class="stat-icon">📝</span>
+          <span class="stat-value">{{ exercises().length }}</span>
+          <span class="stat-label">Ejercicios</span>
+        </div>
+        <div class="stat">
+          <span class="stat-icon">⭐</span>
+          <span class="stat-value">{{ lesson()!.xp_reward || 50 }}</span>
+          <span class="stat-label">XP Reward</span>
+        </div>
+        <div class="stat">
+          <span class="stat-icon">🎯</span>
+          <span class="stat-value">{{ lesson()!.order + 1 }}</span>
+          <span class="stat-label">Orden</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Exercise Button -->
+    <div class="add-exercise-section">
+      <button class="btn btn-primary btn-large" (click)="onAddExercise()">
+        ➕ Agregar Ejercicio
+      </button>
+      <p class="help-text">
+        Los ejercicios se mostrarán en el orden indicado cuando los estudiantes resuelvan la lección
+      </p>
+    </div>
+
+    <!-- Exercises Map -->
+    @if (exercises().length > 0) {
+      <div class="exercises-map">
+        <h2 class="map-title">🗺️ Mapa de Ejercicios</h2>
+        
+        <div class="exercises-list">
+          @for (exercise of exercises(); track $index; let i = $index) {
+            <div class="exercise-card">
+              
+              <!-- Exercise Number -->
+              <div class="exercise-number">
+                {{ i + 1 }}
+              </div>
+
+              <!-- Exercise Content -->
+              <div class="exercise-content">
+                <div class="exercise-header">
+                  <span class="exercise-icon">{{ getExerciseIcon(exercise.type) }}</span>
+                  <h3 class="exercise-title">{{ exercise.title }}</h3>
+                  <span class="exercise-type-badge">{{ getExerciseTypeName(exercise.type) }}</span>
+                </div>
+                
+                <!-- Exercise Metadata -->
+                <div class="exercise-meta">
+                  <span class="meta-item">
+                    🎯 XP: {{ getExerciseXP(exercise) }}
+                  </span>
+                  @if (exercise.type === 'study') {
+                    <span class="meta-item">
+                      📚 Flashcards: {{ getFlashcardsCount(exercise) }}
+                    </span>
+                  }
+                  @if (exercise.type === 'question') {
+                    <span class="meta-item">
+                      ✅ Respuesta: {{ getCorrectAnswer(exercise) }}
+                    </span>
+                  }
+                </div>
+              </div>
+
+              <!-- Exercise Actions -->
+              <div class="exercise-actions">
+                <!-- Reorder Buttons -->
+                <div class="reorder-buttons">
+                  <button 
+                    class="btn-icon" 
+                    (click)="onMoveExerciseUp(i)"
+                    [disabled]="i === 0"
+                    title="Mover arriba">
+                    ↑
+                  </button>
+                  <button 
+                    class="btn-icon" 
+                    (click)="onMoveExerciseDown(i)"
+                    [disabled]="i === exercises().length - 1"
+                    title="Mover abajo">
+                    ↓
+                  </button>
+                </div>
+
+                <!-- Edit/Delete Buttons -->
+                <div class="action-buttons">
+                  <button 
+                    class="btn btn-sm btn-secondary" 
+                    (click)="onEditExercise(i)">
+                    ✏️ Editar
+                  </button>
+                  <button 
+                    class="btn btn-sm btn-danger" 
+                    (click)="onDeleteExercise(i)">
+                    🗑️
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Connector Line -->
+            @if (i < exercises().length - 1) {
+              <div class="exercise-connector"></div>
+            }
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Empty State -->
+    @if (exercises().length === 0) {
+      <div class="empty-state">
+        <div class="empty-icon">📝</div>
+        <h3>No hay ejercicios en esta lección</h3>
+        <p>Agrega el primer ejercicio para que los estudiantes puedan aprender</p>
+        <button class="btn btn-primary" (click)="onAddExercise()">
+          ➕ Crear Primer Ejercicio
+        </button>
+      </div>
+    }
+
+  }
+
+  <!-- ========== MODALES ========== -->
+
+  <!-- Selector de Tipo de Ejercicio -->
+  @if (showTypeSelector()) {
+    <app-exercise-type-selector
+      (typeSelected)="onTypeSelected($event)"
+      (close)="showTypeSelector.set(false)"
+    />
+  }
+
+  <!-- Formulario de Pregunta -->
+  @if (showQuestionForm()) {
+    <app-question-exercise-form
+      [exercise]="getEditingExercise()"
+      (save)="onSaveExercise($event)"
+      (close)="showQuestionForm.set(false)"
+    />
+  }
+
+  <!-- Formulario de Estudio (Flashcards) -->
+  @if (showStudyForm()) {
+    <app-study-exercise-form
+      [exercise]="getEditingExercise()"
+      (save)="onSaveExercise($event)"
+      (close)="showStudyForm.set(false)"
+    />
+  }
+
+  <!-- Formulario de Completar Código -->
+  @if (showCompleteForm()) {
+    <app-complete-exercise-form
+      [exercise]="getEditingExercise()"
+      (save)="onSaveExercise($event)"
+      (close)="showCompleteForm.set(false)"
+    />
+  }
+
+  <!-- Formulario de Escribir Código -->
+  @if (showMakeCodeForm()) {
+    <app-make-code-exercise-form
+      [exercise]="getEditingExercise()"
+      (save)="onSaveExercise($event)"
+      (close)="showMakeCodeForm.set(false)"
+    />
+  }
+
+  <!-- Formulario de Relacionar Conceptos -->
+  @if (showUnitConceptsForm()) {
+    <app-unit-concepts-exercise-form
+      [exercise]="getEditingExercise()"
+      (save)="onSaveExercise($event)"
+      (close)="showUnitConceptsForm.set(false)"
+    />
+  }
+
+  <!-- Modal de Edición de Lección -->
+  @if (showLessonEditModal()) {
+    <app-lesson-edit-modal
+      [lessonToEdit]="lesson()"
+      (save)="onSaveLessonEdit($event)"
+      (close)="onCloseLessonEditModal()"
+    />
+  }
+
+</div>

@@ -10,6 +10,7 @@ class LessonBaseSchema(BaseModel):
     description: str
     order: int
     xp_reward: int
+    is_private: bool = False  # True si es una lección privada/examen (un solo intento)
     # lista de ejercicios embebida
     exercises: List[ExerciseSchema] = Field(..., min_items=1, description="Must contain at least one exercise.")
     
@@ -30,6 +31,7 @@ class LessonUpdate(BaseModel):
     description: Optional[str] = None
     order: Optional[int] = None
     xp_reward: Optional[int] = None
+    is_private: Optional[bool] = None  #  Permitir cambiar el estado privado/público
     # Permite actualizar la lista completa de ejercicios
     exercises: Optional[List[ExerciseSchema]] = None
 

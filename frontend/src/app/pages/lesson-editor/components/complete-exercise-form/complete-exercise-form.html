@@ -1,0 +1,236 @@
+<!-- frontend/src/app/pages/lesson-editor/components/complete-exercise-form/complete-exercise-form.html -->
+
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-content">
+    
+    <!-- HEADER -->
+    <div class="modal-header">
+      <h2>{{ modalTitle }}</h2>
+      <button class="close-button" (click)="onCancel()" type="button">✕</button>
+    </div>
+
+    <!-- FORM -->
+    <form (ngSubmit)="onSubmit()" class="exercise-form">
+      
+      <!-- Título -->
+      <div class="form-group">
+        <label for="title">
+          <span class="label-icon">📝</span>
+          Título del Ejercicio
+          <span class="required">*</span>
+        </label>
+        <input
+          id="title"
+          type="text"
+          class="form-control"
+          placeholder="Ej: Completar función de suma"
+          [value]="title()"
+          (input)="title.set($any($event.target).value)"
+          required
+          minlength="3"
+        />
+      </div>
+
+      <!-- Template de Código con Espacios en Blanco -->
+      <div class="form-group">
+        <label for="codeTemplate">
+          <span class="label-icon">✏️</span>
+          Template de Código
+          <span class="required">*</span>
+        </label>
+        <textarea
+          id="codeTemplate"
+          class="form-control code-template-input"
+          rows="10"
+          placeholder="def suma(a, b):&#10;    return a ___ b&#10;&#10;# Usa ___ para los espacios en blanco"
+          [value]="codeTemplate()"
+          (input)="codeTemplate.set($any($event.target).value)"
+          required
+        ></textarea>
+        <small class="helper-text">
+          💡 Usa <code>___</code> (tres guiones bajos) para marcar cada espacio que el estudiante debe completar.
+        </small>
+      </div>
+
+      <!-- OPCIONES (4 obligatorias) -->
+      <div class="options-section">
+        <div class="section-header">
+          <h3>
+            <span class="section-icon">🎯</span>
+            Opciones de Respuesta
+            <span class="badge">4</span>
+          </h3>
+          <p class="section-description">
+            Proporciona 4 opciones para el espacio en blanco. Marca cuál es la correcta.
+          </p>
+        </div>
+
+        <!-- Opción 1 -->
+        <div class="option-item">
+          <input
+            type="radio"
+            name="correctOption"
+            id="opt1"
+            [checked]="correctOptionIndex() === 0"
+            (change)="correctOptionIndex.set(0)"
+          />
+          <label for="opt1" class="option-label">
+            <span class="option-number">A)</span>
+            <input
+              type="text"
+              class="option-input"
+              placeholder="Primera opción (ej: +)"
+              [value]="option1()"
+              (input)="option1.set($any($event.target).value)"
+              required
+            />
+          </label>
+        </div>
+
+        <!-- Opción 2 -->
+        <div class="option-item">
+          <input
+            type="radio"
+            name="correctOption"
+            id="opt2"
+            [checked]="correctOptionIndex() === 1"
+            (change)="correctOptionIndex.set(1)"
+          />
+          <label for="opt2" class="option-label">
+            <span class="option-number">B)</span>
+            <input
+              type="text"
+              class="option-input"
+              placeholder="Segunda opción (ej: -)"
+              [value]="option2()"
+              (input)="option2.set($any($event.target).value)"
+              required
+            />
+          </label>
+        </div>
+
+        <!-- Opción 3 -->
+        <div class="option-item">
+          <input
+            type="radio"
+            name="correctOption"
+            id="opt3"
+            [checked]="correctOptionIndex() === 2"
+            (change)="correctOptionIndex.set(2)"
+          />
+          <label for="opt3" class="option-label">
+            <span class="option-number">C)</span>
+            <input
+              type="text"
+              class="option-input"
+              placeholder="Tercera opción (ej: *)"
+              [value]="option3()"
+              (input)="option3.set($any($event.target).value)"
+              required
+            />
+          </label>
+        </div>
+
+        <!-- Opción 4 -->
+        <div class="option-item">
+          <input
+            type="radio"
+            name="correctOption"
+            id="opt4"
+            [checked]="correctOptionIndex() === 3"
+            (change)="correctOptionIndex.set(3)"
+          />
+          <label for="opt4" class="option-label">
+            <span class="option-number">D)</span>
+            <input
+              type="text"
+              class="option-input"
+              placeholder="Cuarta opción (ej: /)"
+              [value]="option4()"
+              (input)="option4.set($any($event.target).value)"
+              required
+            />
+          </label>
+        </div>
+
+        <small class="helper-text">
+          ✅ Selecciona la respuesta correcta con el radio button
+        </small>
+      </div>
+
+      <!-- XP Recompensa -->
+      <div class="form-group">
+        <label for="xpReward">
+          <span class="label-icon">⭐</span>
+          Recompensa en XP
+          <span class="required">*</span>
+        </label>
+        <input
+          id="xpReward"
+          type="number"
+          class="form-control"
+          min="10"
+          max="100"
+          [value]="xpReward()"
+          (input)="xpReward.set(+$any($event.target).value)"
+          required
+        />
+        <small class="helper-text">
+          Rango: 10-100 XP. Recomendado: 25-40 XP.
+        </small>
+      </div>
+
+      <!-- Error Message -->
+      @if (error()) {
+        <div class="error-box">
+          <span class="error-icon">⚠️</span>
+          {{ error() }}
+        </div>
+      }
+
+      <!-- Info Box -->
+      <div class="info-box">
+        <div class="info-icon">ℹ️</div>
+        <div>
+          <strong>Ejemplo de uso:</strong>
+          <pre class="example-code">def suma(a, b):
+    return a ___ b
+
+resultado = ___(suma(2, 3))</pre>
+          <p class="example-answers">Respuestas: <code>+</code> y <code>print</code></p>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn-cancel"
+          (click)="onCancel()"
+          [disabled]="isSubmitting()"
+        >
+          Cancelar
+        </button>
+        
+        <button
+          type="submit"
+          class="btn-submit"
+          [disabled]="isSubmitting()"
+        >
+          @if (isSubmitting()) {
+            <span class="spinner"></span>
+            Guardando...
+          } @else {
+            @if (isEditing) {
+              💾 Actualizar
+            } @else {
+              ✨ Crear Ejercicio
+            }
+          }
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

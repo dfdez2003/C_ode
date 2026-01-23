@@ -1,0 +1,266 @@
+<!-- frontend/src/app/pages/student-dashboard/student-dashboard.html -->
+
+<div class="student-dashboard">
+
+  <!-- ========== LOADING ========== -->
+  @if (isLoading()) {
+    <div class="loading-container">
+      <div class="spinner"></div>
+      <p>Cargando tu progreso...</p>
+    </div>
+  }
+
+  <!-- ========== ERROR ========== -->
+  @else if (error()) {
+    <div class="error-container">
+      <div class="error-icon">😕</div>
+      <h2 class="error-title">Oops...</h2>
+      <p class="error-message">{{ error() }}</p>
+      <button class="btn-retry" (click)="loadStats()">🔄 Intentar de nuevo</button>
+    </div>
+  }
+
+  <!-- ========== CONTENT ========== -->
+  @else if (stats()) {
+    
+    <!-- Header con botón volver -->
+    <div class="dashboard-header">
+      <button class="btn-back" (click)="goBack()">
+        ← Volver al Mapa
+      </button>
+    </div>
+
+    <!-- Hero Section con nivel y XP -->
+    <div class="hero-section">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          ¡Hola, {{ stats()!.user_info.username }}! 👋
+        </h1>
+        <p class="hero-subtitle">{{ stats()!.motivational_message }}</p>
+      </div>
+
+      <!-- Level Badge -->
+      <div class="level-badge" [style.border-color]="getLevelColor(stats()!.stats.level)">
+        <div class="level-number" [style.color]="getLevelColor(stats()!.stats.level)">
+          {{ stats()!.stats.level }}
+        </div>
+        <div class="level-title">{{ getLevelTitle(stats()!.stats.level) }}</div>
+        <div class="level-xp">{{ stats()!.stats.total_xp }} XP</div>
+      </div>
+    </div>
+
+    <!-- XP Progress Bar -->
+    <div class="xp-progress-section">
+      <div class="xp-info">
+        <span class="xp-label">Progreso al Nivel {{ stats()!.stats.level + 1 }}</span>
+        <span class="xp-remaining">{{ stats()!.stats.xp_for_next_level }} XP restantes</span>
+      </div>
+      <div class="xp-bar">
+        <div 
+          class="xp-fill" 
+          [style.width.%]="stats()!.stats.level_progress_percentage">
+        </div>
+      </div>
+      <div class="xp-percentage">{{ stats()!.stats.level_progress_percentage | number:'1.0-0' }}%</div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      
+      <!-- Racha -->
+      <div class="stat-card streak-card">
+        <div class="stat-icon">🔥</div>
+        <div class="stat-value">{{ stats()!.stats.streak_days }}</div>
+        <div class="stat-label">Días de Racha</div>
+        <div class="stat-message">{{ getStreakMessage(stats()!.stats.streak_days) }}</div>
+      </div>
+
+      <!-- Lecciones -->
+      <div class="stat-card lessons-card">
+        <div class="stat-icon">📚</div>
+        <div class="stat-value">{{ stats()!.stats.lessons_completed }}</div>
+        <div class="stat-label">Lecciones Completadas</div>
+      </div>
+
+      <!-- Ejercicios -->
+      <div class="stat-card exercises-card">
+        <div class="stat-icon">💪</div>
+        <div class="stat-value">{{ stats()!.stats.exercises_completed }}</div>
+        <div class="stat-label">Ejercicios Resueltos</div>
+      </div>
+
+      <!-- Perfectos -->
+      <div class="stat-card perfect-card">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-value">{{ stats()!.stats.perfect_scores }}</div>
+        <div class="stat-label">Puntajes Perfectos</div>
+      </div>
+
+      <!-- Días Activos -->
+      <div class="stat-card active-card">
+        <div class="stat-icon">📅</div>
+        <div class="stat-value">{{ stats()!.stats.active_days_count }}</div>
+        <div class="stat-label">Días Activos</div>
+      </div>
+
+    </div>
+
+    <!-- Next Goal -->
+    @if (stats()!.next_goal) {
+      <div class="next-goal-section">
+        <h2 class="section-title">🎯 Tu Próxima Meta</h2>
+        <div class="goal-card">
+          <div class="goal-icon">{{ stats()!.next_goal.icon }}</div>
+          <div class="goal-content">
+            <h3 class="goal-title">{{ stats()!.next_goal.title }}</h3>
+            <p class="goal-description">{{ stats()!.next_goal.description }}</p>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Badges Section -->
+    @if (stats()!.badges.length > 0) {
+      <div class="badges-section">
+        <h2 class="section-title">🏆 Tus Logros</h2>
+        <div class="badges-grid">
+          @for (badge of stats()!.badges; track badge.id) {
+            <div class="badge-card" [class.unlocked]="badge.unlocked">
+              <div class="badge-icon">{{ badge.icon }}</div>
+              <div class="badge-name">{{ badge.name }}</div>
+              <div class="badge-description">{{ badge.description }}</div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Activity Calendar -->
+    <div class="calendar-section">
+      <h2 class="section-title">📆 Tu Actividad (Últimos 30 días)</h2>
+      <div class="calendar-grid">
+        @for (day of stats()!.activity_calendar; track day.date) {
+          <div 
+            class="calendar-day" 
+            [class.active]="day.active"
+            [attr.data-intensity]="getActivityIntensity(day)"
+            [title]="day.date + (day.active ? ' - ' + day.exercises_count + ' ejercicios' : ' - Sin actividad')">
+          </div>
+        }
+      </div>
+      <div class="calendar-legend">
+        <span class="legend-label">Menos</span>
+        <div class="legend-squares">
+          <div class="legend-square" data-intensity="none"></div>
+          <div class="legend-square" data-intensity="low"></div>
+          <div class="legend-square" data-intensity="medium"></div>
+          <div class="legend-square" data-intensity="high"></div>
+        </div>
+        <span class="legend-label">Más</span>
+      </div>
+    </div>
+
+    <!-- Historial de XP -->
+    <app-xp-history></app-xp-history>
+
+    <!-- Mi Progreso - Solo Lectura -->
+    <div class="my-progress-section">
+      <h2 class="section-title">📊 Mi Progreso</h2>
+      <div class="global-progress-card">
+        <div class="global-progress-header">
+          <h3>Progreso General</h3>
+          <div class="global-percentage">
+            {{ stats()!.global_progress_percentage || 0 }}%
+            <span class="progress-text">({{ stats()!.global_progress_text }})</span>
+          </div>
+        </div>
+        <div class="global-progress-bar">
+          <div class="global-progress-fill" [style.width.%]="stats()!.global_progress_percentage || 0"></div>
+        </div>
+      </div>
+
+      <!-- Módulos con Detalles de Lecciones (Solo lectura) -->
+      <div class="modules-details-grid">
+        @for (module of stats()!.modules_progress; track module.module_id) {
+          <div class="module-details-card">
+            
+            <!-- Header del Módulo -->
+            <div class="module-details-header">
+              <h3 class="module-details-title">{{ module.module_title }}</h3>
+              <div class="module-details-progress">
+                {{ module.completed_lessons }}/{{ module.total_lessons }} lecciones
+              </div>
+            </div>
+
+            <!-- Progreso del Módulo -->
+            <div class="module-details-progress-bar">
+              <div 
+                class="module-details-progress-fill" 
+                [style.width.%]="module.progress_percentage">
+              </div>
+            </div>
+            <div class="module-details-progress-text">
+              {{ module.progress_percentage }}% completado
+            </div>
+
+            <!-- Estadísticas del Módulo -->
+            <div class="module-details-stats">
+              <div class="detail-stat">
+                <span class="detail-stat-label">Ejercicios resueltos:</span>
+                <span class="detail-stat-value">{{ module.completed_exercises }}/{{ module.total_exercises }}</span>
+              </div>
+              @if (module.average_score > 0) {
+                <div class="detail-stat">
+                  <span class="detail-stat-label">Calificación promedio:</span>
+                  <span class="detail-stat-value">{{ module.average_score }}%</span>
+                </div>
+              }
+            </div>
+
+            <!-- Lecciones del Módulo -->
+            @if (module.lessons && module.lessons.length > 0) {
+              <div class="lessons-list">
+                <h4 class="lessons-list-title">Lecciones:</h4>
+                <div class="lessons-items">
+                  @for (lesson of module.lessons; track lesson.lesson_id) {
+                    <div class="lesson-item" [class.completed]="lesson.status === 'completed'">
+                      
+                      <!-- Status badge -->
+                      <div class="lesson-status">
+                        @if (lesson.status === 'completed') {
+                          <span class="status-badge completed">✅</span>
+                        } @else {
+                          <span class="status-badge not-started">⭕</span>
+                        }
+                      </div>
+
+                      <!-- Lesson info -->
+                      <div class="lesson-info">
+                        <div class="lesson-name">{{ lesson.lesson_title }}</div>
+                        @if (lesson.status === 'completed') {
+                          <div class="lesson-score">
+                            Calificación: {{ lesson.score }}/{{ lesson.total_possible }}
+                            ({{ (lesson.total_possible > 0 ? (lesson.score / lesson.total_possible) * 100 : 0) | number:'1.0-0' }}%)
+                          </div>
+                          <div class="lesson-attempts">
+                            {{ lesson.attempt_count }} intento{{ lesson.attempt_count !== 1 ? 's' : '' }}
+                          </div>
+                        } @else {
+                          <div class="lesson-not-started">Sin intentar</div>
+                        }
+                      </div>
+
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+
+          </div>
+        }
+      </div>
+    </div>
+
+  }
+
+</div>

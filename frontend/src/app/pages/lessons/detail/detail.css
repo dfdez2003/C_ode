@@ -1,0 +1,525 @@
+/* frontend/src/app/pages/lessons/detail/detail.component.css */
+
+/* ... (Estilos existentes del contenedor lesson-detail-content) ... */
+
+.xp-reward {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #5cb85c;
+    text-align: center;
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #eafaea;
+    border-radius: 5px;
+}
+
+/* Modo Profesor - Lista de Edición */
+
+.exercise-summary.editable-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #fff;
+}
+
+.exercise-summary.editable-summary:hover {
+    background-color: #f7f7f7;
+}
+
+.exercise-summary h4 {
+    margin: 0;
+    font-size: 1em;
+    color: #333;
+}
+
+.edit-btn {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+/* Modo Profesor - Formulario de Edición */
+.placeholder-edit-form {
+    padding: 20px;
+    border: 2px dashed #f0ad4e;
+    border-radius: 8px;
+    background-color: #fff8e1;
+    margin-top: 20px;
+}
+
+.cancel-button {
+    padding: 8px 15px;
+    margin-left: 10px;
+    background-color: #ccc;
+    color: #333;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Ocultar el contenedor de ejercicios en el modo Estudiante */
+.exercises-section h3 {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+/* 🆕 Badges de tipo de lección */
+.lesson-badges {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+}
+
+.badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 600;
+}
+
+.badge-private {
+    background-color: #6c5ce7;
+    color: white;
+    box-shadow: 0 2px 4px rgba(108, 92, 231, 0.3);
+}
+
+/* 🆕 Alertas de estado */
+.lesson-status {
+    margin: 20px 0;
+}
+
+.alert {
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 4px solid;
+}
+
+.alert strong {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1.1em;
+}
+
+.alert p {
+    margin: 5px 0;
+}
+
+.alert-locked {
+    background-color: #ffe6e6;
+    border-left-color: #ff6b6b;
+    color: #c92a2a;
+}
+
+.alert-info {
+    background-color: #e7f5ff;
+    border-left-color: #339af0;
+    color: #1864ab;
+}
+
+.alert-warning {
+    background-color: #fff4e6;
+    border-left-color: #fd7e14;
+    color: #d9480f;
+}
+
+.hint {
+    font-style: italic;
+    color: #666;
+    margin-top: 10px;
+}
+
+/* 🆕 Mensaje de lección bloqueada */
+.locked-message {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.locked-message p {
+    font-size: 1.2em;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.back-button {
+    padding: 10px 20px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+}
+
+.back-button:hover {
+    background-color: #5a6268;
+}
+/* ========== EXERCISES GAME MAP (Vista tipo mapa de juego) ========== */
+/* ========== EXERCISES GAME MAP (Vista tipo mapa de juego VERTICAL) ========== */
+
+.exercises-game-map {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding: 2rem 0;
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.exercise-node {
+  position: relative;
+  width: 100%;
+}
+
+.exercise-node-content {
+  background: white;
+  border: 3px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.25rem;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.exercise-node-content:hover {
+  border-color: #667eea;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.15);
+}
+
+.exercise-icon {
+  width: 60px;
+  height: 60px;
+  min-width: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.exercise-icon .icon {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.exercise-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.exercise-number {
+  display: inline-block;
+  background: #f3f4f6;
+  color: #6b7280;
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  width: fit-content;
+}
+
+.exercise-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.exercise-type-badge {
+  display: inline-block;
+  background: #e0e7ff;
+  color: #4338ca;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  width: fit-content;
+}
+
+.exercise-points {
+  color: #f59e0b;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.exercise-node-content .edit-btn,
+.exercise-node-content .delete-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1.2rem;
+}
+
+.exercise-node-content .edit-btn {
+  background: #667eea;
+  color: white;
+}
+
+.exercise-node-content .edit-btn:hover {
+  background: #5568d3;
+  transform: scale(1.05);
+}
+
+.exercise-node-content .delete-btn {
+  background: #ef4444;
+  color: white;
+}
+
+.exercise-node-content .delete-btn:hover {
+  background: #dc2626;
+  transform: scale(1.05);
+}
+
+.exercise-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+/* Conectores entre nodos (verticales) */
+.exercise-connector {
+  width: 4px;
+  height: 40px;
+  background: linear-gradient(to bottom, #e2e8f0, #cbd5e0);
+  margin: 0 auto;
+  position: relative;
+}
+
+.exercise-connector::after {
+  content: '↓';
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  transform: translateX(-50%);
+  color: #cbd5e0;
+  font-size: 1.5rem;
+}
+
+/* Botón + al final */
+.btn-add-exercise {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border: 4px solid #d1fae5;
+  color: white;
+  font-size: 2.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.btn-add-exercise:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.5);
+}
+
+.btn-add-exercise:active {
+  transform: scale(1.05) rotate(90deg);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .exercises-game-map {
+    padding: 1rem;
+    max-width: 100%;
+  }
+
+  .exercise-node-content {
+    padding: 1rem;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .exercise-info {
+    align-items: center;
+  }
+
+  .exercise-actions {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .exercise-icon {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    font-size: 1.5rem;
+  }
+
+  .exercise-title {
+    font-size: 1rem;
+  }
+
+  .btn-add-exercise {
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+  }
+
+  .exercise-connector {
+    height: 30px;
+  }
+}
+
+/* ========== LESSON HEADER (Profesor) ========== */
+
+.lesson-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.lesson-info {
+  flex: 1;
+}
+
+.lesson-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  color: white;
+}
+
+.lesson-description {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 0 1rem 0;
+  opacity: 0.95;
+}
+
+.lesson-meta {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+}
+
+.meta-item.badge-private {
+  background: rgba(255, 107, 107, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.btn-edit-lesson {
+  background: white;
+  color: #667eea;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+}
+
+.btn-edit-lesson:hover {
+  background: #f8f9fa;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-edit-lesson:active {
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .lesson-header {
+    flex-direction: column;
+  }
+
+  .btn-edit-lesson {
+    width: 100%;
+  }
+
+  .lesson-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* ========== TEACHER CONTROLS ========== */
+
+.teacher-controls {
+  margin-bottom: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.add-button {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.add-button:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}

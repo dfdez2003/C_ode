@@ -1,0 +1,36 @@
+<!-- frontend/src/app/pages/game-map/components/lesson-node/lesson-node.html -->
+
+<div 
+  class="lesson-node"
+  [class]="getStatusClass()"
+  [class.is-private]="lesson.is_private"
+  [title]="lesson.title + (lesson.is_private ? ' (Examen - Un intento)' : '')">
+  
+  <!-- Icono de estado -->
+  <div class="lesson-icon">
+    {{ getStatusIcon() }}
+  </div>
+
+  <!-- Número de lección -->
+  <div class="lesson-number">
+    L{{ lessonIndex + 1 }}
+  </div>
+
+  <!-- Info en hover -->
+  <div class="lesson-tooltip">
+    <strong>{{ lesson.title }}</strong>
+    <p>{{ lesson.description }}</p>
+    <div class="tooltip-meta">
+      <span>⭐ {{ lesson.xp_reward }} XP</span>
+      <span>📝 {{ lesson.exercises.length }} ejercicios</span>
+      @if (lesson.is_private) {
+        <span class="private-badge">🔴 Examen</span>
+      }
+    </div>
+    @if (isTeacher) {
+      <div class="teacher-hint">
+        🖱️ Click para editar
+      </div>
+    }
+  </div>
+</div>

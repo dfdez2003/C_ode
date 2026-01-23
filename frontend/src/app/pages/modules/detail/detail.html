@@ -22,7 +22,9 @@
       @if (userRole() === 'teacher') {
         <div class="teacher-controls">
           <button class="edit-button">✏️ Editar Módulo (Pendiente)</button>
-          <button class="add-button">➕ Agregar Lección (Pendiente)</button>
+          <button class="add-button" (click)="openAddLessonModal()">
+            ➕ Agregar Lección
+          </button>
         </div>
       }
 
@@ -63,7 +65,17 @@
       <app-lesson-detail 
         [lesson]="selectedLesson()!" 
         [moduleTitle]="m.title"
+        [moduleId]="m._id"
       ></app-lesson-detail>
     }
   }
 </div>
+
+<!-- Modal de Agregar Lección -->
+@if (showAddLessonModal() && module()) {
+  <app-lesson-form-modal
+    [moduleId]="module()!._id"
+    (close)="closeAddLessonModal()"
+    (lessonCreated)="onLessonCreated()"
+  />
+}

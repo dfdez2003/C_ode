@@ -1,0 +1,37 @@
+<!-- frontend/src/app/components/achievement-notification/achievement-notification.html -->
+
+<div class="achievement-container" 
+     *ngIf="isVisible()" 
+     [@slideIn]="animationState()">
+  
+  <!-- Header -->
+  <div class="achievement-header">
+    <div class="header-title">
+      <span class="trophy-icon">🏆</span>
+      <span class="title-text">¡Felicidades!</span>
+    </div>
+    <button class="close-button" (click)="hide()" aria-label="Cerrar notificación">
+      ✕
+    </button>
+  </div>
+
+  <!-- Logros -->
+  <div class="achievements-list">
+    <div *ngFor="let achievement of achievements; trackBy: trackByAchievement" 
+         class="achievement-item">
+      <span class="achievement-emoji">{{ getEmojiForAchievement(achievement) }}</span>
+      <span class="achievement-text">{{ getTextWithoutEmoji(achievement) }}</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="achievement-footer">
+    <p class="footer-text">Ganaste experiencia y puntos</p>
+  </div>
+</div>
+
+<!-- Invisible backdrop para detectar clicks fuera -->
+<div class="achievement-backdrop" 
+     *ngIf="isVisible()" 
+     (click)="hide()">
+</div>

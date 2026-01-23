@@ -1,0 +1,127 @@
+<!-- frontend/src/app/pages/exercises/types/unit_concepts/unit_concepts.component.html -->
+
+<div class="unit-concepts-container">
+  <div class="exercise-card">
+    <!-- Header del ejercicio -->
+    <div class="exercise-header">
+      <div class="exercise-info">
+        <h2 class="exercise-title">{{ exerciseTitle }}</h2>
+        <span class="exercise-points">
+          <i class="points-icon">⭐</i>
+          {{ exercisePoints }} puntos
+        </span>
+      </div>
+    </div>
+
+  <!-- Descripción -->
+  <div class="description-section">
+    <div class="description-icon">�</div>
+    <p class="description-text">{{ exerciseData.description }}</p>
+  </div>
+
+  <!-- Instrucciones -->
+  <div class="instructions">
+    <p><strong>Instrucciones:</strong> Selecciona un concepto y luego su definición correspondiente para emparejarlos.</p>
+  </div>
+
+  <!-- Área de emparejamiento -->
+  <div class="matching-area">
+    <!-- Columna Izquierda -->
+    <div class="concepts-column">
+      <h3 class="column-header">📝 Conceptos</h3>
+      <div class="items-list">
+        <div
+          *ngFor="let concept of availableConcepts()"
+          class="concept-item"
+          [class.selected]="selectedConcept() === concept"
+          (click)="selectConcept(concept)"
+        >
+          {{ concept }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Columna Central - Pares -->
+    <div class="center-column">
+      <div class="matched-pairs-list">
+        @if (matchedPairs().length === 0) {
+          <div class="empty-state">
+            <p>Selecciona un elemento de cada lado</p>
+          </div>
+        } @else {
+          @for (pair of matchedPairs(); track pair.id) {
+            <div 
+              class="matched-pair"
+              [class.correct]="isPairCorrect(pair) === true"
+              [class.incorrect]="isPairCorrect(pair) === false"
+              [class.clickable]="!hasSubmitted()"
+              (click)="separatePair(pair)"
+            >
+              <span class="pair-text">{{ pair.concept }}</span>
+              <span class="pair-connector">
+                @if (hasSubmitted()) {
+                  {{ isPairCorrect(pair) ? '✓' : '✗' }}
+                } @else {
+                  ⟷
+                }
+              </span>
+              <span class="pair-text">{{ pair.definition }}</span>
+            </div>
+          }
+        }
+      </div>
+    </div>
+
+    <!-- Columna Derecha -->
+    <div class="definitions-column">
+      <h3 class="column-header">💡 Definiciones</h3>
+      <div class="items-list">
+        <div
+          *ngFor="let definition of availableDefinitions()"
+          class="definition-item"
+          [class.selected]="selectedDefinition() === definition"
+          (click)="selectDefinition(definition)"
+        >
+          {{ definition }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feedback -->
+  @if (showFeedback()) {
+    <div class="feedback-section">
+      @if (allPairsCorrect()) {
+        <p class="feedback-text success">
+          🎉 ¡Excelente! Todos los pares son correctos ({{ correctPairsCount() }}/{{ matchedPairs().length }})
+        </p>
+      } @else {
+        <p class="feedback-text">
+          📊 Tienes {{ correctPairsCount() }} de {{ matchedPairs().length }} pares correctos.
+          Los pares incorrectos están marcados con ✗
+        </p>
+      }
+    </div>
+  }
+
+  <!-- Botones de acción -->
+  <div class="action-buttons">
+    @if (!hasSubmitted()) {
+      <button
+        class="submit-button"
+        [disabled]="!allPairsMatched()"
+        (click)="checkAnswer()"
+      >
+        Verificar Respuestas
+      </button>
+    } @else {
+      <button 
+        class="continue-button" 
+        [disabled]="isContinueClicked()"
+        (click)="continue()">
+        {{ isContinueClicked() ? 'Enviando...' : 'Continuar' }}
+      </button>
+    }
+  </div>
+  </div> <!-- Cierra exercise-card -->
+</div> <!-- Cierra unit-concepts-container -->

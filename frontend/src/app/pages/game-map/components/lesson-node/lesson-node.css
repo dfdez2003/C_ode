@@ -1,0 +1,162 @@
+/* frontend/src/app/pages/game-map/components/lesson-node/lesson-node.css */
+
+.lesson-node {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.lesson-node:hover {
+  transform: scale(1.2);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* ========== ESTADOS DE LECCIÓN ========== */
+
+/* Disponible (por defecto) */
+.lesson-node.available {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+}
+
+/* Completada */
+.lesson-node.completed {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
+
+/* Bloqueada */
+.lesson-node.locked {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  color: #d1d5db;
+  cursor: not-allowed;
+}
+
+.lesson-node.locked:hover {
+  transform: scale(1.05);
+}
+
+/* Lección privada (examen) */
+.lesson-node.is-private {
+  border: 3px solid #ef4444;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2);
+}
+
+.lesson-node.is-private.available {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+/* ========== CONTENIDO DEL NODO ========== */
+
+.lesson-icon {
+  font-size: 1.8rem;
+  margin-bottom: 0.25rem;
+}
+
+.lesson-number {
+  font-size: 0.75rem;
+  font-weight: bold;
+  opacity: 0.9;
+}
+
+/* ========== TOOLTIP ========== */
+
+.lesson-tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  background: rgba(17, 24, 39, 0.95);
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  min-width: 200px;
+  max-width: 300px;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.lesson-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 8px solid transparent;
+  border-top-color: rgba(17, 24, 39, 0.95);
+}
+
+.lesson-node:hover .lesson-tooltip {
+  transform: translateX(-50%) scale(1);
+  opacity: 1;
+}
+
+.lesson-tooltip strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.lesson-tooltip p {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  opacity: 0.9;
+}
+
+.tooltip-meta {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.private-badge {
+  background: rgba(239, 68, 68, 0.3);
+  padding: 0.125rem 0.5rem;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.teacher-hint {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 0.75rem;
+  text-align: center;
+  opacity: 0.7;
+}
+
+/* ========== RESPONSIVE ========== */
+
+@media (max-width: 768px) {
+  .lesson-node {
+    width: 60px;
+    height: 60px;
+  }
+
+  .lesson-icon {
+    font-size: 1.5rem;
+  }
+
+  .lesson-number {
+    font-size: 0.7rem;
+  }
+
+  .lesson-tooltip {
+    min-width: 180px;
+  }
+}

@@ -1,0 +1,89 @@
+<!-- frontend/src/app/components/upcoming-rewards/upcoming-rewards.html -->
+
+<div class="upcoming-rewards-container" *ngIf="rewards.length > 0">
+  
+  <!-- Header Colapsable -->
+  <div class="rewards-header" (click)="toggleExpanded()">
+    <div class="header-left">
+      <span class="header-icon">🎯</span>
+      <div class="header-text">
+        <h3 class="header-title">Próximas Recompensas</h3>
+        <p class="header-count">{{ rewards.length }} disponibles</p>
+      </div>
+    </div>
+    <button class="toggle-button" [class.expanded]="isExpanded()">
+      ▼
+    </button>
+  </div>
+
+  <!-- Contenido Expandible -->
+  <div class="rewards-content" *ngIf="isExpanded()" [@fadeIn]>
+    
+    <!-- Recompensa Actual -->
+    <div class="current-reward" *ngIf="currentReward">
+      
+      <!-- Información Básica -->
+      <div class="reward-info">
+        <div class="reward-header">
+          <span class="reward-emoji">{{ getRewardTypeIcon(currentReward.reward_type) }}</span>
+          <div class="reward-title-section">
+            <h4 class="reward-title">{{ currentReward.title }}</h4>
+            <span class="reward-points">+{{ currentReward.points }} XP</span>
+          </div>
+        </div>
+
+        <!-- Descripción -->
+        <p class="reward-description">{{ getRewardDescription(currentReward) }}</p>
+      </div>
+
+      <!-- Barra de Progreso -->
+      <div class="progress-section" *ngIf="currentReward.progress">
+        <div class="progress-bar">
+          <div class="progress-fill" 
+               [style.width.%]="currentReward.progress.percentage"
+               [class]="getProgressBarClass(currentReward.progress.percentage)">
+          </div>
+        </div>
+        <div class="progress-text">
+          <span class="progress-current">{{ currentReward.progress.current }}</span>
+          <span class="progress-slash">/</span>
+          <span class="progress-required">{{ currentReward.progress.required }}</span>
+        </div>
+      </div>
+
+      <!-- Navegación -->
+      <div class="navigation" *ngIf="rewards.length > 1">
+        <button class="nav-button prev" 
+                (click)="previousReward()"
+                [disabled]="currentRewardIndex() === 0"
+                aria-label="Recompensa anterior">
+          ← Anterior
+        </button>
+        <span class="nav-counter">{{ currentRewardIndex() + 1 }} / {{ rewards.length }}</span>
+        <button class="nav-button next" 
+                (click)="nextReward()"
+                [disabled]="currentRewardIndex() === rewards.length - 1"
+                aria-label="Siguiente recompensa">
+          Siguiente →
+        </button>
+      </div>
+    </div>
+
+    <!-- Lista Compacta (cuando hay múltiples) -->
+    <div class="rewards-list" *ngIf="rewards.length > 1">
+      <div class="list-title">Todas las recompensas disponibles:</div>
+      <div class="list-items">
+        <div *ngFor="let reward of rewards; let i = index; trackBy: trackByRewardId"
+             class="list-item"
+             [class.active]="currentRewardIndex() === i"
+             (click)="currentRewardIndex.set(i)">
+          <span class="item-emoji">{{ getRewardTypeIcon(reward.reward_type) }}</span>
+          <span class="item-title">{{ reward.title }}</span>
+          <span class="item-progress" *ngIf="reward.progress">
+            {{ reward.progress.percentage }}%
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

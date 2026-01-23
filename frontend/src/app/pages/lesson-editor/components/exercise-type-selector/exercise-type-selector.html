@@ -1,0 +1,57 @@
+<!-- frontend/src/app/pages/lesson-editor/components/exercise-type-selector/exercise-type-selector.html -->
+
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-content">
+    
+    <!-- Header -->
+    <div class="modal-header">
+      <h2>🎯 Selecciona el Tipo de Ejercicio</h2>
+      <button class="close-button" (click)="onClose()">
+        ✕
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+      <p class="intro-text">
+        Elige el tipo de ejercicio que mejor se adapte a lo que quieres enseñar
+      </p>
+
+      <div class="types-grid">
+        @for (option of exerciseTypes; track option.type) {
+          <div 
+            class="type-card" 
+            [style.border-color]="option.color"
+            (click)="onSelectType(option.type)">
+            
+            <div class="type-icon" [style.background]="option.color">
+              {{ option.icon }}
+            </div>
+            
+            <h3 class="type-name">{{ option.name }}</h3>
+            
+            <p class="type-description">{{ option.description }}</p>
+            
+            <div class="select-arrow" [style.color]="option.color">
+              →
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="help-box">
+        <p>
+          💡 <strong>Consejo:</strong> Comienza con ejercicios de <strong>Estudio</strong> o <strong>Pregunta</strong> para contenido teórico, y usa <strong>Completar/Escribir Código</strong> para práctica.
+        </p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="onClose()">
+        Cancelar
+      </button>
+    </div>
+
+  </div>
+</div>

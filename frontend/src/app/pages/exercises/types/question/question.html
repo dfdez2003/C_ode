@@ -1,0 +1,75 @@
+<!-- frontend/src/app/pages/exercises/types/question/question.component.html -->
+
+<div class="question-exercise-container">
+  <!-- Header del ejercicio -->
+  <div class="exercise-header">
+    <div class="exercise-info">
+      <h2 class="exercise-title">{{ exerciseTitle }}</h2>
+      <span class="exercise-points">
+        <i class="points-icon">⭐</i>
+        {{ exercisePoints }} puntos
+      </span>
+    </div>
+  </div>
+
+  <!-- Pregunta -->
+  <div class="question-content">
+    <div class="question-icon">❓</div>
+    <p class="question-text">{{ exerciseData.description }}</p>
+  </div>
+
+  <!-- Opciones de respuesta -->
+  <div class="options-container">
+    <button
+      *ngFor="let option of exerciseData.options; let i = index"
+      class="option-button"
+      [class.selected]="selectedOption() === option && !hasSubmitted()"
+      [class.correct]="hasSubmitted() && option === exerciseData.correct_answer"
+      [class.incorrect]="hasSubmitted() && selectedOption() === option && !isCorrect()"
+      [class.disabled]="hasSubmitted()"
+      [disabled]="hasSubmitted()"
+      (click)="selectOption(option)"
+    >
+      <span class="option-label">{{ getOptionLabel(i) }}.</span>
+      <span class="option-text">{{ option }}</span>
+    </button>
+  </div>
+
+  <!-- Feedback -->
+  <div class="feedback-container" *ngIf="showFeedback()">
+    <div class="feedback" [class.correct]="isCorrect()" [class.incorrect]="!isCorrect()">
+      <div class="feedback-icon">
+        {{ isCorrect() ? '✓' : '✗' }}
+      </div>
+      <div class="feedback-message">
+        <strong>{{ isCorrect() ? '¡Correcto!' : 'Incorrecto' }}</strong>
+        <p *ngIf="isCorrect()">
+          ¡Excelente! Haz clic en Continuar para avanzar.
+        </p>
+        <p *ngIf="!isCorrect()">
+          Tu respuesta ha sido registrada. Haz clic en Continuar.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botones de acción -->
+  <div class="action-buttons">
+    @if (!hasSubmitted()) {
+      <button
+        class="btn-submit"
+        [disabled]="!selectedOption()"
+        (click)="checkAnswer()">
+        Verificar Respuesta
+      </button>
+    }
+
+    @if (hasSubmitted()) {
+      <button
+        class="btn-continue"
+        (click)="continueToNext()">
+        Continuar →
+      </button>
+    }
+  </div>
+</div>

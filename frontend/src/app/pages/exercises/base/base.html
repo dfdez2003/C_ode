@@ -1,0 +1,72 @@
+@switch (exerciseSummary.type) {
+  @case ('study') {
+    <app-study-exercise 
+      [exerciseData]="exerciseData()"
+      [exerciseTitle]="exerciseSummary.title"
+      [exercisePoints]="exerciseSummary.points"
+      [sessionId]="sessionId!"
+      [moduleId]="moduleId"
+      [lessonId]="lessonId"
+      [exerciseUuid]="exerciseSummary.exercise_uuid"
+      (onComplete)="handleExerciseComplete($event)" />
+  }
+  @case ('complete') {
+    <app-complete-exercise 
+      [exerciseData]="exerciseData()"
+      [exerciseTitle]="exerciseSummary.title"
+      [exercisePoints]="exerciseSummary.points"
+      [sessionId]="sessionId!"
+      [moduleId]="moduleId"
+      [lessonId]="lessonId"
+      [exerciseUuid]="exerciseSummary.exercise_uuid"
+      (onComplete)="handleExerciseComplete($event)" />
+  }
+  @case ('question') {
+    <app-question-exercise 
+      [exerciseData]="exerciseData()"
+      [exerciseTitle]="exerciseSummary.title"
+      [exercisePoints]="exerciseSummary.points"
+      [sessionId]="sessionId!"
+      [moduleId]="moduleId"
+      [lessonId]="lessonId"
+      [exerciseUuid]="exerciseSummary.exercise_uuid"
+      (onComplete)="handleExerciseComplete($event)" />
+  }
+  @case ('unit_concepts') {
+    <app-unit-concepts-exercise 
+      [exerciseData]="exerciseData()"
+      [exerciseTitle]="exerciseSummary.title"
+      [exercisePoints]="exerciseSummary.points"
+      [sessionId]="sessionId!"
+      [moduleId]="moduleId"
+      [lessonId]="lessonId"
+      [exerciseUuid]="exerciseSummary.exercise_uuid"
+      (onComplete)="handleExerciseComplete($event)" />
+  }
+  @case ('make_code') {
+    <app-make-code 
+      [exerciseData]="exerciseData()"
+      [exerciseTitle]="exerciseSummary.title"
+      [exercisePoints]="exerciseSummary.points"
+      [sessionId]="sessionId!"
+      [moduleId]="moduleId"
+      [lessonId]="lessonId"
+      [exerciseUuid]="exerciseSummary.exercise_uuid"
+      [submissionResult]="submissionResult()"
+      (onComplete)="handleExerciseComplete($event)"
+      (onContinue)="handleContinue()" />
+  }
+  @default {
+    <div class="error-message">
+      <p>❌ Tipo de ejercicio desconocido: {{ exerciseSummary.type }}</p>
+    </div>
+  }
+}
+
+<!-- 🏆 Notificación de Logros -->
+<app-achievement-notification 
+  [achievements]="achievementsEarned()"
+  (onClose)="achievementsEarned.set([])" />
+
+
+

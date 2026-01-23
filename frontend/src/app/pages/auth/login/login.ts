@@ -42,7 +42,7 @@ export class LoginComponent {
       next: (response) => {
         // Token almacenado en localStorage dentro del .pipe(tap()) del AuthService
         alert(`Inicio de sesión exitoso. Redirigiendo...`);
-        this.router.navigate(['/dashboard']); // Redirigir a la vista protegida
+        this.router.navigate(['/game-map']); // Redirigir al mapa de juego
       },
       error: (err) => {
         // Manejo de errores de FastAPI (ej. 401 Unauthorized)

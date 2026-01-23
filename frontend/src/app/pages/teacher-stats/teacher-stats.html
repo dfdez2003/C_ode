@@ -1,0 +1,299 @@
+<!-- frontend/src/app/pages/teacher-stats/teacher-stats.html -->
+
+<div class="teacher-stats-container">
+  
+  <!-- Header -->
+  <div class="stats-header">
+    <div class="header-left">
+      <button class="btn-back" (click)="goBack()">
+        ← Volver al Mapa
+      </button>
+    </div>
+    <div class="header-center">
+      <h1>📊 Estadísticas de Estudiantes</h1>
+      <p class="subtitle">Vista general del progreso de todos los alumnos</p>
+    </div>
+    <div class="header-right">
+      <button class="btn-rewards" (click)="goToRewards()">
+        🎁 Gestionar Recompensas
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+    <div class="loading-container">
+      <div class="spinner"></div>
+      <p>Cargando estadísticas...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error()) {
+    <div class="error-container">
+      <p class="error-message">{{ error() }}</p>
+      <button class="btn-retry" (click)="loadStats()">Reintentar</button>
+    </div>
+  }
+
+  <!-- Main Content -->
+  @if (!isLoading() && !error()) {
+    
+    <!-- Summary Cards -->
+    <div class="summary-cards">
+      <div class="summary-card">
+        <div class="card-icon">👥</div>
+        <div class="card-content">
+          <span class="card-value">{{ students().length }}</span>
+          <span class="card-label">Estudiantes</span>
+        </div>
+      </div>
+
+      <div class="summary-card">
+        <div class="card-icon">✅</div>
+        <div class="card-content">
+          <span class="card-value">
+            {{ getTotalLessonsCompleted() }}
+          </span>
+          <span class="card-label">Lecciones Completadas</span>
+        </div>
+      </div>
+
+      <div class="summary-card">
+        <div class="card-icon">⭐</div>
+        <div class="card-content">
+          <span class="card-value">
+            {{ getTotalXP() }}
+          </span>
+          <span class="card-label">XP Total</span>
+        </div>
+      </div>
+
+      <div class="summary-card">
+        <div class="card-icon">🔥</div>
+        <div class="card-content">
+          <span class="card-value">
+            {{ getActiveStreaksCount() }}
+          </span>
+          <span class="card-label">Con Racha Activa</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls-section">
+      <!-- Search -->
+      <div class="search-box">
+        <input
+          type="text"
+          placeholder="🔍 Buscar por nombre o email..."
+          [(ngModel)]="searchTerm"
+          [ngModelOptions]="{standalone: true}"
+          class="search-input"
+        />
+      </div>
+
+      <!-- Sort Buttons -->
+      <div class="sort-buttons">
+        <button
+          class="sort-btn"
+          [class.active]="sortBy() === 'xp'"
+          (click)="setSortBy('xp')">
+          ⭐ XP
+          @if (sortBy() === 'xp') {
+            <span class="sort-arrow">{{ sortDirection() === 'asc' ? '↑' : '↓' }}</span>
+          }
+        </button>
+        <button
+          class="sort-btn"
+          [class.active]="sortBy() === 'streak'"
+          (click)="setSortBy('streak')">
+          🔥 Racha
+          @if (sortBy() === 'streak') {
+            <span class="sort-arrow">{{ sortDirection() === 'asc' ? '↑' : '↓' }}</span>
+          }
+        </button>
+        <button
+          class="sort-btn"
+          [class.active]="sortBy() === 'lessons'"
+          (click)="setSortBy('lessons')">
+          📚 Lecciones
+          @if (sortBy() === 'lessons') {
+            <span class="sort-arrow">{{ sortDirection() === 'asc' ? '↑' : '↓' }}</span>
+          }
+        </button>
+        <button
+          class="sort-btn"
+          [class.active]="sortBy() === 'name'"
+          (click)="setSortBy('name')">
+          📝 Nombre
+          @if (sortBy() === 'name') {
+            <span class="sort-arrow">{{ sortDirection() === 'asc' ? '↑' : '↓' }}</span>
+          }
+        </button>
+      </div>
+    </div>
+
+    <!-- Students Table -->
+    <div class="students-table-container">
+      @if (getFilteredStudents().length === 0) {
+        <div class="empty-state">
+          <p>No se encontraron estudiantes con ese criterio</p>
+        </div>
+      } @else {
+        <table class="students-table">
+          <thead>
+            <tr>
+              <th>Estudiante</th>
+              <th>⭐ XP Total</th>
+              <th>🔥 Racha</th>
+              <th>📚 Lecciones</th>
+              <th>✏️ Ejercicios</th>
+              <th>📅 Días Activos</th>
+              <th>🕒 Última Actividad</th>
+              <th>📊 Progreso</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (student of getFilteredStudents(); track student.user_id) {
+              <tr class="student-row" (click)="selectStudent(student)">
+                <td class="student-info">
+                  <div class="student-avatar">{{ student.username.charAt(0).toUpperCase() }}</div>
+                  <div class="student-details">
+                    <span class="student-name">{{ student.username }}</span>
+                    <span class="student-email">{{ student.email }}</span>
+                  </div>
+                </td>
+                <td class="stat-cell">
+                  <span class="stat-value xp">{{ student.total_xp }}</span>
+                </td>
+                <td class="stat-cell">
+                  <span class="stat-value streak" [class.active]="student.streak_days > 0">
+                    {{ student.streak_days }} días
+                  </span>
+                </td>
+                <td class="stat-cell">
+                  <span class="stat-value">{{ student.lessons_completed }}</span>
+                </td>
+                <td class="stat-cell">
+                  <span class="stat-value">{{ student.exercises_completed }}</span>
+                </td>
+                <td class="stat-cell">
+                  <span class="stat-value">{{ student.active_days_count }}</span>
+                </td>
+                <td class="stat-cell">
+                  <span class="stat-value-small">{{ formatDate(student.last_activity) }}</span>
+                </td>
+                <td class="stat-cell">
+                  <div class="progress-bar-container">
+                    <div 
+                      class="progress-bar-fill" 
+                      [style.width.%]="getAverageProgress(student)">
+                    </div>
+                    <span class="progress-text">{{ getAverageProgress(student) }}% {{ student.global_progress_text ? '(' + student.global_progress_text + ')' : '' }}</span>
+                  </div>
+                </td>
+                <td class="actions-cell">
+                  <button 
+                    class="btn-details" 
+                    (click)="selectStudent(student); $event.stopPropagation()"
+                    title="Ver detalles">
+                    👁️
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+
+  }
+
+  <!-- Detail Panel (Sidebar) -->
+  @if (selectedStudent()) {
+    <div class="detail-panel-backdrop" (click)="closeDetails()">
+      <div class="detail-panel" (click)="$event.stopPropagation()">
+        
+        <!-- Panel Header -->
+        <div class="panel-header">
+          <h2>{{ selectedStudent()!.username }}</h2>
+          <button class="btn-close-panel" (click)="closeDetails()">✕</button>
+        </div>
+
+        <!-- Panel Content -->
+        <div class="panel-content">
+          
+          <!-- User Info -->
+          <div class="info-section">
+            <h3>Información General</h3>
+            <div class="info-grid">
+              <div class="info-item">
+                <span class="info-label">Email:</span>
+                <span class="info-value">{{ selectedStudent()!.email }}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">XP Total:</span>
+                <span class="info-value">{{ selectedStudent()!.total_xp }}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Racha:</span>
+                <span class="info-value">{{ selectedStudent()!.streak_days }} días 🔥</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Lecciones Completadas:</span>
+                <span class="info-value">{{ selectedStudent()!.lessons_completed }}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Ejercicios Completados:</span>
+                <span class="info-value">{{ selectedStudent()!.exercises_completed }}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Días Activos:</span>
+                <span class="info-value">{{ selectedStudent()!.active_days_count }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Activity Calendar -->
+          <div class="info-section">
+            <h3>📅 Días de Actividad Recientes</h3>
+            <div class="activity-calendar">
+              @for (day of selectedStudent()!.active_days.slice(0, 10); track day) {
+                <div class="activity-day" [title]="day">
+                  {{ day }}
+                </div>
+              }
+              @if (selectedStudent()!.active_days.length === 0) {
+                <p class="empty-text">No hay actividad registrada</p>
+              }
+            </div>
+          </div>
+
+          <!-- Module Progress -->
+          <div class="info-section">
+            <h3>📚 Progreso por Módulo</h3>
+            @for (moduleEntry of selectedStudent()!.modules_progress | keyvalue; track moduleEntry.key) {
+              <div class="module-progress-card">
+                <div class="module-header">
+                  <span class="module-id">Módulo: {{ moduleEntry.key.substring(0, 8) }}...</span>
+                </div>
+                <div class="module-stats">
+                  <span>✅ {{ moduleEntry.value.lessons_completed }} lecciones</span>
+                  <span>⭐ {{ moduleEntry.value.total_score }} puntos</span>
+                </div>
+              </div>
+            }
+            @if (Object.keys(selectedStudent()!.modules_progress).length === 0) {
+              <p class="empty-text">Aún no ha iniciado ningún módulo</p>
+            }
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  }
+
+</div>
