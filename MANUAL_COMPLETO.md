@@ -283,18 +283,14 @@ C_ode/
 
 | Colección | Definida en | Usada en | Status | Docs |
 |-----------|-----------|---------|--------|-------|
-| **users** | [db.py#L17](backend/app/db/db.py#L17) | progress, rewards, sessions | ✅ CRÍTICA | 10 |
-| **modules** | [db.py#L18](backend/app/db/db.py#L18) | progress, rewards, modules | ✅ CRÍTICA | 16 |
-| **rewards** | [db.py#L19](backend/app/db/db.py#L19) | rewards.py, routers | ✅ IMPORTANTE | ~20 |
-| **sessions** | [db.py#L20](backend/app/db/db.py#L20) | sessions, progress | ✅ IMPORTANTE | 1 |
-| **lesson_progress** | [services/progress.py](backend/app/services/progress.py#L342)* | progress, rewards, student_stats, teacher_stats | ✅✅✅ MUY CRÍTICA | 📊 Real |
-| **xp_history** | [services/xp_history.py#L11](backend/app/services/xp_history.py#L11)* | xp_history.py, routers | ✅ IMPORTANTE | 📊 Audit |
-
+| **users** | [db.py#L17](backend/app/db/db.py#L17) | progress, rewards, sessions |
+| **modules** | [db.py#L18](backend/app/db/db.py#L18) | progress, rewards, modules |
+| **rewards** | [db.py#L19](backend/app/db/db.py#L19) | rewards.py, routers | 
+| **sessions** | [db.py#L20](backend/app/db/db.py#L20) | sessions, progress |
+| **lesson_progress** | [services/progress.py](backend/app/services/progress.py#L342)* | progress, rewards, student_stats, teacher_stats 
+| **xp_history** | [services/xp_history.py#L11](backend/app/services/xp_history.py#L11)* | xp_history.py, routers |
 *Nota importante: `lesson_progress` y `xp_history` NO están definidas en db.py. Se usan directamente en servicios como `db["nombre_coleccion"]`
 
-**Colecciones ELIMINADAS (no se usan):**
-- ❌ user_progress (definida en db.py pero nunca usada en código)
-- ❌ user_rewards (nunca existió, eliminada de db.py)
 
 #### 1. **users** 
 **Ubicación:** Definida en [backend/app/db/db.py](backend/app/db/db.py#L17)  
@@ -394,7 +390,7 @@ C_ode/
 }
 ```
 
-**⚠️ IMPORTANTE:** Esta colección contiene los datos REALES de progreso de estudiantes. Es la más crítica del sistema.
+
 
 **Usado en:** 4 servicios principales
 - [services/progress.py](backend/app/services/progress.py) - Gestiona intentos y progreso
@@ -833,79 +829,3 @@ export MONGO_URI="mongodb+srv://user:pass@cluster.mongodb.net/"
 
 ---
 
-## Historial de Cambios
-
-### Versión 1.1.0 (24 Enero 2026)
-
-**Cambios Principales:**
-- ✅ Documentación completa de colecciones MongoDB (6 activas, 2 eliminadas)
-- ✅ Clarificación de dónde se definen lesson_progress y xp_history
-- ✅ Eliminadas referencias no usadas: user_progress y user_rewards de db.py
-- ✅ Tabla detallada de colecciones con referencias de código
-- ✅ Documentación mejorada del frontend (estructura completa)
-- ✅ Guía de definición de colecciones en código
-
-### Versión 1.0.0 (23 Enero 2026)
-
-#### Cambios Principales
-- ✅ **Fase 2 - Service Cleanup**
-  - Eliminadas 345 líneas de código legacy
-  - Removidos 16 funciones innecesarias
-  - Limpias referencias a colecciones legacy (exercises, lessons)
-  - Resultado: Arquitectura monolítica simple
-
-- ✅ **Fase 3 - Debug/Logging Cleanup**
-  - Reducidos 30 logs verbose (81% reducción)
-  - Mantenidos 7 logs críticos para production
-  - Terminal más limpia
-
-- ✅ **Fase 4 - MongoDB Cleanup**
-  - Eliminadas colecciones legacy vacías (exercises, lessons)
-  - Preservadas 10 usuarios, 16 módulos
-  - 100% integridad de datos verificada
-
-#### Calidad
-- ✅ Toda compilación validada
-- ✅ 0 breaking changes en frontend
-- ✅ 0 pérdida de datos
-- ✅ XP display fix (problema inicial resuelto)
-
-#### Commits
-```
-bac2b21 - Feat: Comprehensive cleanup - Phases 2-4
-e5a5249 - Commit inicial
-```
-
----
-
-## Próximos Pasos (Roadmap)
-
-### Corto Plazo
-- [ ] Unit tests para services/modules.py
-- [ ] Integration tests para endpoints
-- [ ] Performance testing
-
-### Mediano Plazo
-- [ ] Caché Redis para consultas frecuentes
-- [ ] Índices MongoDB optimizados
-- [ ] Documentación de API (Swagger)
-
-### Largo Plazo
-- [ ] Mobile app (React Native)
-- [ ] Real-time notifications
-- [ ] Leaderboards y social features
-- [ ] Advanced analytics
-
----
-
-## Contacto y Soporte
-
-**Desarrollador:** Diego Fernández Montalvo  
-**Email:** df4720350@gmail.com  
-**Repositorio:** https://github.com/...
-
----
-
-**Este documento es la fuente de verdad para el proyecto. Mantenlo actualizado.**
-
-Última revisión: 24/01/2026
