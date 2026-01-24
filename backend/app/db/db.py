@@ -18,8 +18,9 @@ users_collection = db["users"]
 modules_collection = db["modules"]
 rewards_collection = db["rewards"]
 sessions_collection = db["sessions"]
-userprogress_collection = db["user_progress"]
-userrewards_collection = db["user_rewards"]
+# NOTA: lesson_progress y xp_history se usan directamente como db["nombre"]
+# en sus respectivos servicios sin estar exportadas aquí
+
 client = mongo_client  # Exporta el cliente por si necesitas start_session()
 
 # Esta función es la que FastAPI necesita para inyectar el objeto DB.

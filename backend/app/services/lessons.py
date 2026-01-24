@@ -1,6 +1,5 @@
 from schemas.lessons import LessonCreate, LessonOut, LessonUpdate
 from models import PyObjectId
-from db.db import userprogress_collection
 from typing import List, Optional
 from bson import ObjectId
 from fastapi import HTTPException, status
