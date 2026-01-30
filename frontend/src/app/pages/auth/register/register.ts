@@ -31,7 +31,39 @@ export class RegisterComponent {
     username: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8)]],
+    secret_key: [''], // Campo para clave de profesor (inicialmente vacío)
   });
+
+  constructor() {
+    // Suscribirse a cambios en isTeacherRegistration para actualizar validadores
+    // Esto es necesario porque Angular Signals no son reactivos automáticamente
+    // Usamos un efecto implícito mediante el getter
+  }
+
+  /**
+   * Getter para determinar si la clave secreta es requerida
+   */
+  get isSecretKeyRequired(): boolean {
+    return this.isTeacherRegistration();
+  }
+
+  /**
+   * Maneja el cambio del checkbox de profesor
+   */
+  public toggleTeacherRegistration(): void {
+    const newValue = !this.isTeacherRegistration();
+    this.isTeacherRegistration.set(newValue);
+    
+    const secretKeyControl = this.registerForm.get('secret_key');
+    if (newValue) {
+      // Si es profesor, la clave es requerida
+      secretKeyControl?.setValidators([Validators.required, Validators.minLength(5)]);
+    } else {
+      // Si es estudiante, no es requerida
+      secretKeyControl?.clearValidators();
+    }
+    secretKeyControl?.updateValueAndValidity();
+  }
 
   /**
    * Maneja el envío del formulario.
@@ -43,15 +75,22 @@ export class RegisterComponent {
       return;
     }
 
-    const data: UserCreate = this.registerForm.value as UserCreate;
+    const data: any = this.registerForm.value;
 
     let registration$: any;
     
     // Determinar qué endpoint llamar según la variable 'isTeacherRegistration'
     if (this.isTeacherRegistration()) {
+      // Para profesor, enviamos con secret_key
       registration$ = this.authService.registerTeacher(data);
     } else {
-      registration$ = this.authService.register(data);
+      // Para estudiante, solo enviamos los campos básicos
+      const studentData = {
+        username: data.username,
+        email: data.email,
+        password: data.password
+      };
+      registration$ = this.authService.register(studentData);
     }
 
     registration$.subscribe({

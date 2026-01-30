@@ -59,6 +59,39 @@
     font-weight: normal;
 }
 
+/* Estilos para el contenedor de clave secreta de profesor */
+.teacher-secret-container {
+    background-color: #f9f3f0;
+    border: 2px solid #ff9800;
+    border-radius: 6px;
+    padding: 12px;
+    margin: 15px 0;
+}
+
+.teacher-secret-container label {
+    color: #d84315;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.teacher-secret-container input {
+    background-color: #fff5f1;
+    border: 1px solid #ffcc80 !important;
+}
+
+.teacher-secret-container input:focus {
+    outline: none;
+    border: 2px solid #ff9800 !important;
+    background-color: #fffbf8;
+}
+
+.info-text {
+    color: #d84315;
+    font-size: 12px;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
 .role-display {
     text-align: center;
     margin-bottom: 15px;

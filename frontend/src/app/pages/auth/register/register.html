@@ -16,12 +16,28 @@
       <label for="password">Contraseña:</label>
       <input id="password" type="password" formControlName="password" required class="input-field">
       
+      <!-- Campo de clave secreta de profesor (mostrado solo si se selecciona profesor) -->
+      @if (isTeacherRegistration()) {
+        <div class="teacher-secret-container">
+          <label for="secret_key">Código Secreto de Profesor:</label>
+          <input 
+            id="secret_key" 
+            type="password" 
+            formControlName="secret_key" 
+            placeholder="Ingresa el código secreto"
+            class="input-field"
+            [required]="isTeacherRegistration()"
+          >
+          <p class="info-text">⚠️ Necesario para registrarse como profesor</p>
+        </div>
+      }
+      
       <div class="role-option">
         <input 
           id="isTeacher" 
           type="checkbox" 
           [checked]="isTeacherRegistration()" 
-          (change)="isTeacherRegistration.set(!isTeacherRegistration())"
+          (change)="toggleTeacherRegistration()"
         >
         <label for="isTeacher">Registrarse como Profesor</label>
       </div>
