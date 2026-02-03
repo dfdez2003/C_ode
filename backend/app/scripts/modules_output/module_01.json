@@ -1,0 +1,610 @@
+{
+  "title": "Razonamiento Algorítmico",
+  "description": "Fundamentos de la lógica computacional, metodología de solución de problemas y el ciclo de vida del software en C.",
+  "order": 1,
+  "estimate_time": 240,
+  "lessons": [
+    {
+      "title": "¿Qué es un Algoritmo?",
+      "description": "Definición, características y las 3 reglas de oro.",
+      "order": 1,
+      "xp_reward": 100,
+      "is_private": false,
+      "exercises": [
+        {
+          "type": "study",
+          "title": "Definición de Algoritmo",
+          "points": 1,
+          "flashcards": {
+            "Algoritmo": "Pasos ordenados para resolver un problema",
+            "Finito": "Debe tener un fin",
+            "Preciso": "Sin ambigüedades"
+          }
+        },
+        {
+          "type": "unit_concepts",
+          "title": "Características Pro",
+          "points": 2,
+          "concepts": {
+            "Preciso": "Orden claro",
+            "Definido": "Mismo resultado",
+            "Finito": "Tiene fin"
+          }
+        },
+        {
+          "type": "question",
+          "title": "Propiedad Clave",
+          "points": 2,
+          "description": "¿Qué propiedad indica que un algoritmo debe terminar?",
+          "options": [
+            "Finito",
+            "Preciso",
+            "Definido",
+            "Eficiente"
+          ],
+          "correct_answer": "Finito"
+        },
+        {
+          "type": "complete",
+          "title": "El proceso lógico",
+          "points": 3,
+          "text": "Si un algoritmo da siempre el mismo resultado ante los mismos datos, es ___.",
+          "options": [
+            "definido",
+            "finito",
+            "claro",
+            "largo"
+          ],
+          "correct_answer": "definido"
+        },
+        {
+          "type": "make_code",
+          "title": "Pasos de Lógica",
+          "points": 4,
+          "description": "Escribe los pasos (comentarios) para cambiar una llanta.",
+          "code": "",
+          "solution": "// 1. Levantar auto\\n// 2. Quitar tuercas\\n// 3. Cambiar llanta\\n// 4. Bajar auto",
+          "test_cases": [
+            {
+              "input": "",
+              "expected_output": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Entradas, Procesos y Salidas",
+      "description": "Identificación de los componentes básicos de un proceso.",
+      "order": 2,
+      "xp_reward": 100,
+      "is_private": false,
+      "exercises": [
+        {
+          "type": "study",
+          "title": "El Flujo de Datos",
+          "points": 1,
+          "flashcards": {
+            "Entrada": "Datos iniciales",
+            "Proceso": "Transformación",
+            "Salida": "Resultado final"
+          }
+        },
+        {
+          "type": "unit_concepts",
+          "title": "Identificación E/S",
+          "points": 2,
+          "concepts": {
+            "Mouse": "Entrada",
+            "Monitor": "Salida",
+            "RAM": "Almacenamiento"
+          }
+        },
+        {
+          "type": "complete",
+          "title": "El ciclo E-P-S",
+          "points": 3,
+          "text": "La parte del algoritmo donde los datos se transforman es el ___.",
+          "options": [
+            "Entrada",
+            "Proceso",
+            "Salida",
+            "Código"
+          ],
+          "correct_answer": "Proceso"
+        },
+        {
+          "type": "question",
+          "title": "Datos de Salida",
+          "points": 2,
+          "description": "¿Qué representa la 'Salida' en un algoritmo?",
+          "options": [
+            "El resultado final",
+            "Los datos iniciales",
+            "Las instrucciones",
+            "El error"
+          ],
+          "correct_answer": "El resultado final"
+        },
+        {
+          "type": "make_code",
+          "title": "Simulación de Suma",
+          "points": 4,
+          "description": "Escribe un programa que imprima el resultado de 5+5.",
+          "code": "",
+          "solution": "#include <stdio.h>\\nint main() {\\n printf(\"%d\", 5+5);\\n return 0;\\n}",
+          "test_cases": [
+            {
+              "input": "",
+              "expected_output": "10"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Análisis y Diseño",
+      "description": "Cómo entender un problema antes de proponer una solución.",
+      "order": 3,
+      "xp_reward": 100,
+      "is_private": false,
+      "exercises": [
+        {
+          "type": "study",
+          "title": "Metodología",
+          "points": 1,
+          "flashcards": {
+            "Análisis": "¿Qué hay que hacer?",
+            "Diseño": "¿Cómo lo vamos a hacer?",
+            "Pruebas": "¿Funciona?"
+          }
+        },
+        {
+          "type": "question",
+          "title": "Fase de Análisis",
+          "points": 2,
+          "description": "¿Cuál es el primer paso de la metodología?",
+          "options": [
+            "Análisis del problema",
+            "Diseño de solución",
+            "Codificación",
+            "Pruebas"
+          ],
+          "correct_answer": "Análisis del problema"
+        },
+        {
+          "type": "complete",
+          "title": "El plan previo",
+          "points": 3,
+          "text": "En la fase de ___ se crean los diagramas y pseudocódigos.",
+          "options": [
+            "Diseño",
+            "Análisis",
+            "Compilación",
+            "Error"
+          ],
+          "correct_answer": "Diseño"
+        },
+        {
+          "type": "unit_concepts",
+          "title": "Herramientas de Diseño",
+          "points": 2,
+          "concepts": {
+            "Diagrama": "Representación visual",
+            "Pseudocódigo": "Lenguaje natural técnico",
+            "Algoritmo": "Lógica pura"
+          }
+        },
+        {
+          "type": "make_code",
+          "title": "Lógica de Mayoría",
+          "points": 4,
+          "description": "Escribe un código que imprima \"OK\" si una variable edad es 18.",
+          "code": "",
+          "solution": "#include <stdio.h>\\nint main() {\\n int edad = 18;\\n if(edad == 18) printf(\"OK\");\\n return 0;\\n}",
+          "test_cases": [
+            {
+              "input": "",
+              "expected_output": "OK"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Representación de Soluciones",
+      "description": "Introducción a la diagramación y el pseudocódigo.",
+      "order": 4,
+      "xp_reward": 100,
+      "is_private": false,
+      "exercises": [
+        {
+          "type": "study",
+          "title": "Simbología",
+          "points": 1,
+          "flashcards": {
+            "Óvalo": "Inicio/Fin",
+            "Rectángulo": "Proceso",
+            "Rombo": "Decisión",
+            "Trapecio": "Entrada/Salida"
+          }
+        },
+        {
+          "type": "question",
+          "title": "El Rombo",
+          "points": 2,
+          "description": "En un diagrama de flujo, ¿para qué sirve el rombo?",
+          "options": [
+            "Tomar una decisión",
+            "Iniciar el programa",
+            "Realizar una suma",
+            "Imprimir"
+          ],
+          "correct_answer": "Tomar una decisión"
+        },
+        {
+          "type": "complete",
+          "title": "Pseudocódigo",
+          "points": 3,
+          "text": "Para mostrar un mensaje en pseudocódigo usamos la palabra ___.",
+          "options": [
+            "Escribir",
+            "Leer",
+            "Inicio",
+            "Fin"
+          ],
+          "correct_answer": "Escribir"
+        },
+        {
+          "type": "unit_concepts",
+          "title": "Estructura",
+          "points": 2,
+          "concepts": {
+            "Inicio": "Punto de partida",
+            "Cuerpo": "Instrucciones",
+            "Fin": "Cierre del proceso"
+          }
+        },
+        {
+          "type": "make_code",
+          "title": "Hola Mundo C",
+          "points": 4,
+          "description": "Escribe el programa más básico que imprima \"Hola\".",
+          "code": "",
+          "solution": "#include <stdio.h>\\nint main() {\\n printf(\"Hola\");\\n return 0;\\n}",
+          "test_cases": [
+            {
+              "input": "",
+              "expected_output": "Hola"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Fase de Codificación",
+      "description": "Del diseño al lenguaje de programación C.",
+      "order": 5,
+      "xp_reward": 100,
+      "is_private": false,
+      "exercises": [
+        {
+          "type": "study",
+          "title": "Codificación",
+          "points": 1,
+          "flashcards": {
+            "Sintaxis": "Reglas del lenguaje",
+            "Semántica": "Significado del código",
+            "IDE": "Editor de texto técnico"
+          }
+        },
+        {
+          "type": "question",
+          "title": "Lenguaje C",
+          "points": 2,
+          "description": "¿Qué tipo de lenguaje es C según su cercanía al hardware?",
+          "options": [
+            "Bajo/Medio nivel",
+            "Alto nivel",
+            "Lenguaje humano",
+            "Binario puro"
+          ],
+          "correct_answer": "Bajo/Medio nivel"
+        },
+        {
+          "type": "complete",
+          "title": "El Editor",
+          "points": 3,
+          "text": "El archivo que escribimos nosotros se llama ___.",
+          "options": [
+            "código fuente",
+            "binario",
+            "ejecutable",
+            "texto"
+          ],
+          "correct_answer": "código fuente"
+        },
+        {
+          "type": "unit_concepts",
+          "title": "Elementos de C",
+          "points": 2,
+          "concepts": {
+            "#include": "Librerías",
+            "main": "Punto de entrada",
+            "{}": "Bloques de código"
+          }
+        },
+        {
+          "type": "make_code",
+          "title": "Variable Int",
+          "points": 4,
+          "description": "Crea una variable 'x' con valor 10 y muéstrala.",
+          "code": "",
+          "solution": "#include <stdio.h>\\nint main() {\\n int x = 10;\\n printf(\"%d\", x);\\n return 0;\\n}",
+          "test_cases": [
+            {
+              "input": "",
+              "expected_output": "10"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Fase de Compilación",
+      "description": "Cómo el computador entiende nuestras instrucciones.",
+      "order": 6,
+      "xp_reward": 100,
+      "is_private": false,
+      "exercises": [
+        {
+          "type": "study",
+          "title": "Compilación",
+          "points": 1,
+          "flashcards": {
+            "Compilador": "Traduce a binario",
+            "Error de Sintaxis": "Error de escritura",
+            "Ejecutable": "Archivo final .exe"
+          }
+        },
+        {
+          "type": "question",
+          "title": "Traducción",
+          "points": 2,
+          "description": "¿Qué herramienta traduce el código C a lenguaje máquina?",
+          "options": [
+            "Compilador",
+            "Navegador",
+            "Editor de texto",
+            "Teclado"
+          ],
+          "correct_answer": "Compilador"
+        },
+        {
+          "type": "complete",
+          "title": "Errores",
+          "points": 3,
+          "text": "Olvidar un punto y coma (;) genera un error de ___.",
+          "options": [
+            "Sintaxis",
+            "Lógica",
+            "Tiempo",
+            "Memoria"
+          ],
+          "correct_answer": "Sintaxis"
+        },
+        {
+          "type": "unit_concepts",
+          "title": "Proceso Técnico",
+          "points": 2,
+          "concepts": {
+            "Preprocesador": "Limpia el código",
+            "Compilador": "Genera objeto",
+            "Enlazador": "Crea ejecutable"
+          }
+        },
+        {
+          "type": "make_code",
+          "title": "Error Corregido",
+          "points": 4,
+          "description": "Corrige el código: printf(\"Hola\") sin punto y coma.",
+          "code": "",
+          "solution": "#include <stdio.h>\\nint main() {\\n printf(\"Hola\");\\n return 0;\\n}",
+          "test_cases": [
+            {
+              "input": "",
+              "expected_output": "Hola"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Pruebas y Depuración",
+      "description": "Detección de errores y verificación de resultados.",
+      "order": 7,
+      "xp_reward": 100,
+      "is_private": false,
+      "exercises": [
+        {
+          "type": "study",
+          "title": "Depuración",
+          "points": 1,
+          "flashcards": {
+            "Debugger": "Busca errores",
+            "Prueba de Escritorio": "Seguimiento manual",
+            "Error de Lógica": "Cálculo equivocado"
+          }
+        },
+        {
+          "type": "question",
+          "title": "Error de Lógica",
+          "points": 2,
+          "description": "Si el programa corre pero suma mal, ¿qué error es?",
+          "options": [
+            "Lógica",
+            "Sintaxis",
+            "Compilación",
+            "Fatal"
+          ],
+          "correct_answer": "Lógica"
+        },
+        {
+          "type": "complete",
+          "title": "Seguimiento",
+          "points": 3,
+          "text": "El seguimiento manual de un algoritmo se llama Prueba de ___.",
+          "options": [
+            "Escritorio",
+            "Pantalla",
+            "Papel",
+            "Viento"
+          ],
+          "correct_answer": "Escritorio"
+        },
+        {
+          "type": "unit_concepts",
+          "title": "Verificación",
+          "points": 2,
+          "concepts": {
+            "Entrada válida": "Datos correctos",
+            "Entrada límite": "Datos extremos",
+            "Entrada inválida": "Datos erróneos"
+          }
+        },
+        {
+          "type": "make_code",
+          "title": "Multiplicación",
+          "points": 4,
+          "description": "Haz un programa que multiplique 3 por 4 e imprima el resultado.",
+          "code": "",
+          "solution": "#include <stdio.h>\\nint main() {\\n printf(\"%d\", 3*4);\\n return 0;\\n}",
+          "test_cases": [
+            {
+              "input": "",
+              "expected_output": "12"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Práctica de Lógica I",
+      "description": "Ejercicios de secuenciación lógica básica.",
+      "order": 8,
+      "xp_reward": 120,
+      "is_private": false,
+      "exercises": [
+        {
+          "type": "study",
+          "title": "Secuenciación",
+          "points": 1,
+          "flashcards": {
+            "Orden": "Pasos uno tras otro",
+            "Estado": "Valor de las variables",
+            "Traza": "Ruta del algoritmo"
+          }
+        },
+        {
+          "type": "question",
+          "title": "Paso a Paso",
+          "points": 2,
+          "description": "En una estructura secuencial, ¿cómo se ejecutan las órdenes?",
+          "options": [
+            "Una tras otra en orden",
+            "Al azar",
+            "Todas al mismo tiempo",
+            "De atrás hacia adelante"
+          ],
+          "correct_answer": "Una tras otra en orden"
+        },
+        {
+          "type": "complete",
+          "title": "Instrucciones",
+          "points": 3,
+          "text": "El orden de ejecución por defecto en C es ___.",
+          "options": [
+            "secuencial",
+            "aleatoria",
+            "cíclica",
+            "nula"
+          ],
+          "correct_answer": "secuencial"
+        },
+        {
+          "type": "unit_concepts",
+          "title": "Flujo",
+          "points": 2,
+          "concepts": {
+            "Arriba": "Inicio",
+            "Abajo": "Final",
+            "Líneas": "Dirección del flujo"
+          }
+        },
+        {
+          "type": "make_code",
+          "title": "Intercambio",
+          "points": 4,
+          "description": "Imprime los números 1, 2 y 3 cada uno en una línea nueva.",
+          "code": "",
+          "solution": "#include <stdio.h>\\nint main() {\\n printf(\"1\\n2\\n3\");\\n return 0;\\n}",
+          "test_cases": [
+            {
+              "input": "",
+              "expected_output": "1\\n2\\n3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Desafío Final: El Algoritmo",
+      "description": "Evaluación integradora de los conceptos del módulo.",
+      "order": 9,
+      "xp_reward": 150,
+      "is_private": true,
+      "exercises": [
+        {
+          "type": "question",
+          "title": "Integración",
+          "points": 5,
+          "description": "¿Cuál es la secuencia correcta para crear un software?",
+          "options": [
+            "Análisis-Diseño-Codificación",
+            "Codificación-Diseño-Análisis",
+            "Diseño-Pruebas-Análisis",
+            "Pruebas-Codificación-Diseño"
+          ],
+          "correct_answer": "Análisis-Diseño-Codificación"
+        },
+        {
+          "type": "complete",
+          "title": "El final",
+          "points": 3,
+          "text": "La base de toda la informática es el diseño de ___.",
+          "options": [
+            "algoritmos",
+            "dibujos",
+            "juegos",
+            "comidas"
+          ],
+          "correct_answer": "algoritmos"
+        },
+        {
+          "type": "make_code",
+          "title": "Desafío Final",
+          "points": 4,
+          "description": "Crea un programa que imprima \"CodeUP listo\".",
+          "code": "",
+          "solution": "#include <stdio.h>\\nint main() {\\n printf(\"CodeUP listo\");\\n return 0;\\n}",
+          "test_cases": [
+            {
+              "input": "",
+              "expected_output": "CodeUP listo"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

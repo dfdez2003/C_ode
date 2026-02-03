@@ -1,0 +1,564 @@
+{
+  "title": "Herramientas de Representación",
+  "description": "Domina el diseño visual de algoritmos mediante Diagramas de Flujo y la lógica del Pseudocódigo.",
+  "order": 2,
+  "estimate_time": 200,
+  "lessons": [
+    {
+      "title": "Simbología Básica",
+      "description": "Terminales y procesos: El inicio de todo diagrama.",
+      "order": 1,
+      "xp_reward": 100,
+      "is_private": false,
+      "exercises": [
+        {
+          "type": "study",
+          "title": "Terminales y Procesos",
+          "points": 1,
+          "flashcards": {
+            "Óvalo": "Inicio o Fin del algoritmo",
+            "Rectángulo": "Proceso o cálculo matemático",
+            "Flecha": "Dirección del flujo de datos"
+          }
+        },
+        {
+          "type": "unit_concepts",
+          "title": "Funciones del Bloque",
+          "points": 2,
+          "concepts": {
+            "Inicio": "Punto de partida único",
+            "Proceso": "Operación interna",
+            "Fin": "Cierre obligatorio"
+          }
+        },
+        {
+          "type": "question",
+          "title": "El Rectángulo",
+          "points": 2,
+          "description": "¿Qué acción representa un rectángulo en un diagrama de flujo?",
+          "options": [
+            "Una decisión",
+            "Un proceso o operación",
+            "La entrada de datos",
+            "El fin del programa"
+          ],
+          "correct_answer": "Un proceso o operación"
+        },
+        {
+          "type": "complete",
+          "title": "El Óvalo",
+          "points": 3,
+          "text": "En un diagrama, el óvalo se utiliza exclusivamente para el ___ y el fin.",
+          "options": [
+            "inicio",
+            "proceso",
+            "decisión",
+            "entrada"
+          ],
+          "correct_answer": "inicio"
+        },
+        {
+          "type": "make_code",
+          "title": "Lógica de Inicio",
+          "points": 4,
+          "description": "Escribe en comentarios cómo iniciarías un algoritmo para sumar A+B.",
+          "code": "",
+          "solution": "// 1. Inicio\\n// 2. Definir A, B, Suma\\n// 3. Sumar\\n// 4. Fin",
+          "test_cases": [
+            {
+              "input": "",
+              "expected_output": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Entrada y Salida Visual",
+      "description": "Cómo representar el movimiento de datos en un diagrama.",
+      "order": 2,
+      "xp_reward": 100,
+      "is_private": false,
+      "exercises": [
+        {
+          "type": "study",
+          "title": "Bloques E/S",
+          "points": 1,
+          "flashcards": {
+            "Trapecio": "Entrada de datos (Leer)",
+            "Paralelogramo": "Salida de datos (Imprimir)",
+            "E/S": "Intercambio con el usuario"
+          }
+        },
+        {
+          "type": "question",
+          "title": "Captura de Datos",
+          "points": 2,
+          "description": "¿Qué símbolo usarías para representar que el usuario debe teclear su nombre?",
+          "options": [
+            "Óvalo",
+            "Rectángulo",
+            "Trapecio/Paralelogramo",
+            "Rombo"
+          ],
+          "correct_answer": "Trapecio/Paralelogramo"
+        },
+        {
+          "type": "unit_concepts",
+          "title": "Flujo de Datos",
+          "points": 2,
+          "concepts": {
+            "Leer": "Capturar desde teclado",
+            "Escribir": "Mostrar en pantalla",
+            "Dato": "Información procesada"
+          }
+        },
+        {
+          "type": "complete",
+          "title": "Mostrar Información",
+          "points": 3,
+          "text": "El símbolo de paralelogramo representa tanto la entrada como la ___ de datos.",
+          "options": [
+            "proceso",
+            "salida",
+            "entrada",
+            "cierre"
+          ],
+          "correct_answer": "salida"
+        },
+        {
+          "type": "make_code",
+          "title": "Salida Visual",
+          "points": 4,
+          "description": "Crea un pseudocódigo simple que pida un número y lo muestre.",
+          "code": "",
+          "solution": "// 1. Inicio\\n// 2. Leer N\\n// 3. Escribir N\\n// 4. Fin",
+          "test_cases": [
+            {
+              "input": "",
+              "expected_output": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Reglas de Construcción",
+      "description": "Estándares de diseño: Dirección, flujo y claridad.",
+      "order": 3,
+      "xp_reward": 100,
+      "is_private": false,
+      "exercises": [
+        {
+          "type": "study",
+          "title": "Reglas de Diseño",
+          "points": 1,
+          "flashcards": {
+            "Top-Down": "Flujo de arriba hacia abajo",
+            "No cruces": "Evitar líneas que se toquen",
+            "Unicidad": "Solo un inicio y un fin"
+          }
+        },
+        {
+          "type": "question",
+          "title": "Sentido del Flujo",
+          "points": 2,
+          "description": "¿Cuál es la dirección estándar para leer un diagrama de flujo?",
+          "options": [
+            "De izquierda a derecha",
+            "De arriba hacia abajo",
+            "De abajo hacia arriba",
+            "En diagonal"
+          ],
+          "correct_answer": "De arriba hacia abajo"
+        },
+        {
+          "type": "complete",
+          "title": "Claridad Visual",
+          "points": 3,
+          "text": "Una regla fundamental es evitar los ___ de líneas para no confundir el flujo.",
+          "options": [
+            "cruces",
+            "flechas",
+            "colores",
+            "textos"
+          ],
+          "correct_answer": "cruces"
+        },
+        {
+          "type": "unit_concepts",
+          "title": "Estándares ANSI",
+          "points": 2,
+          "concepts": {
+            "Claridad": "Fácil lectura",
+            "Lógica": "Pasos coherentes",
+            "Simbolismo": "Uso de figuras estándar"
+          }
+        },
+        {
+          "type": "make_code",
+          "title": "Estructura Limpia",
+          "points": 4,
+          "description": "Representa la secuencia: Inicio -> Proceso A -> Proceso B -> Fin.",
+          "code": "",
+          "solution": "// 1. Inicio\\n// 2. Ejecutar A\\n// 3. Ejecutar B\\n// 4. Fin",
+          "test_cases": [
+            {
+              "input": "",
+              "expected_output": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Decisiones en Diagramas",
+      "description": "El uso del rombo para bifurcar la lógica del programa.",
+      "order": 4,
+      "xp_reward": 100,
+      "is_private": false,
+      "exercises": [
+        {
+          "type": "study",
+          "title": "El Rombo de Decisión",
+          "points": 1,
+          "flashcards": {
+            "Rombo": "Punto de decisión",
+            "Verdadero/Falso": "Caminos de salida",
+            "Bifurcación": "División del flujo"
+          }
+        },
+        {
+          "type": "question",
+          "title": "Salidas del Rombo",
+          "points": 2,
+          "description": "¿Cuántos caminos de salida tiene usualmente un rombo de decisión simple?",
+          "options": [
+            "1",
+            "2",
+            "3",
+            "Infinitos"
+          ],
+          "correct_answer": "2"
+        },
+        {
+          "type": "unit_concepts",
+          "title": "Lógica Selectiva",
+          "points": 2,
+          "concepts": {
+            "Sí/True": "Camino si se cumple",
+            "No/False": "Camino si no se cumple",
+            "Condición": "Pregunta lógica interna"
+          }
+        },
+        {
+          "type": "complete",
+          "title": "Condicionales",
+          "points": 3,
+          "text": "El rombo es el único símbolo que permite tomar una ___ dentro del algoritmo.",
+          "options": [
+            "decisión",
+            "inicio",
+            "proceso",
+            "final"
+          ],
+          "correct_answer": "decisión"
+        },
+        {
+          "type": "make_code",
+          "title": "Lógica if",
+          "points": 4,
+          "description": "Crea un esquema: Si edad > 18 imprimir \"Mayor\", sino \"Menor\".",
+          "code": "",
+          "solution": "// 1. Leer edad\\n// 2. Si edad > 18: Escribir \"Mayor\"\\n// 3. Sino: Escribir \"Menor\"\\n// 4. Fin",
+          "test_cases": [
+            {
+              "input": "",
+              "expected_output": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Ciclos en Diagramas",
+      "description": "Representación visual de procesos repetitivos (bucles).",
+      "order": 5,
+      "xp_reward": 100,
+      "is_private": false,
+      "exercises": [
+        {
+          "type": "study",
+          "title": "Bucles Visuales",
+          "points": 1,
+          "flashcards": {
+            "Bucle": "Repetición de pasos",
+            "Ciclo": "Regreso a un punto anterior",
+            "Condición de Salida": "Lo que detiene el bucle"
+          }
+        },
+        {
+          "type": "question",
+          "title": "Flechas de Regreso",
+          "points": 2,
+          "description": "¿Hacia dónde apunta la flecha al final de un ciclo en el diagrama?",
+          "options": [
+            "Hacia el fin",
+            "Hacia un punto anterior",
+            "Hacia afuera del diagrama",
+            "A ningún lado"
+          ],
+          "correct_answer": "Hacia un punto anterior"
+        },
+        {
+          "type": "complete",
+          "title": "Iteración",
+          "points": 3,
+          "text": "Cuando una flecha regresa a un bloque superior, se está formando un ___.",
+          "options": [
+            "ciclo",
+            "proceso",
+            "inicio",
+            "salto"
+          ],
+          "correct_answer": "ciclo"
+        },
+        {
+          "type": "unit_concepts",
+          "title": "Control de Ciclos",
+          "points": 2,
+          "concepts": {
+            "Contador": "Cuenta vueltas",
+            "Acumulador": "Suma valores",
+            "Bandera": "Indica un estado"
+          }
+        },
+        {
+          "type": "make_code",
+          "title": "Lógica de Ciclo",
+          "points": 4,
+          "description": "Esquema para imprimir \"Hola\" 5 veces.",
+          "code": "",
+          "solution": "// 1. i = 1\\n// 2. Imprimir \"Hola\"\\n// 3. i = i + 1\\n// 4. Si i <= 5 volver al paso 2",
+          "test_cases": [
+            {
+              "input": "",
+              "expected_output": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Introducción al Pseudocódigo",
+      "description": "La transición del dibujo a la lógica textual técnica.",
+      "order": 6,
+      "xp_reward": 100,
+      "is_private": false,
+      "exercises": [
+        {
+          "type": "study",
+          "title": "Pseudocódigo Base",
+          "points": 1,
+          "flashcards": {
+            "Pseudocódigo": "Lenguaje intermedio",
+            "Natural": "Parecido al habla humana",
+            "No ejecutable": "No lo entiende la PC directamente"
+          }
+        },
+        {
+          "type": "question",
+          "title": "Utilidad",
+          "points": 2,
+          "description": "¿Cuál es la principal ventaja del pseudocódigo?",
+          "options": [
+            "Es más rápido que programar",
+            "La PC lo ejecuta",
+            "No usa palabras",
+            "Es solo para dibujos"
+          ],
+          "correct_answer": "Es más rápido que programar"
+        },
+        {
+          "type": "complete",
+          "title": "Nivel de Lenguaje",
+          "points": 3,
+          "text": "El pseudocódigo es un lenguaje de nivel ___, previo a la codificación real.",
+          "options": [
+            "técnico",
+            "máquina",
+            "binario",
+            "físico"
+          ],
+          "correct_answer": "técnico"
+        },
+        {
+          "type": "unit_concepts",
+          "title": "Ventajas",
+          "points": 2,
+          "concepts": {
+            "Portabilidad": "Sirve para cualquier lenguaje",
+            "Flexibilidad": "Fácil de modificar",
+            "Lógica": "Enfoque en la solución"
+          }
+        },
+        {
+          "type": "make_code",
+          "title": "Primer Pseudocódigo",
+          "points": 4,
+          "description": "Escribe el pseudocódigo para saludar al usuario.",
+          "code": "",
+          "solution": "Algoritmo Saludo\\n Escribir \"Hola usuario\"\\nFinAlgoritmo",
+          "test_cases": [
+            {
+              "input": "",
+              "expected_output": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Estructura en Pseudocódigo",
+      "description": "Palabras clave: Leer, Escribir, Si-Entonces y Mientras.",
+      "order": 7,
+      "xp_reward": 100,
+      "is_private": false,
+      "exercises": [
+        {
+          "type": "study",
+          "title": "Palabras Reservadas",
+          "points": 1,
+          "flashcards": {
+            "Leer": "Obtener datos",
+            "Escribir": "Mostrar datos",
+            "Si/Entonces": "Condicional",
+            "Mientras": "Bucle"
+          }
+        },
+        {
+          "type": "question",
+          "title": "Captura de Teclado",
+          "points": 2,
+          "description": "¿Qué palabra se usa en pseudocódigo para recibir un dato del usuario?",
+          "options": [
+            "Mostrar",
+            "Leer",
+            "Escribir",
+            "Dato"
+          ],
+          "correct_answer": "Leer"
+        },
+        {
+          "type": "unit_concepts",
+          "title": "Estructuras",
+          "points": 2,
+          "concepts": {
+            "Secuencia": "Pasos seguidos",
+            "Selección": "Caminos opcionales",
+            "Repetición": "Bucles"
+          }
+        },
+        {
+          "type": "complete",
+          "title": "Lógica textual",
+          "points": 3,
+          "text": "Para enviar un resultado a la pantalla en pseudocódigo se usa ___.",
+          "options": [
+            "Escribir",
+            "Leer",
+            "Borrar",
+            "Mover"
+          ],
+          "correct_answer": "Escribir"
+        },
+        {
+          "type": "make_code",
+          "title": "Pseudocódigo Suma",
+          "points": 4,
+          "description": "Escribe el pseudocódigo para sumar dos números A y B.",
+          "code": "",
+          "solution": "Algoritmo Sumar\\n Leer A, B\\n Resultado = A + B\\n Escribir Resultado\\nFinAlgoritmo",
+          "test_cases": [
+            {
+              "input": "",
+              "expected_output": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Práctica de Traducción",
+      "description": "Convirtiendo diagramas de flujo en pseudocódigo real.",
+      "order": 8,
+      "xp_reward": 150,
+      "is_private": true,
+      "exercises": [
+        {
+          "type": "question",
+          "title": "Evaluación Final",
+          "points": 2,
+          "description": "Si un diagrama tiene un rombo, ¿qué estructura de pseudocódigo usaremos?",
+          "options": [
+            "Mientras",
+            "Si-Entonces",
+            "Para",
+            "Leer"
+          ],
+          "correct_answer": "Si-Entonces"
+        },
+        {
+          "type": "complete",
+          "title": "Traducción",
+          "points": 3,
+          "text": "El paso final tras el pseudocódigo es traducirlo a un lenguaje de ___ como C.",
+          "options": [
+            "código",
+            "dibujo",
+            "música",
+            "video"
+          ],
+          "correct_answer": "código"
+        },
+        {
+          "type": "question",
+          "title": "Ciclos",
+          "points": 2,
+          "description": "¿Qué palabra de pseudocódigo representa una flecha que regresa en un diagrama?",
+          "options": [
+            "Mientras",
+            "Si",
+            "Escribir",
+            "Fin"
+          ],
+          "correct_answer": "Mientras"
+        },
+        {
+          "type": "unit_concepts",
+          "title": "Calidad",
+          "points": 2,
+          "concepts": {
+            "Indentación": "Sangría para orden",
+            "Comentarios": "Notas aclaratorias",
+            "Nombres": "Variables claras"
+          }
+        },
+        {
+          "type": "make_code",
+          "title": "Desafío Módulo 2",
+          "points": 4,
+          "description": "Pseudocódigo: Si N es mayor a 0 escribir \"Positivo\".",
+          "code": "",
+          "solution": "Algoritmo Signo\\n Leer N\\n Si N > 0 Entonces\\n Escribir \"Positivo\"\\n FinSi\\nFinAlgoritmo",
+          "test_cases": [
+            {
+              "input": "",
+              "expected_output": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

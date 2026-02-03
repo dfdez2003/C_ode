@@ -827,5 +827,68 @@ export MONGO_URI="mongodb+srv://user:pass@cluster.mongodb.net/"
 2. Verificar credenciales en MONGO_URI
 3. Comprobar conexión: `mongosh <uri>`
 
----
 
+### 🗺️ Índice Contenido
+
+#### **Bloque 1: Introducción a la Programación (AFID)**
+*Enfoque: Lógica pura, diagramación y sintaxis básica en C.*
+
+* **Módulo 1: Razonamiento Algorítmico (Completado)**
+* Lecciones del 1 al 9: Desde la definición de algoritmo hasta las fases de creación de software.
+* **Módulo 2: Herramientas de Representación (Completado)**
+* Lecciones del 1 al 8: Diagramas de flujo (ANSI) y Pseudocódigo técnico.
+* **Módulo 3: El Lenguaje C: Fundamentos Técnicos**
+* L1-L8: Estructura del archivo, tipos de datos (`int`, `float`, `char`), variables y constantes.
+* **Módulo 4: Entrada, Salida y Operaciones**
+* L1-L8: Operadores aritméticos, jerarquía, `printf` formateado y `scanf`.
+* **Módulo 5: Estructuras de Control: Decisiones**
+* L1-L9: Operadores relacionales/lógicos, `if-else` anidados y selección múltiple `switch`.
+* **Módulo 6: Estructuras de Control: Ciclos e Iteración**
+* L1-L9: Bucles `for`, `while`, `do-while`, contadores, acumuladores y anidación.
+* **Módulo 7: Modularidad: Funciones y Procedimientos**
+* L1-L8: Definición, tipos de retorno, parámetros y prototipos de función.
+* **Módulo 8: Almacenamiento Estático: Arreglos**
+* L1-L9: Vectores (1D), Matrices (2D), recorrido con ciclos y cadenas de caracteres básicas.
+
+
+
+#### **Bloque 2: Programación Estructurada (AFD)**
+*Enfoque: Manejo avanzado de memoria, punteros y bajo nivel.*
+
+* **Módulo 9: Recursión y Módulos Avanzados**
+* L1-L8: Recursión simple y múltiple, ámbito de variables y persistencia.
+* **Módulo 10: El Poder de los Apuntadores**
+* L1-L8: Direccionamiento (`&`), desreferenciación (`*`) y paso por referencia.
+* **Módulo 11: Punteros Avanzados y Arreglos**
+* L1-L8: Aritmética de punteros, relación puntero-arreglo y punteros dobles.
+* **Módulo 12: Gestión de Archivos**
+* L1-L8: Streams, archivos de texto (`fprintf`/`fscanf`) y binarios (`fwrite`/`fread`).
+* **Módulo 13: Memoria Dinámica**
+* L1-L8: Uso de `malloc`, `calloc`, `realloc`, `free` y prevención de memory leaks.
+* **Módulo 14: Programación a Nivel de Bit**
+* L1-L8: Operadores `&`, `|`, `^`, `~` y corrimientos binarios `<<`, `>>`.
+* **Módulo 15: Puertos y Comunicaciones**
+* L1-L8: Conceptos de puertos físicos/lógicos y transmisión básica de datos.
+* **Módulo 16: Multiprocesamiento y Sistemas**
+* L1-L8: Hilos (Threads), sincronización básica y procesos con `fork()`.
+
+
+#### **Bloque 3: Estructuras de Datos (IFCC)**
+*Enfoque: Gestión eficiente de información y estructuras dinámicas complejas.*
+
+* **Módulo 17: Listas Dinámicas Simples**
+* L1-L8: Nodos autorreferenciados, inserción, recorrido y búsqueda.
+* **Módulo 18: Listas Dinámicas Avanzadas**
+* L1-L8: Eliminación de nodos y variantes de Listas Circulares.
+* **Módulo 19: Listas Doblemente Ligadas**
+* L1-L8: Estructura bidireccional, punteros `next` y `prev` y operaciones complejas.
+* **Módulo 20: Pilas (Stacks)**
+* L1-L8: Concepto LIFO, operaciones `Push` / `Pop` y aplicaciones prácticas.
+* **Módulo 21: Colas (Queues)**
+* L1-L8: Concepto FIFO, colas circulares y de doble extremo (Deques).
+* **Módulo 22: Árboles Binarios**
+* L1-L8: Árboles de búsqueda (BST) y recorridos (Pre, In, Post-orden).
+* **Módulo 23: Árboles Avanzados**
+* L1-L8: Introducción a balanceo AVL y conceptos de Árboles B/B+.
+* **Módulo 24: Grafos**
+* L1-L8: Representación (Matrices y Listas de adyacencia) y teoría básica.
